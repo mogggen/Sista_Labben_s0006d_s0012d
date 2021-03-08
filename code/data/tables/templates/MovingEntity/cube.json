@@ -1,0 +1,6 @@
+{
+    "blueprint": "MovingEntity",
+    "properties": {
+        "ModelResource": "mdl:dev/tree.n3"
+    }
+}

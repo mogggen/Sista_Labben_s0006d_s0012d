@@ -10,8 +10,16 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 
+#>fips
+# this area is managed by fips, do not edit
+.fips-*
+*.pyc
+.vscode/
+.idea/
+#<fips
+
+export_win32/*
+export/*
+
 # manges shit
 .proj.vim
-
-# other shit
-.vscode

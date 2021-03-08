@@ -1,0 +1,53 @@
+{
+    "namespace": "Demo",
+    "includes": [
+        "math/vec3.h",
+        "game/entity.h"
+    ],
+    "enums": {
+        "Foo": {
+            "DOOD":  0,
+            "ALF":  1,
+            "GNYRF": 2
+        }
+    },
+    "properties": {
+        "Movement": {
+            "direction": "vec3",
+            "speed": {
+                "_type_": "float",
+                "_default_": 4.0
+            },
+            "wanderRadius": { // Radius of constraining circle
+                "_type_": "float",
+                "_default_": 0.35
+            },
+            "wanderDistance": { // Distance the wander circle is projected in front of the entity
+                "_type_": "float",
+                "_default_": 2.0
+            },
+            "wanderJitter": { // maximum amount of random displacement that can be added each second.
+                "_type_": "float",
+                "_default_": 0.80
+            },
+            "maximumDistance": 
+            {
+                "_type_": "float",
+                "_default_": 20.0
+            },
+            "target_entity": "entity"
+        },
+        "Marker" : {
+            "position" : "vec3"
+        },
+        "Agent":{
+            "position"      : "vec3",
+            "tiredness"     : "int",
+            "hunger"        : "int",
+            "thirst"        : "int",
+            "social_metric" : "int",
+            "money"         : "int",
+            "food_storage"  : "int"
+        }
+    }
+}
