@@ -2,7 +2,7 @@
 Shift-vänsterclick i repos mappen och välj "Öppna powershell fönster här" eller "Open powershell windows here"
 öppna powershell.exe och skriv kommado-raderna nedan:
 
-<code>mk Last_nebula
+mk Last_nebula
 cd Last_nebula
 
 git clone "https://github.com/sirAgg/nebula.git"
@@ -14,7 +14,7 @@ cd ..\nebula-toolkit\
 .\fips anyfx setup
 .\fips set config win64-vstudio-release
 .\fips build
-(vänta i typ 15 min)
+
 (add enviorment variables to PATH)
 
 .\fips fetch
@@ -27,12 +27,14 @@ cd ..\Sista_Labben_s0006d_s0012d\
 .\fips nebula set toolkit ..\nebula
 .\fips nebula set work .
 .\fips set config vulkan-win64-vs2019-debug (".\fips set config vulkan-win64-vs2017-debug" om du avänder visual studio 2017 istället för 2019)
+.\fips gen
 
+.\fips build
 .\fips open
 .\fips physx deploy
-(vänta i typ 15 min)
+
 
 cd ..\fips-deploy\nebula-toolkit\win64-vstudio-debug\
 .\assetbatcher.exe
 
-./fips run nebula-demo</code>
+./fips run nebula-demo
