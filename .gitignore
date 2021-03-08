@@ -1,11 +1,10 @@
-CMakeLists.txt.user
-CMakeCache.txt
-CMakeFiles
-CMakeScripts
-Testing
-Makefile
-cmake_install.cmake
-install_manifest.txt
-compile_commands.json
-CTestTestfile.cmake
-_deps
+#>fips
+# this area is managed by fips, do not edit
+.fips-*
+*.pyc
+.vscode/
+.idea/
+#<fips
+
+export_win32/*
+export/*
