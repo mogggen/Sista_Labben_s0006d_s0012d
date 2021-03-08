@@ -36,5 +36,11 @@ cd ..\Sista_Labben_s0006d_s0012d\
 
 cd ..\fips-deploy\nebula-toolkit\win64-vstudio-debug\
 .\assetbatcher.exe
+cd ..\..\..\Sista_Labben_s0006d_s0012d\
 
-./fips run nebula-demo
+(
+.\fips gen
+.\fips build
+hard maybe!)
+
+.\fips run nebula-demo
