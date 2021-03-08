@@ -1,0 +1,997 @@
+#version 460 core
+#define gl_InstanceID gl_InstanceIndex
+#define gl_VertexID gl_VertexIndex
+#extension GL_GOOGLE_cpp_style_line_directive : enable
+#extension GL_ARB_separate_shader_objects : enable
+#extension GL_ARB_shading_language_420pack : enable
+#extension GL_KHR_shader_subgroup_quad : enable
+#define SPIRV
+#define COMPUTE_SHADER 1
+
+#define dFdx(val) val
+#define dFdy(val) val
+#define fwidth(val) val
+struct ClusterAABB
+{
+/* Offset:0 */	vec4 maxPoint;
+/* Offset:16 */	vec4 minPoint;
+/* Offset:32 */	uint featureFlags;
+};
+
+struct SpotLight
+{
+/* Offset:0 */	vec4 position;
+/* Offset:16 */	vec4 forward;
+/* Offset:32 */	vec2 angleSinCos;
+/* Offset:48 */	vec3 color;
+/* Offset:60 */	int projectionExtension;
+/* Offset:64 */	int shadowExtension;
+/* Offset:68 */	uint flags;
+};
+
+struct SpotLightProjectionExtension
+{
+/* Offset:0 */	mat4x4 projection;
+/* Offset:64 */	uint projectionTexture;
+};
+
+struct SpotLightShadowExtension
+{
+/* Offset:0 */	mat4x4 projection;
+/* Offset:64 */	float shadowIntensity;
+/* Offset:68 */	uint shadowSlice;
+/* Offset:72 */	uint shadowMap;
+};
+
+struct PointLight
+{
+/* Offset:0 */	vec4 position;
+/* Offset:16 */	vec3 color;
+/* Offset:28 */	uint flags;
+};
+
+struct PointLightShadowExtension
+{
+/* Offset:0 */	float shadowIntensity;
+/* Offset:0 */	uint shadowMap;
+};
+
+struct PBRDecal
+{
+/* Offset:0 */	uint albedo;
+/* Offset:16 */	vec4 bboxMin;
+/* Offset:32 */	vec4 bboxMax;
+/* Offset:48 */	mat4x4 invModel;
+/* Offset:112 */	vec3 direction;
+/* Offset:124 */	uint material;
+/* Offset:128 */	vec3 tangent;
+/* Offset:140 */	uint normal;
+};
+
+struct EmissiveDecal
+{
+/* Offset:0 */	vec4 bboxMin;
+/* Offset:16 */	vec4 bboxMax;
+/* Offset:32 */	mat4x4 invModel;
+/* Offset:96 */	vec3 direction;
+/* Offset:108 */	uint emissive;
+};
+
+struct FogSphere
+{
+/* Offset:0 */	vec3 position;
+/* Offset:12 */	float radius;
+/* Offset:16 */	vec3 absorption;
+/* Offset:28 */	float turbidity;
+/* Offset:32 */	float falloff;
+};
+
+struct FogBox
+{
+/* Offset:0 */	vec3 bboxMin;
+/* Offset:12 */	float falloff;
+/* Offset:16 */	vec3 bboxMax;
+/* Offset:28 */	float turbidity;
+/* Offset:32 */	vec3 absorption;
+/* Offset:48 */	mat4x4 invTransform;
+};
+
+layout(set=0, binding=5) uniform sampler Basic2DSampler;
+layout(set=0, binding=6) uniform sampler PosteffectSampler;
+layout(set=0, binding=7) uniform sampler PosteffectUpscaleSampler;
+layout(set=0, binding=0) uniform 	texture2D Textures2D[2048];
+layout(set=0, binding=1) uniform 	texture2DMS Textures2DMS[64];
+layout(set=0, binding=2) uniform 	textureCube TexturesCube[128];
+layout(set=0, binding=3) uniform 	texture3D Textures3D[128];
+layout(set=0, binding=4) uniform 	texture2DArray Textures2DArray[8];
+#ifdef FRAGMENT_SHADER
+layout(input_attachment_index=0, set=2, binding=0) uniform 	subpassInput InputAttachment0;
+#endif //FRAGMENT_SHADER
+#ifdef FRAGMENT_SHADER
+layout(input_attachment_index=0, set=2, binding=1) uniform 	subpassInput InputAttachment1;
+#endif //FRAGMENT_SHADER
+#ifdef FRAGMENT_SHADER
+layout(input_attachment_index=0, set=2, binding=2) uniform 	subpassInput InputAttachment2;
+#endif //FRAGMENT_SHADER
+#ifdef FRAGMENT_SHADER
+layout(input_attachment_index=0, set=2, binding=3) uniform 	subpassInput InputAttachment3;
+#endif //FRAGMENT_SHADER
+#ifdef FRAGMENT_SHADER
+layout(input_attachment_index=0, set=2, binding=4) uniform 	subpassInput InputAttachment4;
+#endif //FRAGMENT_SHADER
+#ifdef FRAGMENT_SHADER
+layout(input_attachment_index=0, set=2, binding=5) uniform 	subpassInput InputAttachment5;
+#endif //FRAGMENT_SHADER
+#ifdef FRAGMENT_SHADER
+layout(input_attachment_index=0, set=2, binding=6) uniform 	subpassInput InputAttachment6;
+#endif //FRAGMENT_SHADER
+#ifdef FRAGMENT_SHADER
+layout(input_attachment_index=0, set=2, binding=7) uniform 	subpassInput InputAttachment7;
+#endif //FRAGMENT_SHADER
+#ifdef FRAGMENT_SHADER
+layout(input_attachment_index=0, set=2, binding=8) uniform 	subpassInput InputAttachment8;
+#endif //FRAGMENT_SHADER
+#ifdef FRAGMENT_SHADER
+layout(input_attachment_index=0, set=2, binding=9) uniform 	subpassInput InputAttachment9;
+#endif //FRAGMENT_SHADER
+#ifdef FRAGMENT_SHADER
+layout(input_attachment_index=0, set=2, binding=10) uniform 	subpassInput InputAttachment10;
+#endif //FRAGMENT_SHADER
+#ifdef FRAGMENT_SHADER
+layout(input_attachment_index=0, set=2, binding=11) uniform 	subpassInput InputAttachment11;
+#endif //FRAGMENT_SHADER
+#ifdef FRAGMENT_SHADER
+layout(input_attachment_index=0, set=2, binding=12) uniform 	subpassInput InputAttachment12;
+#endif //FRAGMENT_SHADER
+#ifdef FRAGMENT_SHADER
+layout(input_attachment_index=0, set=2, binding=13) uniform 	subpassInput InputAttachment13;
+#endif //FRAGMENT_SHADER
+#ifdef FRAGMENT_SHADER
+layout(input_attachment_index=0, set=2, binding=14) uniform 	subpassInput InputAttachment14;
+#endif //FRAGMENT_SHADER
+#ifdef FRAGMENT_SHADER
+layout(input_attachment_index=0, set=2, binding=15) uniform 	subpassInput InputAttachment15;
+#endif //FRAGMENT_SHADER
+#ifdef FRAGMENT_SHADER
+layout(input_attachment_index=0, set=2, binding=16) uniform 	subpassInput DepthAttachment;
+#endif //FRAGMENT_SHADER
+layout(std140, set=0, binding=8) uniform PerTickParams
+{
+/* Offset:0 */	vec4 WindDirection;
+/* Offset:16 */	float WindWaveSize;
+/* Offset:20 */	float WindSpeed;
+/* Offset:24 */	float WindIntensity;
+/* Offset:28 */	float WindForce;
+/* Offset:32 */	float Saturation;
+/* Offset:36 */	float MaxLuminance;
+/* Offset:40 */	float FadeValue;
+/* Offset:44 */	uint UseDof;
+/* Offset:48 */	vec4 Balance;
+/* Offset:64 */	vec3 DoFDistances;
+/* Offset:76 */	float HDRBrightPassThreshold;
+/* Offset:80 */	vec4 HDRBloomColor;
+/* Offset:96 */	vec4 FogDistances;
+/* Offset:112 */	vec4 FogColor;
+/* Offset:128 */	uint GlobalLightFlags;
+/* Offset:132 */	float GlobalLightShadowIntensity;
+/* Offset:144 */	vec4 GlobalLightDirWorldspace;
+/* Offset:160 */	vec4 GlobalLightDir;
+/* Offset:176 */	vec4 GlobalLightColor;
+/* Offset:192 */	vec4 GlobalBackLightColor;
+/* Offset:208 */	vec4 GlobalAmbientLightColor;
+/* Offset:224 */layout(column_major) 	mat4x4 CSMShadowMatrix;
+/* Offset:288 */	float GlobalBackLightOffset;
+/* Offset:292 */	uint GlobalLightShadowBuffer;
+/* Offset:296 */	int NumEnvMips;
+/* Offset:300 */	uint EnvironmentMap;
+/* Offset:304 */	vec4 A;
+/* Offset:320 */	vec4 B;
+/* Offset:336 */	vec4 C;
+/* Offset:352 */	vec4 D;
+/* Offset:368 */	vec4 E;
+/* Offset:384 */	vec4 Z;
+/* Offset:400 */	float RayleighFactor;
+/* Offset:404 */	float RayleighZenithLength;
+/* Offset:408 */	float RefractiveIndex;
+/* Offset:412 */	float DepolarizationFactor;
+/* Offset:416 */	float Molecules;
+/* Offset:420 */	float MieV;
+/* Offset:424 */	float MieCoefficient;
+/* Offset:428 */	float MieDirectionalG;
+/* Offset:432 */	float MieZenithLength;
+/* Offset:436 */	float Turbidity;
+/* Offset:440 */	float SunIntensityFactor;
+/* Offset:444 */	float SunIntensityFalloff;
+/* Offset:448 */	float SunDiscSize;
+/* Offset:464 */	vec3 MieKCoefficient;
+/* Offset:480 */	vec3 PrimaryColors;
+/* Offset:492 */	float TonemapWeight;
+/* Offset:496 */	float Lum;
+/* Offset:512 */	vec4 CascadeOffset[4];
+/* Offset:576 */	vec4 CascadeScale[4];
+/* Offset:640 */	vec4 CascadeDistances;
+/* Offset:656 */	float MinBorderPadding;
+/* Offset:660 */	float MaxBorderPadding;
+/* Offset:664 */	float ShadowPartitionSize;
+/* Offset:668 */	float GlobalLightShadowBias;
+/* Offset:672 */	uint NormalBuffer;
+/* Offset:676 */	uint DepthBuffer;
+/* Offset:680 */	uint SpecularBuffer;
+/* Offset:684 */	uint IrradianceMap;
+/* Offset:688 */	uint DepthBufferCopy;
+};
+
+layout(std140, set=1, binding=0) uniform FrameBlock
+{
+/* Offset:0 */layout(column_major) 	mat4x4 View;
+/* Offset:64 */layout(column_major) 	mat4x4 InvView;
+/* Offset:128 */layout(column_major) 	mat4x4 ViewProjection;
+/* Offset:192 */layout(column_major) 	mat4x4 Projection;
+/* Offset:256 */layout(column_major) 	mat4x4 InvProjection;
+/* Offset:320 */layout(column_major) 	mat4x4 InvViewProjection;
+/* Offset:384 */	vec4 EyePos;
+/* Offset:400 */	vec4 FocalLengthNearFar;
+/* Offset:416 */	vec4 TimeAndRandom;
+};
+
+layout(std140, set=1, binding=1) uniform ShadowMatrixBlock
+{
+/* Offset:0 */layout(column_major) 	mat4x4 CSMViewMatrix[4];
+/* Offset:256 */layout(column_major) 	mat4x4 LightViewMatrix[16];
+};
+
+layout(std140, set=1, binding=2) uniform ClusterUniforms
+{
+/* Offset:0 */	vec2 FramebufferDimensions;
+/* Offset:8 */	vec2 InvFramebufferDimensions;
+/* Offset:16 */	uvec2 BlockSize;
+/* Offset:24 */	float InvZScale;
+/* Offset:28 */	float InvZBias;
+/* Offset:32 */	uvec3 NumCells;
+/* Offset:44 */	float ZDistribution;
+};
+
+layout(std140, set=1, binding=3) uniform LightUniforms
+{
+/* Offset:0 */	uint SSAOBuffer;
+/* Offset:4 */	uint NumPointLights;
+/* Offset:8 */	uint NumSpotLights;
+/* Offset:12 */	uint NumLightClusters;
+};
+
+layout(std140, set=1, binding=4) uniform DecalUniforms
+{
+/* Offset:0 */	uint NumPBRDecals;
+/* Offset:4 */	uint NumEmissiveDecals;
+/* Offset:8 */	uint NumDecalClusters;
+/* Offset:12 */	uint NormalBufferCopy;
+/* Offset:16 */	uint StencilBuffer;
+};
+
+layout(std140, set=1, binding=5) uniform VolumeFogUniforms
+{
+/* Offset:0 */	int Downscale;
+/* Offset:4 */	uint NumFogSpheres;
+/* Offset:8 */	uint NumFogBoxes;
+/* Offset:12 */	uint NumVolumeFogClusters;
+/* Offset:16 */	vec3 GlobalAbsorption;
+/* Offset:28 */	float GlobalTurbidity;
+};
+
+layout(std140, set=2, binding=17) uniform PassBlock
+{
+/* Offset:0 */	vec4 RenderTargetDimensions[16];
+};
+
+layout(std430, set=1, binding=6) buffer ClusterAABBs
+{
+/* Offset:0 */	ClusterAABB AABBs[];
+};
+
+layout(std430, set=1, binding=7) buffer LightIndexLists
+{
+/* Offset:0 */	uint PointLightCountList[16384];
+/* Offset:65536 */	uint PointLightIndexList[2097152];
+/* Offset:8454144 */	uint SpotLightCountList[16384];
+/* Offset:8519680 */	uint SpotLightIndexList[2097152];
+};
+
+layout(std430, set=1, binding=8) buffer LightLists
+{
+/* Offset:0 */	SpotLight SpotLights[1024];
+/* Offset:81920 */	SpotLightProjectionExtension SpotLightProjection[256];
+/* Offset:102400 */	SpotLightShadowExtension SpotLightShadow[16];
+/* Offset:103680 */	PointLight PointLights[1024];
+};
+
+layout(std430, set=1, binding=9) buffer DecalIndexLists
+{
+/* Offset:0 */	uint EmissiveDecalCountList[16384];
+/* Offset:65536 */	uint EmissiveDecalIndexList[2097152];
+/* Offset:8454144 */	uint PBRDecalCountList[16384];
+/* Offset:8519680 */	uint PBRDecalIndexList[2097152];
+};
+
+layout(std430, set=1, binding=10) buffer DecalLists
+{
+/* Offset:0 */	EmissiveDecal EmissiveDecals[128];
+/* Offset:14336 */	PBRDecal PBRDecals[128];
+};
+
+layout(std430, set=1, binding=11) buffer FogIndexLists
+{
+/* Offset:0 */	uint FogSphereCountList[16384];
+/* Offset:65536 */	uint FogSphereIndexList[2097152];
+/* Offset:8454144 */	uint FogBoxCountList[16384];
+/* Offset:8519680 */	uint FogBoxIndexList[2097152];
+};
+
+layout(std430, set=1, binding=12) buffer FogLists
+{
+/* Offset:0 */	FogSphere FogSpheres[128];
+/* Offset:6144 */	FogBox FogBoxes[128];
+};
+
+const int TICK_GROUP = int(0);
+const int FRAME_GROUP = int(1);
+const int PASS_GROUP = int(2);
+const int BATCH_GROUP = int(3);
+const int INSTANCE_GROUP = int(4);
+const int SYSTEM_GROUP = int(5);
+const int DYNAMIC_OFFSET_GROUP = int(6);
+const int MAX_2D_TEXTURES = int(2048);
+const int MAX_2D_MS_TEXTURES = int(64);
+const int MAX_2D_ARRAY_TEXTURES = int(8);
+const int MAX_CUBE_TEXTURES = int(128);
+const int MAX_3D_TEXTURES = int(128);
+const uint CLUSTER_POINTLIGHT_BIT = uint(1);
+const uint CLUSTER_SPOTLIGHT_BIT = uint(2);
+const uint CLUSTER_AREALIGHT_BIT = uint(4);
+const uint CLUSTER_LIGHTPROBE_BIT = uint(8);
+const uint CLUSTER_PBR_DECAL_BIT = uint(16);
+const uint CLUSTER_EMISSIVE_DECAL_BIT = uint(32);
+const uint CLUSTER_FOG_SPHERE_BIT = uint(64);
+const uint CLUSTER_FOG_BOX_BIT = uint(128);
+const uint NUM_CLUSTER_ENTRIES = uint(16384);
+const uint MAX_LIGHTS_PER_CLUSTER = uint(128);
+const int SHADOW_CASTER_COUNT = int(16);
+const float depthScale = float(100);
+const float MiddleGrey = float(0.5);
+const float Key = float(0.300000012);
+const vec4 Luminance = vec4(0.212599993, 0.715200007, 0.0722000003, 0);
+const int m = int(1540483477);
+const float F3 = float(0.333333313);
+const float G3 = float(0.166666701);
+const mat3x3 rot1 = mat3x3(-0.370000005, 0.360000014, 0.850000024, -0.140000001, -0.930000007, 0.340000004, 0.920000017, 0.00999999978, 0.400000006);
+const mat3x3 rot2 = mat3x3(-0.550000012, -0.389999986, 0.74000001, 0.330000013, -0.910000026, -0.239999995, 0.769999981, 0.119999997, 0.629999995);
+const mat3x3 rot3 = mat3x3(-0.709999979, 0.519999981, -0.469999999, -0.0799999982, -0.720000029, -0.680000007, -0.699999988, -0.449999988, 0.560000002);
+#line 67 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/std.fxh"
+void
+sincos(float angle, out float sinus, out float cosinus)
+{
+#line 69 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/std.fxh"
+sinus = sin(angle);
+	cosinus = cos(angle);
+}
+
+#line 18 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec4
+Encode2(vec2 inVals)
+{
+#line 21 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+return vec4(inVals.x, fract(inVals.x * 256.0), inVals.y, fract(inVals.y * 256.0));
+}
+
+#line 28 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec2
+Decode2(vec4 inVals)
+{
+#line 31 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+return vec2(inVals.x + (inVals.y / 256.0), inVals.z + (inVals.w / 256.0));
+}
+
+#line 38 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec3
+UnpackNormal(vec3 packedDataNormal)
+{
+#line 41 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+return (packedDataNormal * 2.0) - 1.0;
+}
+
+#line 48 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec4
+UnpackNormal4(vec4 packedDataNormal)
+{
+#line 51 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+return vec4((packedDataNormal.xyz * 2.0) - 1.0, 1.0f);
+}
+
+#line 58 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec2
+UnpackUv(vec2 packedDataUv)
+{
+#line 61 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+return (packedDataUv / 8192.0);
+}
+
+#line 69 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec4
+UnpackWeights(vec4 weights)
+{
+#line 72 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+return (weights / dot(weights, vec4(1.0, 1.0, 1.0, 1.0)));
+}
+
+#line 134 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec4
+ToneMap(vec4 vColor, vec4 lumAvg, float maxLum)
+{
+#line 146 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+float L = dot(vColor, Luminance);
+	float Lp = L * Key / lumAvg.x;
+	float nL = (Lp * (1.0f + Lp / (MiddleGrey))) / (1.0f + Lp);
+
+
+
+
+	vec3 color = vColor.rgb * (nL / L) * maxLum;
+
+
+
+	return vec4(color, 1.0f);
+}
+
+#line 165 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+float
+linstep(float min, float max, float v)
+{
+#line 167 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+return clamp((v - min) / (max - min), 0.0f, 1.0f);
+}
+
+#line 179 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+void
+pack_u16(in float depth, out float byte_a, out float byte_b)
+{
+#line 181 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+float tmp = depth / 256.0f;
+    byte_a = floor(tmp) / 256.0f;
+    byte_b = fract(tmp);
+}
+
+#line 191 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+float
+unpack_u16(in float byte_a, in float byte_b)
+{
+#line 193 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+return ((byte_a * 256.0f) * 256.0f) + (byte_b * 256.0f);
+}
+
+#line 203 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+void
+pack_16bit_normal_component(in float n, out float byte_a, out float byte_b)
+{
+#line 205 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+n = ((n * 0.5f) + 0.5f) * 65535.0f;
+
+    pack_u16(n, byte_a, byte_b);
+}
+
+#line 214 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+float
+unpack_16bit_normal_component(in float byte_a, in float byte_b)
+{
+#line 216 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+return ((unpack_u16(byte_a, byte_b) / 65535.0f) - 0.5f) * 2.0f;
+}
+
+#line 223 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec4
+pack_normalxy_into_rgba8(in float normal_x, in float normal_y)
+{
+#line 225 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec4 ret;
+    pack_16bit_normal_component(normal_x, ret.x, ret.y);
+    pack_16bit_normal_component(normal_y, ret.z, ret.w);
+    return ret;
+}
+
+#line 235 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec4
+unpack_normalxy_from_rgba8(in vec4 packedData)
+{
+#line 237 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+return vec4( unpack_16bit_normal_component(packedData.x, packedData.y),
+                    unpack_16bit_normal_component(packedData.z, packedData.w),
+                    0.0f,
+                    0.0f);
+}
+
+#line 249 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec4
+PackViewSpaceNormal(in vec3 viewSpaceNormal)
+{
+#line 252 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+viewSpaceNormal = normalize(viewSpaceNormal);
+
+
+
+    const float scale = 1.7777f;
+    vec2 enc = viewSpaceNormal.xy / (viewSpaceNormal.z+1.0f);
+    enc /= scale;
+    enc = enc * 0.5f + 0.5f;
+
+
+    vec4 normal = pack_normalxy_into_rgba8(enc.x, enc.y);
+    return normal;
+}
+
+#line 270 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec3
+UnpackViewSpaceNormal(in vec4 packedDataValue)
+{
+#line 274 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec4 unpackedData = unpack_normalxy_from_rgba8(packedDataValue);
+
+
+    const float scale = 1.7777f;
+    vec3 nn = unpackedData.xyz * vec3(2.0f * scale, 2.0f * scale, 0.0f) + vec3(-scale, -scale, 1.0f);
+    float g = 2.0f / dot(nn.xyz, nn.xyz);
+    vec3 outViewSpaceNormal;
+    outViewSpaceNormal.xy = g * nn.xy;
+    outViewSpaceNormal.z = g - 1.0f;
+    return outViewSpaceNormal;
+}
+
+#line 295 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec4
+PackObjectDepth(in float ObjectId, in float NormalGroupId, in float depth)
+{
+#line 297 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec4 packedData;
+    packedData.x = ObjectId;
+    packedData.y = NormalGroupId;
+
+
+    depth = depth * depthScale;
+    pack_u16(depth, packedData.z, packedData.w);
+    return packedData;
+}
+
+#line 316 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+float
+UnpackDepth(in vec4 packedData)
+{
+#line 318 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+return unpack_u16(packedData.z, packedData.w) / depthScale;
+}
+
+#line 326 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec4
+psLightMaterial(in vec4 lightValues, in vec4 diffColor, in vec3 emsvColor, in float emsvIntensity, in vec3 specColor, in float specIntensity)
+{
+#line 334 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+lightValues = lightValues;
+    vec4 color = diffColor;
+
+    color.xyz *= lightValues.xyz;
+    color.xyz += emsvColor * emsvIntensity;
+
+    vec3 normedColor = normalize(lightValues.xyz);
+    float maxColor = max(max(normedColor.x, normedColor.y), normedColor.z);
+    normedColor /= maxColor;
+    float spec = lightValues.w;
+    color.xyz += specColor * specIntensity * spec * normedColor;
+
+    return color;
+}
+
+#line 358 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+float
+log_conv(float x0, float x, float y0, float y)
+{
+#line 360 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+return (x + log(x0 + (y0 * exp(y - x))));
+}
+
+#line 367 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec2
+GetPixelSize(in sampler2D tex)
+{
+#line 370 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec2 size = textureSize(tex, 0);
+	size = vec2(1.0f) / size;
+	return size;
+}
+
+#line 379 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec2
+GetScaledUVs(in vec2 uvs, in sampler2D tex, in vec2 dimensions)
+{
+#line 382 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec2 texSize = textureSize(tex, 0);
+	uvs = uvs * (dimensions / texSize);
+	return uvs;
+}
+
+#line 391 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec2
+GetUV(in ivec2 pixel, in sampler2D tex)
+{
+#line 394 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec2 size = textureSize(tex, 0);
+	size = pixel / size;
+	return size;
+}
+
+#line 403 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+ivec2
+GetPixel(in vec2 uv, in sampler2D tex)
+{
+#line 406 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+ivec2 size = textureSize(tex, 0);
+	size = ivec2(uv * size);
+	return size;
+}
+
+#line 415 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec2
+GetTextureRatio(in sampler2D tex, vec2 pixelSize)
+{
+#line 418 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+ivec2 size = textureSize(tex, 0);
+	vec2 currentTextureSize = vec2(1.0f) / size;
+	return size / currentTextureSize;
+}
+
+#line 427 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec2
+FlipY(vec2 uv)
+{
+#line 430 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+return vec2(uv.x, 1.0f - uv.y);
+}
+
+#line 436 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+float
+LinearizeDepth(float depth)
+{
+#line 439 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+return (FocalLengthNearFar.z * FocalLengthNearFar.w) / (depth * (FocalLengthNearFar.z - FocalLengthNearFar.w) + FocalLengthNearFar.w);
+}
+
+#line 445 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+float
+DelinearizeDepth(float depth)
+{
+#line 448 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+return -((FocalLengthNearFar.z + FocalLengthNearFar.w) * depth - (2 * FocalLengthNearFar.z)) / ((FocalLengthNearFar.z - FocalLengthNearFar.w) * depth);
+}
+
+#line 455 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec2
+PixelToNormalized(in vec2 screenCoord, in vec2 pixelSize)
+{
+#line 458 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+return screenCoord.xy * pixelSize.xy;
+}
+
+#line 465 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec4
+PixelToProjection(vec2 screenCoord, float depth)
+{
+#line 469 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+return vec4(screenCoord * 2.0f - 1.0f, depth, 1.0f);
+}
+
+#line 476 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec4
+PixelToView(vec2 screenCoord, float depth)
+{
+#line 479 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec4 projectionSpace = PixelToProjection(screenCoord, depth);
+    vec4 viewSpace = InvProjection * projectionSpace;
+    viewSpace /= viewSpace.w;
+	return viewSpace;
+}
+
+#line 489 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec4
+PixelToWorld(vec2 screenCoord, float depth)
+{
+#line 492 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec4 viewSpace = PixelToView(screenCoord, depth);
+	return InvView * viewSpace;
+}
+
+#line 500 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec4
+ViewToWorld(const vec4 viewSpace)
+{
+#line 503 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+return InvView * viewSpace;
+}
+
+#line 510 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec3
+GetPosition(mat4x4 transform)
+{
+#line 513 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+return transform[2].xyz;
+}
+
+#line 521 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+uvec3
+Unpack1DTo3D(uint index1D, uint width, uint height)
+{
+#line 524 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+uint i = index1D % width;
+    uint j = index1D % (width * height) / width;
+    uint k = index1D / (width * height);
+
+    return uvec3(i, j, k);
+}
+
+#line 535 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+uint
+Pack3DTo1D(uvec3 index3D, uint width, uint height)
+{
+#line 538 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+return index3D.x + (width * (index3D.y + height * index3D.z));
+}
+
+#line 544 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+bool
+IntersectLineWithPlane(vec3 lineStart, vec3 lineEnd, vec4 plane, out vec3 intersect)
+{
+#line 546 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec3 ab = lineEnd - lineStart;
+    float t = (plane.w - dot(plane.xyz, lineStart)) / dot(plane.xyz, ab);
+    bool ret = (t >= 0.0f && t <= 1.0f);
+    intersect = vec3(0, 0, 0);
+    if (ret)
+    {
+        intersect = lineStart + t * ab;
+    }
+
+    return ret;
+}
+
+#line 568 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+float
+hash11(float p)
+{
+#line 571 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec3 p3 = fract(vec3(p) * vec3(443.8975,397.2973, 491.1871));
+    p3 += dot(p3, p3.yzx + 19.19);
+    return fract((p3.x + p3.y) * p3.z);
+}
+
+#line 579 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+float
+hash12(vec2 p)
+{
+#line 582 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec3 p3 = fract(vec3(p.xyx) * vec3(443.8975,397.2973, 491.1871));
+    p3 += dot(p3, p3.yzx + 19.19);
+    return fract((p3.x + p3.y) * p3.z);
+}
+
+#line 590 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec3
+hash32(vec2 p)
+{
+#line 593 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec3 p3 = fract(vec3(p.xyx) * vec3(443.8975,397.2973, 491.1871));
+    p3 += dot(p3, p3.yxz + 19.19);
+    return fract(vec3((p3.x + p3.y) * p3.z, (p3.x + p3.z) * p3.y, (p3.y + p3.z) * p3.x));
+}
+
+#line 603 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+float
+murmur(int k)
+{
+#line 605 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+int h = k ^ 1;
+
+    k *= m;
+    k ^= k >> 24;
+    k *= m;
+
+    h *= m;
+    h ^= k;
+
+    return float(h);
+}
+
+#line 621 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec3
+random3(vec3 c)
+{
+#line 624 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec3 r;
+    float c1 = dot(c, vec3(17.0f, 59.4f, 15.0f));
+    r.x = fract(murmur(int(c.x * c1)) / 512.0f);
+    r.y = fract(murmur(int(c.y * c1)) / 512.0f);
+    r.z = fract(murmur(int(c.z * c1)) / 512.0f);
+    return r - 0.5f;
+}
+
+#line 641 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+float
+simplex3D(vec3 p)
+{
+#line 648 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec3 s = floor(p + dot(p, vec3(F3)));
+    vec3 x = p - s + dot(s, vec3(G3));
+
+
+    vec3 e = step(vec3(0.0f), x - x.yzx);
+    vec3 i1 = e * (1.0f - e.zxy);
+    vec3 i2 = 1.0f - e.zxy * (1.0f - e);
+
+
+    vec3 x1 = x - i1 + G3;
+    vec3 x2 = x - i2 + 2.0f * G3;
+    vec3 x3 = x - 1.0f + 3.0f * G3;
+
+
+    vec4 w, d;
+
+
+    w.x = dot(x, x);
+    w.y = dot(x1, x1);
+    w.z = dot(x2, x2);
+    w.w = dot(x3, x3);
+
+
+    w = max(0.6f - w, 0.0f);
+
+
+    d.x = dot(random3(s), x);
+    d.y = dot(random3(s + i1), x1);
+    d.z = dot(random3(s + i2), x2);
+    d.w = dot(random3(s + 1.0f), x3);
+
+
+    w *= w;
+    w *= w;
+    d *= w;
+
+
+    return dot(d, vec4(52.0f));
+}
+
+#line 694 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+float
+simplex3D_fractal(vec3 m)
+{
+#line 697 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+return 0.5333333f * simplex3D(m * rot1)
+        + 0.2666667f * simplex3D(2.0f * m * rot2)
+        + 0.1333333f * simplex3D(4.0f * m * rot3)
+        + 0.0666667f * simplex3D(8.0f * m);
+}
+
+#line 707 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+vec2
+hash(vec2 p)
+{
+#line 710 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+p = vec2(dot(p, vec2(127.1, 311.7)), dot(p, vec2(269.5, 183.3)));
+    return -1.0 + 2.0 * fract(sin(p) * 43758.5453123);
+}
+
+#line 718 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+float
+noise(in vec2 p)
+{
+#line 721 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/util.fxh"
+const float K1 = 0.366025404;
+    const float K2 = 0.211324865;
+
+    vec2 i = floor(p + (p.x + p.y) * K1);
+    vec2 a = p - i + (i.x + i.y) * K2;
+    float m = step(a.y, a.x);
+    vec2 o = vec2(m, 1.0 - m);
+    vec2 b = a - o + K2;
+    vec2 c = a - 1.0 + 2.0 * K2;
+    vec3 h = max(0.5 - vec3(dot(a, a), dot(b, b), dot(c, c)), 0.0);
+    vec3 n = h * h * h * h * vec3(dot(a, hash(i + 0.0)), dot(b, hash(i + o)), dot(c, hash(i + 1.0)));
+    return dot(n, vec3(70.0));
+}
+
+#line 15 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/clustering.fxh"
+uvec3
+CalculateClusterIndex(vec2 screenPos, float depth, float scale, float bias)
+{
+#line 17 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/clustering.fxh"
+uint i = uint(screenPos.x);
+	uint j = uint(screenPos.y);
+	uint k = uint(log2(-depth) * scale + bias);
+
+	return uvec3(i, j, k);
+}
+
+#line 27 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/clustering.fxh"
+bool
+TestAABBAABB(ClusterAABB aabb, vec3 bboxMin, vec3 bboxMax)
+{
+#line 35 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/clustering.fxh"
+return all(equal(lessThan(aabb.minPoint.xyz, bboxMax), greaterThan(aabb.maxPoint.xyz, bboxMin)));
+}
+
+#line 41 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/clustering.fxh"
+bool
+TestAABBSphere(ClusterAABB aabb, vec3 pos, float radius)
+{
+#line 44 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/clustering.fxh"
+float sqDist = 0.0f;
+	for (int i = 0; i < 3; i++)
+	{
+		float v = (pos)[i];
+
+		if (v < aabb.minPoint[i]) sqDist += pow(aabb.minPoint[i] - v, 2);
+		if (v > aabb.maxPoint[i]) sqDist += pow(v - aabb.maxPoint[i], 2);
+	}
+	return sqDist <= radius * radius;
+}
+
+#line 61 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/clustering.fxh"
+bool
+TestAABBCone(ClusterAABB aabb, vec3 pos, vec3 forward, float radius, vec2 sinCosAngles)
+{
+#line 64 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/lib/clustering.fxh"
+vec3 aabbExtents = (aabb.maxPoint.xyz - aabb.minPoint.xyz) * 0.5f;
+	vec3 aabbCenter = aabb.minPoint.xyz + aabbExtents;
+	float aabbRadius = aabb.maxPoint.w;
+
+	vec3 v = aabbCenter - pos;
+	const float vlensq = dot(v, v);
+	const float v1len = dot(v, -forward);
+	const float distanceClosestPoint = sinCosAngles.y * sqrt(vlensq - v1len * v1len) - v1len * sinCosAngles.x;
+
+	const bool angleCull = distanceClosestPoint > aabbRadius;
+	const bool frontCull = v1len > aabbRadius + radius;
+	const bool backCull = v1len < -aabbRadius;
+	return !(angleCull || backCull || frontCull);
+}
+
+layout(local_size_x = 64, local_size_y = 1, local_size_z = 1) in;
+#line 15 "C:/Users/maglii-9-local/Documents/final_lab/nebula/work/shaders/vk/cluster_generate.fx"
+void
+main()
+{
+uint index1D = gl_GlobalInvocationID.x;
+    uvec3 index3D = Unpack1DTo3D(index1D, NumCells.x, NumCells.y);
+
+    if (index1D > NumCells.x * NumCells.y * NumCells.z)
+        return;
+
+
+    vec4 nearPlane = vec4(0, 0, 1.0f, -FocalLengthNearFar.z * pow(ZDistribution, index3D.z / float(NumCells.z)));
+    vec4 farPlane = vec4(0, 0, 1.0f, -FocalLengthNearFar.z * pow(ZDistribution, (index3D.z + 1) / float(NumCells.z)));
+
+
+    vec4 minCorner = PixelToView(index3D.xy * vec2(BlockSize) * InvFramebufferDimensions, 1);
+    vec4 maxCorner = PixelToView((index3D.xy + ivec2(1.0f)) * vec2(BlockSize) * InvFramebufferDimensions, 1);
+
+
+    vec3 nearMin, nearMax, farMin, farMax;
+    vec3 eye = vec3(0.0f, 0.0f, 0.0f);
+    IntersectLineWithPlane(eye, minCorner.xyz, nearPlane, nearMin);
+    IntersectLineWithPlane(eye, maxCorner.xyz, nearPlane, nearMax);
+    IntersectLineWithPlane(eye, minCorner.xyz, farPlane, farMin);
+    IntersectLineWithPlane(eye, maxCorner.xyz, farPlane, farMax);
+
+
+    ClusterAABB aabb;
+    aabb.minPoint = vec4(min(nearMin, min(nearMax, min(farMin, farMax))), 1);
+    aabb.maxPoint = vec4(max(nearMin, max(nearMax, max(farMin, farMax))), 1);
+    vec3 extents = (aabb.maxPoint.xyz - aabb.minPoint.xyz) * 0.5f;
+    float radius = dot(extents, extents);
+    aabb.featureFlags = 0;
+    aabb.minPoint.w = radius;
+    aabb.maxPoint.w = sqrt(radius);
+    AABBs[index1D] = aabb;
+}
