@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="4">
+    <Model name="team_buildings/blue_castle_wall_small" bboxcenter="-0.002001,2.216126,-0.045992,1.000000" bboxextents="1.174689,2.205564,1.109129,0.000000">
+        <ShapeNodes>
+            <ShapeNode name="mesh" type="static" path="root/mesh" useLOD="false" primitive="0" position="0.000000,0.000000,0.000000,1.000000" rotation="0.000000,0.000000,0.000000,1.000000" scale="1.000000,1.000000,1.000000,0.000000" mesh="msh:Buildings/castle_wall_small.nvx2" bboxcenter="-0.002001,2.216126,-0.045992,1.000000" bboxextents="1.174689,2.205564,1.109129,0.000000" />
+        </ShapeNodes>
+    </Model>
+</Nebula>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="4">
+    <Model name="environment/Toplane" bboxcenter="-68.120743,0.000000,-0.027145,1.000000" bboxextents="75.435852,0.000000,173.650116,0.000000">
+        <ShapeNodes>
+            <ShapeNode name="pPlane3" type="static" path="root/pPlane3" useLOD="false" primitive="0" position="0.000000,0.000000,0.000000,1.000000" rotation="0.000000,0.000000,0.000000,1.000000" scale="1.000000,1.000000,1.000000,0.000000" mesh="msh:environment/Toplane.nvx2" bboxcenter="-68.120743,0.000000,-0.027145,1.000000" bboxextents="75.435852,0.000000,173.650116,0.000000" />
+        </ShapeNodes>
+    </Model>
+</Nebula>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="1">
+    <Options exportFlags="4" exportMode="0" scale="0.010000" />
+    <States>
+        <ModelNode name="Upgrade_Income_ch/polySurface22" material="Skinned">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Buildings/Upgrade_Income_Diffuse" />
+                <Texture name="NormalMap" value="tex:Buildings/Upgrade_Income_Normals" />
+                <Texture name="SpecularMap" value="tex:Buildings/Upgrade_Income_Specular" />
+            </Textures>
+            <Variables>
+                <Variable name="MatSpecularIntensity" type="0" />
+            </Variables>
+        </ModelNode>
+        <ModelNode name="root/_income3_retopo:polySurface31" material="Static">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Buildings/Upgrade_Income_Diffuse" />
+                <Texture name="NormalMap" value="tex:Buildings/Upgrade_Income_Normals" />
+            </Textures>
+        </ModelNode>
+        <ModelNode name="root/polySurface22" material="sur:Buildings/Upgrade_Income">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:system/placeholder" />
+                <Texture name="NormalMap" value="tex:system/nobump" />
+            </Textures>
+        </ModelNode>
+    </States>
+</Nebula>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="1">
+    <Options exportFlags="4" exportMode="0" scale="0.010000" />
+    <States>
+        <ModelNode name="root/Trees_022" material="Static">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Vegetation/Oak_Pine_Combined" />
+                <Texture name="NormalMap" value="tex:system/nobump" />
+            </Textures>
+            <Variables>
+                <Variable name="AlphaSensitivity" type="0" />
+            </Variables>
+        </ModelNode>
+        <ModelNode name="root/polySurface4285" material="sur:Vegetation/Pine_01">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:system/placeholder" />
+                <Texture name="NormalMap" value="tex:system/nobump" />
+            </Textures>
+        </ModelNode>
+    </States>
+</Nebula>

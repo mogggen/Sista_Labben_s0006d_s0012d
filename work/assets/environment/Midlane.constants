@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="4">
+    <Model name="environment/Midlane" bboxcenter="0.633970,0.000000,0.944656,1.000000" bboxextents="26.433901,0.000000,172.254105,0.000000">
+        <ShapeNodes>
+            <ShapeNode name="pPlane2" type="static" path="root/pPlane2" useLOD="false" primitive="0" position="0.000000,0.000000,0.000000,1.000000" rotation="0.000000,0.000000,0.000000,1.000000" scale="1.000000,1.000000,1.000000,0.000000" mesh="msh:environment/Midlane.nvx2" bboxcenter="0.633970,0.000000,0.944656,1.000000" bboxextents="26.433901,0.000000,172.254105,0.000000" />
+        </ShapeNodes>
+    </Model>
+</Nebula>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="4">
+    <Model name="team_units/red_Unit_Catapult" bboxcenter="0.000000,2.022937,-0.827971,1.000000" bboxextents="2.081846,2.003119,3.924762,0.000000">
+        <CharacterNodes>
+            <CharacterNode name="Unit_Catapult_ch" animation="ani:Units/Unit_Catapult.nax3" skeleton="ske:Units/Unit_Catapult.nsk3">
+                <Skinlist name="Unit_Catapult">
+                    <Skin name="mesh" />
+                </Skinlist>
+            </CharacterNode>
+        </CharacterNodes>
+        <Skins>
+            <Skin name="mesh" type="skeletal" path="mesh" bboxcenter="0.000000,2.022937,-0.827971,1.000000" bboxextents="2.081846,2.003119,3.924762,0.000000" position="0.000000,0.000000,0.000000,1.000000" rotation="0.000000,0.000000,0.000000,1.000000" scale="1.000000,1.000000,1.000000,0.000000" mesh="msh:Units/Unit_Catapult.nvx2">
+                <Fragment name="mesh_0" path="mesh/mesh_0" primitive="0">
+                    <Joints>1, 0, 8, 6, 3, 2, 11, 10, 4, 7, 5, 9
+                    </Joints>
+                </Fragment>
+            </Skin>
+        </Skins>
+    </Model>
+</Nebula>

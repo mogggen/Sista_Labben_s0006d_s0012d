@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula>
+    <Surface template="NotACastleStatic">
+        <Param name="AlbedoMap" value="tex:Buildings/Castle_Wall_Diffuse" />
+        <Param name="SpecularMap" value="tex:system/white" />
+        <Param name="NormalMap" value="tex:Buildings/Castle_Wall_Normals" />
+        <Param name="RoughnessMap" value="tex:system/white" />
+        <Param name="CavityMap" value="tex:system/white" />
+        <Param name="MatAlbedoIntensity" value="1.000000,1.000000,1.000000,1.000000" />
+        <Param name="MatSpecularIntensity" value="0.000000,0.000000,0.000000,1.000000" />
+        <Param name="MatRoughnessIntensity" value="1.000000" />
+        <Param name="TeamColorMask" value="tex:Buildings/Castle_Wall_mask" />
+        <Param name="TeamColor" value="1.000000,0.000000,0.000000,0.000000" />
+    </Surface>
+</Nebula>

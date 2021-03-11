@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="1">
+    <Options exportFlags="4" exportMode="1" scale="0.015000" />
+    <States>
+        <ModelNode name="Unit_Archer_ch/mesh" material="NotACastleChar">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Units/Archer_Diffuse" />
+                <Texture name="NormalMap" value="tex:Units/Archer_Normal" />
+                <Texture name="SpecularMap" value="tex:Units/archer_specular" />
+                <Texture name="TeamColorMask" value="tex:Units/Archer_mask" />
+            </Textures>
+            <Variables>
+                <Variable name="MatSpecularIntensity" type="0" />
+                <Variable name="TeamColor" type="0" />
+            </Variables>
+        </ModelNode>
+        <ModelNode name="Unit_Archer_ch/pPlane1" material="Skinned">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:system/white" />
+                <Texture name="NormalMap" value="tex:system/nobump" />
+            </Textures>
+        </ModelNode>
+        <ModelNode name="Unit_Archer_ch/pasted__Mesh" material="Skinned">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Units/Archer_Diffuse" />
+                <Texture name="NormalMap" value="tex:Units/Archer_Normal" />
+            </Textures>
+        </ModelNode>
+        <ModelNode name="Unit_Archer_ch/pasted__pasted__pasted__Mesh" material="NotACastleChar">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Units/Archer_Diffuse" />
+                <Texture name="NormalMap" value="tex:Units/Archer_Normal" />
+                <Texture name="SpecularMap" value="tex:Units/archer_specular" />
+            </Textures>
+            <Variables>
+                <Variable name="MatColor" type="0" />
+                <Variable name="MatSpecularIntensity" type="0" />
+            </Variables>
+        </ModelNode>
+        <ModelNode name="mesh" material="sur:Units/Unit_Archer">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:system/placeholder" />
+                <Texture name="NormalMap" value="tex:system/nobump" />
+            </Textures>
+        </ModelNode>
+    </States>
+    <Takes>
+        <Take name="Take 001">
+            <Clip name="idle" start="2" stop="26" post="1" pre="0" />
+            <Clip name="walk" start="27" stop="47" post="1" pre="0" />
+            <Clip name="load" start="48" stop="112" post="0" pre="0">
+                <Event name="bowdraw" category="sound" type="1" mark="0" />
+            </Clip>
+            <Clip name="long_loop" start="112" stop="132" post="1" pre="0" />
+            <Clip name="fire" start="133" stop="165" post="0" pre="0">
+                <Event name="fire" category="" type="1" mark="0" />
+                <Event name="arrowfire" category="sound" type="1" mark="0" />
+            </Clip>
+            <Clip name="jump" start="191" stop="219" post="0" pre="0" />
+            <Clip name="death" start="191" stop="219" post="0" pre="0">
+                <Event name="death" category="" type="1" mark="28" />
+                <Event name="soldierdeath" category="sound" type="1" mark="0" />
+            </Clip>
+        </Take>
+    </Takes>
+    <Masks>
+        <Mask name="legs" weights="19">
+            <Joint index="0" weight="1.000000" />
+            <Joint index="1" weight="0.000000" />
+            <Joint index="2" weight="1.000000" />
+            <Joint index="3" weight="1.000000" />
+            <Joint index="4" weight="1.000000" />
+            <Joint index="5" weight="1.000000" />
+            <Joint index="6" weight="1.000000" />
+            <Joint index="7" weight="1.000000" />
+            <Joint index="8" weight="1.000000" />
+            <Joint index="9" weight="1.000000" />
+            <Joint index="10" weight="1.000000" />
+            <Joint index="11" weight="0.000000" />
+            <Joint index="12" weight="0.000000" />
+            <Joint index="13" weight="0.000000" />
+            <Joint index="14" weight="0.000000" />
+            <Joint index="15" weight="0.000000" />
+            <Joint index="16" weight="0.000000" />
+            <Joint index="17" weight="0.000000" />
+            <Joint index="18" weight="0.000000" />
+        </Mask>
+        <Mask name="upper body" weights="19">
+            <Joint index="0" weight="1.000000" />
+            <Joint index="1" weight="1.000000" />
+            <Joint index="2" weight="0.000000" />
+            <Joint index="3" weight="0.000000" />
+            <Joint index="4" weight="0.000000" />
+            <Joint index="5" weight="0.000000" />
+            <Joint index="6" weight="0.000000" />
+            <Joint index="7" weight="0.000000" />
+            <Joint index="8" weight="0.000000" />
+            <Joint index="9" weight="0.000000" />
+            <Joint index="10" weight="0.000000" />
+            <Joint index="11" weight="1.000000" />
+            <Joint index="12" weight="1.000000" />
+            <Joint index="13" weight="1.000000" />
+            <Joint index="14" weight="1.000000" />
+            <Joint index="15" weight="1.000000" />
+            <Joint index="16" weight="1.000000" />
+            <Joint index="17" weight="1.000000" />
+            <Joint index="18" weight="1.000000" />
+        </Mask>
+    </Masks>
+</Nebula>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="1">
+    <Options exportFlags="4" exportMode="1" scale="0.010000" />
+    <States>
+        <ModelNode name="Tower_Catapult_ch/mesh" material="NotACastleChar">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Units/Catapult_Diffuse" />
+                <Texture name="NormalMap" value="tex:Units/Catapult_Normal" />
+                <Texture name="SpecularMap" value="tex:Units/Catapult_Specular" />
+                <Texture name="TeamColorMask" value="tex:Units/Catapult_mask" />
+            </Textures>
+            <Variables>
+                <Variable name="MatSpecularIntensity" type="0" />
+                <Variable name="TeamColor" type="0" />
+            </Variables>
+        </ModelNode>
+        <ModelNode name="Tower_Catapult_ch/polySurface107" material="Skinned">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Units/Catapult_Diffuse" />
+                <Texture name="NormalMap" value="tex:Units/Catapult_Normal" />
+            </Textures>
+        </ModelNode>
+        <ModelNode name="Tower_Catapult_ch/polySurface108" material="NotACastleChar">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Units/Catapult_Diffuse" />
+                <Texture name="NormalMap" value="tex:Units/Catapult_Normal" />
+                <Texture name="SpecularMap" value="tex:Units/Catapult_Specular" />
+            </Textures>
+            <Variables>
+                <Variable name="MatColor" type="0" />
+                <Variable name="MatSpecularIntensity" type="0" />
+            </Variables>
+        </ModelNode>
+        <ModelNode name="mesh" material="sur:team_buildings/blue_siegevehicles">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:system/placeholder" />
+                <Texture name="NormalMap" value="tex:system/nobump" />
+            </Textures>
+        </ModelNode>
+    </States>
+    <Takes>
+        <Take name="Take 001">
+            <Clip name="attack" start="1" stop="136" post="0" pre="0" />
+            <Clip name="idle" start="1" stop="2" post="0" pre="0" />
+            <Clip name="fire" start="1" stop="40" post="0" pre="0">
+                <Event name="fire" category="" type="1" mark="22" />
+            </Clip>
+            <Clip name="load" start="41" stop="135" post="0" pre="0">
+                <Event name="loaddone" category="" type="1" mark="94" />
+            </Clip>
+        </Take>
+    </Takes>
+</Nebula>

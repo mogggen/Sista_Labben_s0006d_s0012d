@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="4">
+    <Model name="Vegetation/Prettyflowers" bboxcenter="0.000000,0.000000,-0.000001,1.000000" bboxextents="1.077867,0.000000,1.562423,0.000000">
+        <ShapeNodes>
+            <ShapeNode name="Prettyflowers" type="static" path="root/Prettyflowers" useLOD="false" primitive="0" position="0.000000,0.000000,0.000000,1.000000" rotation="0.000000,0.000000,0.000000,1.000000" scale="1.000000,1.000000,1.000000,0.000000" mesh="msh:Vegetation/Prettyflowers.nvx2" bboxcenter="0.000000,0.000000,-0.000001,1.000000" bboxextents="1.077867,0.000000,1.562423,0.000000" />
+        </ShapeNodes>
+    </Model>
+</Nebula>

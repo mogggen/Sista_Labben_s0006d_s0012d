@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="1">
+    <Options exportFlags="4" exportMode="1" scale="0.010000" />
+    <States>
+        <ModelNode name="castle_gate_ch/mesh" material="NotACastleChar">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Buildings/Castle_Gate_diffuse" />
+                <Texture name="NormalMap" value="tex:Buildings/Castle_Gate_Normals" />
+                <Texture name="TeamColorMask" value="tex:Buildings/Castle_Gate_mask" />
+            </Textures>
+            <Variables>
+                <Variable name="TeamColor" type="0" />
+            </Variables>
+        </ModelNode>
+        <ModelNode name="castle_gate_ch/polySurface33" material="NotACastleChar">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Buildings/Castle_Gate_diffuse" />
+                <Texture name="NormalMap" value="tex:Buildings/Castle_Gate_Normals" />
+            </Textures>
+            <Variables>
+                <Variable name="MatColor" type="0" />
+            </Variables>
+        </ModelNode>
+        <ModelNode name="mesh" material="sur:Buildings/castle_gate">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:system/placeholder" />
+                <Texture name="NormalMap" value="tex:system/nobump" />
+            </Textures>
+        </ModelNode>
+    </States>
+    <Takes>
+        <Take name="Take 001">
+            <Clip name="open" start="1" stop="15" post="0" pre="0">
+                <Event name="opened" category="" type="1" mark="14" />
+            </Clip>
+            <Clip name="close" start="16" stop="30" post="0" pre="0">
+                <Event name="closed" category="" type="1" mark="14" />
+            </Clip>
+        </Take>
+    </Takes>
+</Nebula>

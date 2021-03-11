@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="4">
+    <Model name="environment/Groundplane" bboxcenter="7.391098,8.316886,0.853622,1.000000" bboxextents="191.432632,21.387865,187.614227,0.000000">
+        <ShapeNodes>
+            <ShapeNode name="Group5" type="static|vertexcolors" path="root/Group5" useLOD="false" primitive="0" position="0.000000,0.000000,0.000000,1.000000" rotation="0.000000,0.000000,0.000000,1.000000" scale="1.000000,1.000000,1.000000,0.000000" mesh="msh:environment/Groundplane.nvx2" bboxcenter="7.391098,8.316886,0.853622,1.000000" bboxextents="191.432632,21.387865,187.614227,0.000000" />
+        </ShapeNodes>
+    </Model>
+</Nebula>

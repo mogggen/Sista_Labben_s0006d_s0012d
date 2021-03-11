@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="4">
+    <Model name="team_units/blue_Unit_Spearman" bboxcenter="-0.000007,1.523293,1.023818,1.000000" bboxextents="1.989599,1.505850,2.068920,0.000000">
+        <CharacterNodes>
+            <CharacterNode name="Unit_Spearman_ch" animation="ani:Units/Unit_Spearman.nax3" skeleton="ske:Units/Unit_Spearman.nsk3">
+                <Skinlist name="Unit_Spearman">
+                    <Skin name="mesh" />
+                </Skinlist>
+            </CharacterNode>
+        </CharacterNodes>
+        <Skins>
+            <Skin name="mesh" type="skeletal" path="mesh" bboxcenter="-0.000007,1.523293,1.023818,1.000000" bboxextents="1.989599,1.505850,2.068920,0.000000" position="0.000000,0.000000,0.000000,1.000000" rotation="0.000000,0.000000,0.000000,1.000000" scale="1.000000,1.000000,1.000000,0.000000" mesh="msh:Units/Unit_Spearman.nvx2">
+                <Fragment name="mesh_0" path="mesh/mesh_0" primitive="0">
+                    <Joints>4, 0, 2, 3, 1, 8, 5, 10, 9, 15, 11, 13, 12, 14, 7, 6, 16, 17, 18
+                    </Joints>
+                </Fragment>
+            </Skin>
+        </Skins>
+    </Model>
+</Nebula>

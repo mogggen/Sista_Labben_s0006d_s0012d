@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="1">
+    <Options exportFlags="4" exportMode="0" scale="0.100000" />
+    <States>
+        <ModelNode name="root/asdadd" material="sur:environment/Towersite">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:system/placeholder" />
+                <Texture name="NormalMap" value="tex:system/nobump" />
+            </Textures>
+        </ModelNode>
+        <ModelNode name="root/polySurface4" material="Static">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:environment/Symbols" />
+                <Texture name="NormalMap" value="tex:system/nobump" />
+            </Textures>
+        </ModelNode>
+    </States>
+</Nebula>

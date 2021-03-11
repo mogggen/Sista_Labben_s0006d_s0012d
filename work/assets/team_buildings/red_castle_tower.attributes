@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="1">
+    <Options exportFlags="4" exportMode="0" scale="0.010000" />
+    <States>
+        <ModelNode name="castle_tower_ch/mesh" material="NotACastleChar">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Buildings/Castle_Tower_Diffuse" />
+                <Texture name="NormalMap" value="tex:Buildings/Castle_Tower_Normals" />
+                <Texture name="TeamColorMask" value="tex:Buildings/Castle_Tower_mask" />
+            </Textures>
+            <Variables>
+                <Variable name="TeamColor" type="0" />
+            </Variables>
+        </ModelNode>
+        <ModelNode name="castle_tower_ch/polySurface7" material="NotACastleChar">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Buildings/Castle_Tower_Diffuse" />
+                <Texture name="NormalMap" value="tex:Buildings/Castle_Tower_Normals" />
+            </Textures>
+            <Variables>
+                <Variable name="MatColor" type="0" />
+            </Variables>
+        </ModelNode>
+        <ModelNode name="mesh" material="NotACastleChar">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Buildings/Castle_Tower_Diffuse" />
+                <Texture name="NormalMap" value="tex:Buildings/Castle_Tower_Normals" />
+                <Texture name="TeamColorMask" value="tex:Buildings/Castle_Tower_mask" />
+            </Textures>
+            <Variables>
+                <Variable name="TeamColor" type="0" />
+            </Variables>
+        </ModelNode>
+        <ModelNode name="root/mesh" material="sur:team_buildings/red_castle_tower">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:system/placeholder" />
+                <Texture name="NormalMap" value="tex:system/nobump" />
+            </Textures>
+        </ModelNode>
+        <ModelNode name="root/polySurface7" material="NotACastleStatic">
+            <Textures>
+                <Texture name="NormalMap" value="tex:Buildings/Castle_Tower_Normals" />
+                <Texture name="DiffuseMap" value="tex:Buildings/Castle_Tower_Diffuse" />
+            </Textures>
+        </ModelNode>
+    </States>
+    <Takes>
+        <Take name="Take 001" />
+    </Takes>
+</Nebula>

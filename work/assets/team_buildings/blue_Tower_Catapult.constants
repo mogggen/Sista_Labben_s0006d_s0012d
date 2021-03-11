@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="4">
+    <Model name="team_buildings/blue_Tower_Catapult" bboxcenter="0.000000,1.337910,-0.995261,1.000000" bboxextents="1.387897,1.337468,2.242656,0.000000">
+        <CharacterNodes>
+            <CharacterNode name="Tower_Catapult_ch" animation="ani:Buildings/Tower_Catapult.nax3" skeleton="ske:Buildings/Tower_Catapult.nsk3">
+                <Skinlist name="Tower_Catapult">
+                    <Skin name="mesh" />
+                </Skinlist>
+            </CharacterNode>
+        </CharacterNodes>
+        <Skins>
+            <Skin name="mesh" type="skeletal" path="mesh" bboxcenter="0.000000,1.337910,-0.995261,1.000000" bboxextents="1.387897,1.337468,2.242656,0.000000" position="0.000000,0.000000,0.000000,1.000000" rotation="0.000000,0.000000,0.000000,1.000000" scale="1.000000,1.000000,1.000000,0.000000" mesh="msh:Buildings/Tower_Catapult.nvx2">
+                <Fragment name="mesh_0" path="mesh/mesh_0" primitive="0">
+                    <Joints>1, 0, 6, 7, 2, 4, 5, 8, 3, 9
+                    </Joints>
+                </Fragment>
+            </Skin>
+        </Skins>
+    </Model>
+</Nebula>

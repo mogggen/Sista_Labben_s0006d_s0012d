@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="1">
+    <Options exportFlags="4" exportMode="0" scale="0.010000" />
+    <States>
+        <ModelNode name="root/polySurface3" material="Static">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:system/white" />
+                <Texture name="NormalMap" value="tex:system/nobump" />
+            </Textures>
+        </ModelNode>
+        <ModelNode name="root/polySurface4306" material="Static">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:system/white" />
+                <Texture name="NormalMap" value="tex:system/nobump" />
+            </Textures>
+        </ModelNode>
+        <ModelNode name="root/polySurface4704" material="Static">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Units/Knight_Diffuse" />
+                <Texture name="NormalMap" value="tex:Units/Knight_Normals" />
+            </Textures>
+        </ModelNode>
+        <ModelNode name="root/polySurface4886" material="Static">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Units/Knight_Diffuse" />
+                <Texture name="NormalMap" value="tex:Units/Knight_Normals" />
+            </Textures>
+        </ModelNode>
+        <ModelNode name="root/polySurface5110" material="Static">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Units/Knight_Diffuse" />
+                <Texture name="NormalMap" value="tex:Units/Knight_Normals" />
+            </Textures>
+        </ModelNode>
+        <ModelNode name="root/polySurface5334" material="Static">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Units/Knight_Diffuse" />
+                <Texture name="NormalMap" value="tex:Units/Knight_Normals" />
+            </Textures>
+        </ModelNode>
+        <ModelNode name="root/polySurface5601" material="Static">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Units/Knight_Diffuse" />
+                <Texture name="NormalMap" value="tex:Units/Knight_Normals" />
+            </Textures>
+        </ModelNode>
+        <ModelNode name="root/polySurface5828" material="Static">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Units/Knight_Diffuse" />
+                <Texture name="NormalMap" value="tex:Units/Knight_Normals" />
+            </Textures>
+        </ModelNode>
+        <ModelNode name="root/polySurface6054" material="sur:environment/env_prop">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:system/placeholder" />
+                <Texture name="NormalMap" value="tex:system/nobump" />
+            </Textures>
+        </ModelNode>
+    </States>
+</Nebula>

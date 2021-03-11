@@ -24,6 +24,7 @@
 #include "terrain/terraincontext.h"
 #include "scripting/python/pythonserver.h"
 #include "io/console.h"
+#include "util/random.h"
 
 #include <chrono>
 
@@ -110,80 +111,105 @@ GameStateManager::OnActivate()
 
     } // #################################
 
-    //{
-    //    Game::EntityCreateInfo info;
-    //    info.immediate = true;
-    //    info.templateId = Game::GetTemplateId("StaticGroundPlane/dev_ground_plane"_atm);
-    //    Game::CreateEntity(info);
-    //}
-    //{
-    //    Game::EntityCreateInfo info;
-    //    info.immediate = true;
-    //    info.templateId = Game::GetTemplateId("StaticEnvironment/knob_metallic"_atm);
-    //    Game::Entity entity = Game::CreateEntity(info);
-    //    Game::SetProperty(entity, Game::GetPropertyId("WorldTransform"_atm), Math::scaling(5, 5, 5) * Math::translation({ 0, 0, 3 }));
-    //}
-    //{
-    //    Game::EntityCreateInfo info;
-    //    info.immediate = true;
-    //    info.templateId = Game::GetTemplateId("StaticEnvironment/knob_plastic"_atm);
-    //    Game::Entity entity = Game::CreateEntity(info);
-    //    Game::SetProperty(entity, Game::GetPropertyId("WorldTransform"_atm), Math::scaling(5, 5, 5) * Math::translation({ 0, 0,-3 }));
-    //}
-    //{
-    //    Game::EntityCreateInfo info;
-    //    info.immediate = true;
-    //    info.templateId = Game::GetTemplateId("StaticEnvironment/tree"_atm);
-    //    Game::Entity entity = Game::CreateEntity(info);
-    //    Game::SetProperty(entity, Game::GetPropertyId("WorldTransform"_atm), Math::scaling(5, 5, 5) * Math::translation({ 3, 0, 0 }));
-    //}
-    //{
-    //    Game::EntityCreateInfo info;
-    //    info.immediate = true;
-    //    info.templateId = Game::GetTemplateId("StaticEnvironment/knob_reflective"_atm);
-    //    Game::Entity entity = Game::CreateEntity(info);
-    //    Game::SetProperty(entity, Game::GetPropertyId("WorldTransform"_atm), Math::scaling(5, 5, 5) * Math::translation({-3, 0, 0 }));
-    //}
+    {
+        auto gid = Graphics::CreateEntity();Graphics::RegisterEntity<Models::ModelContext, Visibility::ObservableContext>(gid);
+        Models::ModelContext::Setup(gid, "mdl:environment/Groundplane.n3", "gid", [gid]()
+                {
+                    Visibility::ObservableContext::Setup(gid, Visibility::VisibilityEntityType::Model);
+                    Models::ModelContext::SetTransform(gid, Math::translation(Math::vec3(0,0, 0)));
+                });
+    }
+    Util::String models[] = {
+        "mdl:Vegetation/Ferns_01.n3",
+        "mdl:Vegetation/Ferns_02.n3",
+        "mdl:Vegetation/Ferns_03.n3",
+        "mdl:Vegetation/Ferns_04.n3",
+        "mdl:Vegetation/Ferns_05.n3",
+        "mdl:Vegetation/Ferns_06.n3",
+        "mdl:Vegetation/Ferns_07.n3",
+        "mdl:Vegetation/Ferns_08.n3",
+        "mdl:Vegetation/Ferns_09.n3",
+        "mdl:Vegetation/Ferns_10.n3",
+        "mdl:Vegetation/Ferns_11.n3",
+        "mdl:Vegetation/Ferns_12.n3",
+        "mdl:Vegetation/Ferns_13.n3",
+        "mdl:Vegetation/Ferns_14.n3",
+        "mdl:Vegetation/Trees_01.n3",
+        "mdl:Vegetation/Trees_02.n3",
+        "mdl:Vegetation/Trees_03.n3",
+        "mdl:Vegetation/Trees_04.n3",
+        "mdl:Vegetation/Trees_05.n3",
+        "mdl:Vegetation/Trees_06.n3",
+        "mdl:Vegetation/Trees_07.n3",
+        "mdl:Vegetation/Trees_08.n3",
+        "mdl:Vegetation/Trees_09.n3",
+        "mdl:Vegetation/Trees_10.n3",
+        "mdl:Vegetation/Trees_11.n3",
+        "mdl:Vegetation/Trees_12.n3",
+        "mdl:Vegetation/Trees_13.n3",
+        "mdl:environment/Bridge.n3",
+        "mdl:environment/env_prop_1.n3",
+        "mdl:environment/env_prop_2.n3",
+    };
 
-    //for (int i = 0; i < 5; i++)
-    //{
-    //    Game::EntityCreateInfo info;
-    //    info.immediate = true;
-    //    info.templateId = Game::GetTemplateId("PhysicsEntity/placeholder_box"_atm);
-    //    Game::Entity entity = Game::CreateEntity(info);
-    //    Game::SetProperty(entity, Game::GetPropertyId("WorldTransform"_atm), Math::rotationyawpitchroll(0.01f, 0.01f, 0.01f) * Math::translation({ 2, 5.0f + ((float)i * 1.0f), 0 }));
-    //}
+    for (auto& model : models)
+    {
+        auto gid = Graphics::CreateEntity();
+        Graphics::RegisterEntity<Models::ModelContext, Visibility::ObservableContext>(gid);
+        Models::ModelContext::Setup(gid, model, "gid", [gid]()
+            {
+                Visibility::ObservableContext::Setup(gid, Visibility::VisibilityEntityType::Model);
+                Models::ModelContext::SetTransform(gid, Math::translation(Math::vec3(0,0, 0)));
+            });
 
-    //for (size_t i = 0; i < 0; i++)
-    //{
-    //    Game::EntityCreateInfo info;
-    //    info.immediate = true;
-    //    info.templateId = Game::GetTemplateId("MovingEntity/cube"_atm);
-    //    Game::Entity entity = Game::CreateEntity(info);
-    //    Game::SetProperty(entity, Game::GetPropertyId("WorldTransform"_atm), Math::translation({ 0, 0.5f, 0 }));
-    //}
+    }
+    
+    // Generate mountains
+    Util::String mountainRes = "mdl:environment/Mountains_01.n3";
+    float width = 395 * 1.1f;
+    float height = 420 * 1.1f;
+    int nw = 8;
+    int nh = 8;
+    for (int y = 0; y <= nh; y++)
+    {
+        for (int x = 0; x <= nw; x++)
+        {
+            if (x == 0 || y == 0 || x == nw || y == nh)
+            {
+                Math::vec3 pos = Math::vec3((width / nw) * (float)x - (width / 2.0f), 0, (height / nh) * (float)y - (height / 2.0f) - 20.0f);
+                auto gid = Graphics::CreateEntity();
+                Graphics::RegisterEntity<Models::ModelContext, Visibility::ObservableContext>(gid);
+                Models::ModelContext::Setup(gid, mountainRes, "gid", [gid, pos]()
+                    {
+                        Visibility::ObservableContext::Setup(gid, Visibility::VisibilityEntityType::Model);
+                        float scale = Util::RandomFloat() * 0.4f + 1.0f;
+                        Models::ModelContext::SetTransform(gid, Math::scaling(scale) * Math::rotationy(Util::RandomFloat()) * Math::translation(pos));
+                    });
+            }
+        }
+    }
 
-    //{
-    //    Game::EntityCreateInfo info;
-    //    info.immediate = true;
-    //    info.templateId = Game::GetTemplateId("MovingEntity/agent"_atm);
-    //    Game::Entity entity = Game::CreateEntity(info);
-    //    Game::SetProperty(entity, Game::GetPropertyId("WorldTransform"_atm), Math::translation({ 0, 0.5f, 0 }));
-    //}
+    const Util::StringAtom modelRes[] = { "mdl:team_units/blue_Unit_Archer.n3",  "mdl:team_units/blue_Unit_Footman.n3",  "mdl:team_units/blue_Unit_Spearman.n3" };
+    const Util::StringAtom skeletonRes[] = { "ske:Units/Unit_Archer.nsk3",  "ske:Units/Unit_Footman.nsk3",  "ske:Units/Unit_Spearman.nsk3" };
+    const Util::StringAtom animationRes[] = { "ani:Units/Unit_Archer.nax3",  "ani:Units/Unit_Footman.nax3",  "ani:Units/Unit_Spearman.nax3" };
+    
+//for (int i = 0; i < 3; i++){auto gid = Graphics::CreateEntity();Graphics::RegisterEntity<Models::ModelContext, Visibility::ObservableContext,Characters::CharacterContext>(gid);Models::ModelContext::Setup(gid, modelRes[i], "gid", [gid, i](){Visibility::ObservableContext::Setup(gid, Visibility::VisibilityEntityType::Model);Models::ModelContext::SetTransform(gid, Math::translation(Math::vec3(0,0, i * 2)));});Characters::CharacterContext::Setup(gid, skeletonRes[i], animationRes[i], "Viewer");Characters::CharacterContext::PlayClip(gid, nullptr, 0, 0, Characters::Append, 1.0f, 1, Util::RandomFloat() * 100.0f, 0.0f, 0.0f, Util::RandomFloat() * 100.0f);}
+
+
+    {
+        Game::EntityCreateInfo info;
+        info.immediate = true;
+        info.templateId = Game::GetTemplateId("Buildings/knob_reflective"_atm);
+        Game::Entity entity = Game::CreateEntity(info);
+        Game::SetProperty(entity, Game::GetPropertyId("WorldTransform"_atm), Math::scaling(5, 5, 5) * Math::translation({-3, 0, 0 }));
+    }
 
     GraphicsFeature::GraphicsFeatureUnit::Instance()->AddRenderUICallback([]()
     {
         Scripting::ScriptServer::Instance()->Eval("NebulaDraw()");
-        //auto start = std::chrono::high_resolution_clock::now();
-        //for(int x=0; x < 16; x++)
-        //    for(int y=0; y < 16; y++)
-        //        Im3d::Im3dContext::DrawPoint(Math::vec3(x+4,0,y), 10, Math::vec4(0,0,1,1));
-        //auto stop = std::chrono::high_resolution_clock::now();
-        //auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-        //IO::Console::Instance()->Print("drawing a lot of dots took %f microseconds", duration.count());
     });
 
-    GraphicsFeature::GraphicsFeatureUnit::Instance()->SetGraphicsDebugging(true);
+    //GraphicsFeature::GraphicsFeatureUnit::Instance()->SetGraphicsDebugging(true);
 }
 
 //------------------------------------------------------------------------------

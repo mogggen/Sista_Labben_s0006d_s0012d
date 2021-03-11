@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="4">
+    <Model name="environment/Middle_Lane" bboxcenter="-69.628906,-427.680237,5.126953,1.000000" bboxextents="2505.303223,540.424805,17463.800781,0.000000">
+        <ShapeNodes>
+            <ShapeNode name="Middle_Lane" type="static" path="root/Middle_Lane" useLOD="false" primitive="0" position="0.000000,0.000000,0.000000,1.000000" rotation="0.000000,0.000000,0.000000,1.000000" scale="1.000000,1.000000,1.000000,0.000000" mesh="msh:environment/Middle_Lane.nvx2" bboxcenter="-69.628906,-427.680237,5.126953,1.000000" bboxextents="2505.303223,540.424805,17463.800781,0.000000" />
+        </ShapeNodes>
+    </Model>
+</Nebula>

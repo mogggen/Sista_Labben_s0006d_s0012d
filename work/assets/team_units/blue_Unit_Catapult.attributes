@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="1">
+    <Options exportFlags="4" exportMode="1" scale="0.015000" />
+    <States>
+        <ModelNode name="Unit_Catapult_ch/mesh" material="NotACastleChar">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Units/Catapult_Diffuse" />
+                <Texture name="NormalMap" value="tex:Units/Catapult_Normal" />
+                <Texture name="SpecularMap" value="tex:Units/Catapult_Specular" />
+                <Texture name="TeamColorMask" value="tex:Units/Catapult_mask" />
+            </Textures>
+            <Variables>
+                <Variable name="MatSpecularIntensity" type="0" />
+                <Variable name="TeamColor" type="0" />
+            </Variables>
+        </ModelNode>
+        <ModelNode name="Unit_Catapult_ch/polySurface52" material="Skinned">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Units/Catapult_Diffuse" />
+                <Texture name="NormalMap" value="tex:Units/Catapult_Normal" />
+            </Textures>
+        </ModelNode>
+        <ModelNode name="Unit_Catapult_ch/polySurface53" material="NotACastleChar">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Units/Catapult_Diffuse" />
+                <Texture name="NormalMap" value="tex:Units/Catapult_Normal" />
+                <Texture name="SpecularMap" value="tex:Units/Catapult_Specular" />
+            </Textures>
+            <Variables>
+                <Variable name="MatColor" type="0" />
+                <Variable name="MatSpecularIntensity" type="0" />
+            </Variables>
+        </ModelNode>
+        <ModelNode name="mesh" material="sur:team_units/blue_Unit_Catapult">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:system/placeholder" />
+                <Texture name="NormalMap" value="tex:system/nobump" />
+            </Textures>
+        </ModelNode>
+    </States>
+    <Takes>
+        <Take name="Take 001">
+            <Clip name="idle" start="1" stop="2" post="1" pre="0" />
+            <Clip name="walk" start="1" stop="61" post="1" pre="0" />
+            <Clip name="fire" start="62" stop="116" post="0" pre="0">
+                <Event name="fire" category="" type="1" mark="33" />
+                <Event name="catapultshoot" category="sound" type="1" mark="32" />
+            </Clip>
+            <Clip name="death" start="199" stop="235" post="0" pre="0">
+                <Event name="death" category="" type="1" mark="35" />
+            </Clip>
+            <Clip name="load" start="117" stop="198" post="0" pre="0">
+                <Event name="loaddone" category="" type="1" mark="80" />
+                <Event name="catapultdraw" category="sound" type="1" mark="0" />
+            </Clip>
+        </Take>
+    </Takes>
+</Nebula>

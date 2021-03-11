@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="4">
+    <Model name="Buildings/Upgrade_Siege" bboxcenter="0.879800,3.184115,1.354240,1.000000" bboxextents="4.019930,3.194243,3.872228,0.000000">
+        <ShapeNodes>
+            <ShapeNode name="polySurface38" type="static" path="root/polySurface38" useLOD="false" primitive="0" position="0.000000,0.000000,0.388153,1.000000" rotation="0.000000,0.000000,0.000000,1.000000" scale="1.000000,1.000000,1.000000,0.000000" mesh="msh:Buildings/Upgrade_Siege.nvx2" bboxcenter="0.879800,3.184115,1.354240,1.000000" bboxextents="4.019930,3.194243,3.872228,0.000000" />
+        </ShapeNodes>
+    </Model>
+</Nebula>

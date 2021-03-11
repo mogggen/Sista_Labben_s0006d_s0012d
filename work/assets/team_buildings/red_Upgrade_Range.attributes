@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="1">
+    <Options exportFlags="4" exportMode="0" scale="0.010000" />
+    <States>
+        <ModelNode name="Upgrade_Range_ch/polySurface28" material="Skinned">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Buildings/Upgrade_Range_Diffuse" />
+                <Texture name="NormalMap" value="tex:Buildings/Upgrade_Range_Normals" />
+                <Texture name="SpecularMap" value="tex:Buildings/Upgrade_Range_Specular" />
+            </Textures>
+            <Variables>
+                <Variable name="MatSpecularIntensity" type="0" />
+            </Variables>
+        </ModelNode>
+        <ModelNode name="root/polySurface28" material="sur:team_buildings/red_Upgrade_Range">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:system/placeholder" />
+                <Texture name="NormalMap" value="tex:system/nobump" />
+            </Textures>
+        </ModelNode>
+    </States>
+</Nebula>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="1">
+    <Options exportFlags="4" exportMode="1" scale="0.015000" />
+    <States>
+        <ModelNode name="mesh" material="sur:team_units/blue_unit_king">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:system/placeholder" />
+                <Texture name="NormalMap" value="tex:system/nobump" />
+            </Textures>
+        </ModelNode>
+        <ModelNode name="unit_king_ch/mesh" material="NotACastleChar">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Units/king_diffuse" />
+                <Texture name="NormalMap" value="tex:Units/king_normals" />
+                <Texture name="SpecularMap" value="tex:Units/king_specular" />
+                <Texture name="TeamColorMask" value="tex:Units/king_mask" />
+            </Textures>
+            <Variables>
+                <Variable name="MatSpecularIntensity" type="0" />
+                <Variable name="TeamColor" type="0" />
+            </Variables>
+        </ModelNode>
+        <ModelNode name="unit_king_ch/polySurface6" material="NotACastleChar">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Units/king_diffuse" />
+                <Texture name="NormalMap" value="tex:Units/king_normals" />
+                <Texture name="SpecularMap" value="tex:Units/king_specular" />
+                <Texture name="TeamColorMask" value="tex:Units/king_mask" />
+            </Textures>
+            <Variables>
+                <Variable name="MatColor" type="0" />
+                <Variable name="MatSpecularIntensity" type="0" />
+                <Variable name="TeamColor" type="0" />
+            </Variables>
+        </ModelNode>
+    </States>
+    <Takes>
+        <Take name="Take 001">
+            <Clip name="idle" start="3" stop="2944" post="1" pre="0" />
+        </Take>
+    </Takes>
+</Nebula>

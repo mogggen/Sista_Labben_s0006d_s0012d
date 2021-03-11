@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula>
+    <Surface template="Static + Alpha test">
+        <Param name="AlbedoMap" value="tex:Vegetation/Oak_Pine_Combined" />
+        <Param name="ParameterMap" value="tex:system/default_material" />
+        <Param name="NormalMap" value="tex:system/nobump" />
+        <Param name="RoughnessMap" value="tex:system/white" />
+        <Param name="CavityMap" value="tex:system/white" />
+        <Param name="MatAlbedoIntensity" value="1.000000,1.000000,1.000000,1.000000" />
+        <Param name="MatSpecularIntensity" value="1.000000,1.000000,1.000000,1.000000" />
+        <Param name="AlphaSensitivity" value="0.500000" />
+        <Param name="MatRoughnessIntensity" value="1.000000" />
+    </Surface>
+</Nebula>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="4">
+    <Model name="team_units/red_Unit_Footman" bboxcenter="-0.024233,1.507019,0.771959,1.000000" bboxextents="1.972586,1.497878,1.319685,0.000000">
+        <CharacterNodes>
+            <CharacterNode name="Unit_Footman_ch" animation="ani:Units/Unit_Footman.nax3" skeleton="ske:Units/Unit_Footman.nsk3">
+                <Skinlist name="Unit_Footman">
+                    <Skin name="mesh" />
+                </Skinlist>
+            </CharacterNode>
+        </CharacterNodes>
+        <Skins>
+            <Skin name="mesh" type="skeletal" path="mesh" bboxcenter="-0.024233,1.507019,0.771959,1.000000" bboxextents="1.972586,1.497878,1.319685,0.000000" position="0.000000,0.000000,0.000000,1.000000" rotation="0.000000,0.000000,0.000000,1.000000" scale="1.000000,1.000000,1.000000,0.000000" mesh="msh:Units/Unit_Footman.nvx2">
+                <Fragment name="mesh_0" path="mesh/mesh_0" primitive="0">
+                    <Joints>19, 18, 17, 0, 20, 15, 13, 1, 12, 9, 2, 10, 3, 11, 14, 16, 4, 5, 8, 6, 7
+                    </Joints>
+                </Fragment>
+            </Skin>
+        </Skins>
+    </Model>
+</Nebula>

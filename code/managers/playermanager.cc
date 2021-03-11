@@ -84,7 +84,7 @@ PlayerManager::OnActivate()
     GraphicsFeature::GraphicsFeatureUnit::Instance()->AddRenderUICallback([]()
     {
         ImGui::Begin("Camera config");
-        ImGui::SliderFloat("Camera height", &Singleton->tdc.height, 0.0001f, 100.0f);
+        ImGui::SliderFloat("Camera height", &Singleton->tdc.height, 0.0001f, 150.0f);
         ImGui::SliderFloat("Camera pitch", &Singleton->tdc.pitch, 0.0001f, N_PI_HALF);
         ImGui::SliderFloat("Camera yaw", &Singleton->tdc.yaw, 0.0f, 2*N_PI_DOUBLE);
         ImGui::End();

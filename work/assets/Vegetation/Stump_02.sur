@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula>
+    <Surface template="Static">
+        <Param name="AlbedoMap" value="tex:Vegetation/Bushes_01" />
+        <Param name="NormalMap" value="tex:system/nobump" />
+    </Surface>
+</Nebula>

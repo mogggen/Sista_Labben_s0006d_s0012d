@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="1">
+    <Options exportFlags="4" exportMode="0" scale="0.010000" />
+    <States>
+        <ModelNode name="castle_keep_ch/polySurface658" material="NotACastleChar">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Buildings/castle_keep_diffuse" />
+                <Texture name="NormalMap" value="tex:Buildings/castle_keep_normals" />
+            </Textures>
+            <Variables>
+                <Variable name="MatColor" type="0" />
+            </Variables>
+        </ModelNode>
+        <ModelNode name="root/mesh" material="sur:team_buildings/blue_castle_keep">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:system/placeholder" />
+                <Texture name="NormalMap" value="tex:system/nobump" />
+            </Textures>
+        </ModelNode>
+        <ModelNode name="root/polySurface323" material="Static">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Buildings/castle_keep_diffuse" />
+                <Texture name="NormalMap" value="tex:Buildings/castle_keep_normals" />
+            </Textures>
+        </ModelNode>
+        <ModelNode name="root/polySurface430" material="Static">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Buildings/castle_keep_diffuse" />
+                <Texture name="NormalMap" value="tex:Buildings/castle_keep_normals" />
+            </Textures>
+        </ModelNode>
+        <ModelNode name="root/polySurface544" material="Static">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Buildings/castle_keep_diffuse" />
+                <Texture name="NormalMap" value="tex:Buildings/castle_keep_normals" />
+            </Textures>
+        </ModelNode>
+        <ModelNode name="root/polySurface658" material="NotACastleStatic">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Buildings/castle_keep_diffuse" />
+                <Texture name="NormalMap" value="tex:Buildings/castle_keep_normals" />
+                <Texture name="TeamColorMask" value="tex:Buildings/castle_keep_mask" />
+            </Textures>
+            <Variables>
+                <Variable name="MatColor" type="0" />
+                <Variable name="TeamColor" type="0" />
+            </Variables>
+        </ModelNode>
+    </States>
+</Nebula>

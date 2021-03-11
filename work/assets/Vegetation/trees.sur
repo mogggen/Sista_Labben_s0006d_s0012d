@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula>
+    <Surface template="Static + Alpha test">
+        <Param name="AlbedoMap" value="tex:Vegetation/Oak_Pine_Combined" />
+        <Param name="ParameterMap" value="tex:system/default_material" />
+        <Param name="NormalMap" value="tex:system/nobump" />
+        <Param name="RoughnessMap" value="tex:system/white" />
+        <Param name="AlphaSensitivity" value="0.500000" />
+        <Param name="WindDirection" value="0.020000,0.000000,0.000000,0.000000" />
+    </Surface>
+</Nebula>

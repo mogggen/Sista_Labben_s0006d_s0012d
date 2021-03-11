@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="4">
+    <Model name="Vegetation/Nuderose_02" bboxcenter="0.000000,0.000000,0.000000,1.000000" bboxextents="1.170274,0.129562,0.637139,0.000000">
+        <ShapeNodes>
+            <ShapeNode name="polySurface81" type="static" path="root/polySurface81" useLOD="false" primitive="0" position="0.000000,0.000000,0.000000,1.000000" rotation="0.000000,0.000000,0.000000,1.000000" scale="1.000000,1.000000,1.000000,0.000000" mesh="msh:Vegetation/Nuderose_02.nvx2" bboxcenter="0.000000,0.000000,0.000000,1.000000" bboxextents="1.170274,0.129562,0.637139,0.000000" />
+        </ShapeNodes>
+    </Model>
+</Nebula>

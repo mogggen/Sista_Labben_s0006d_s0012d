@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula>
+    <Surface template="UnlitAlpha">
+        <Param name="AlbedoMap" value="tex:environment/Symbols" />
+        <Param name="AlphaSensitivity" value="0.010000" />
+        <Param name="AlphaBlendFactor" value="1.000000" />
+        <Param name="Brightness" value="2.000000" />
+    </Surface>
+</Nebula>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="4">
+    <Model name="Buildings/castle_gate" bboxcenter="-0.022918,3.809555,0.009063,1.000000" bboxextents="6.310161,3.818801,2.151709,0.000000">
+        <CharacterNodes>
+            <CharacterNode name="castle_gate_ch" animation="ani:Buildings/castle_gate.nax3" skeleton="ske:Buildings/castle_gate.nsk3">
+                <Skinlist name="castle_gate">
+                    <Skin name="mesh" />
+                </Skinlist>
+            </CharacterNode>
+        </CharacterNodes>
+        <Skins>
+            <Skin name="mesh" type="skeletal" path="mesh" bboxcenter="-0.022918,3.809555,0.009063,1.000000" bboxextents="6.310161,3.818801,2.151709,0.000000" position="0.000000,0.000000,0.000000,1.000000" rotation="0.000000,0.000000,0.000000,1.000000" scale="1.000000,1.000000,1.000000,0.000000" mesh="msh:Buildings/castle_gate.nvx2">
+                <Fragment name="mesh_0" path="mesh/mesh_0" primitive="0">
+                    <Joints>0, 3, 1
+                    </Joints>
+                </Fragment>
+            </Skin>
+        </Skins>
+    </Model>
+</Nebula>

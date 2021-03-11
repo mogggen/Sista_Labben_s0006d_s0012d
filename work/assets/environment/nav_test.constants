@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="4">
+    <Model name="environment/nav_test" bboxcenter="16.802746,6.070618,-7.623505,1.000000" bboxextents="45.692062,10.940135,38.676647,0.000000">
+        <ShapeNodes>
+            <ShapeNode name="Generic" type="static" path="root/Generic" useLOD="false" primitive="0" position="0.000000,0.000000,0.000000,1.000000" rotation="0.000000,0.000000,0.000000,1.000000" scale="1.000000,1.000000,1.000000,0.000000" mesh="msh:environment/nav_test.nvx2" bboxcenter="16.802746,6.070618,-7.623505,1.000000" bboxextents="45.692062,10.940135,38.676647,0.000000" />
+        </ShapeNodes>
+    </Model>
+</Nebula>

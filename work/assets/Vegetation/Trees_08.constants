@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="4">
+    <Model name="Vegetation/Trees_08" bboxcenter="74.966003,9.437994,48.469017,1.000000" bboxextents="47.638573,11.920622,67.882584,0.000000">
+        <ShapeNodes>
+            <ShapeNode name="Trees_017" type="static" path="root/Trees_017" useLOD="false" primitive="0" position="0.000000,0.000000,0.000000,1.000000" rotation="0.000000,0.000000,0.000000,1.000000" scale="1.000000,1.000000,1.000000,0.000000" mesh="msh:Vegetation/Trees_08.nvx2" bboxcenter="74.966003,9.437994,48.469017,1.000000" bboxextents="47.638573,11.920622,67.882584,0.000000" />
+        </ShapeNodes>
+    </Model>
+</Nebula>

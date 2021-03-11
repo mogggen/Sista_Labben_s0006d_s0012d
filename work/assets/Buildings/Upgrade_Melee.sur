@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula>
+    <Surface template="NotACastleStatic">
+        <Param name="AlbedoMap" value="tex:Buildings/Upgrade_Melee_Diffuse" />
+        <Param name="SpecularMap" value="tex:Buildings/Upgrade_Melee_Specular" />
+        <Param name="NormalMap" value="tex:Buildings/Upgrade_Melee_Normals" />
+        <Param name="RoughnessMap" value="tex:system/white" />
+        <Param name="CavityMap" value="tex:system/white" />
+        <Param name="MatAlbedoIntensity" value="1.000000,1.000000,1.000000,1.000000" />
+        <Param name="MatSpecularIntensity" value="0.000000,0.000000,0.000000,0.000000" />
+        <Param name="MatRoughnessIntensity" value="0.000000" />
+        <Param name="TeamColorMask" value="tex:Buildings/Upgrade_Melee_Mask" />
+        <Param name="TeamColor" value="1.000000,0.000000,0.000000,0.000000" />
+    </Surface>
+</Nebula>

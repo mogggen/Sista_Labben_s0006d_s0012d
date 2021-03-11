@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="1">
+    <Options exportFlags="4" exportMode="1" scale="0.010000" />
+    <States>
+        <ModelNode name="mesh" material="sur:team_buildings/red_siegevehicles">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:system/placeholder" />
+                <Texture name="NormalMap" value="tex:system/nobump" />
+            </Textures>
+        </ModelNode>
+        <ModelNode name="tower_ballista_ch/mesh" material="NotACastleChar">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Units/Catapult_Diffuse" />
+                <Texture name="NormalMap" value="tex:Units/Catapult_Normal" />
+                <Texture name="SpecularMap" value="tex:Units/Catapult_Specular" />
+                <Texture name="TeamColorMask" value="tex:Units/Catapult_mask" />
+            </Textures>
+            <Variables>
+                <Variable name="MatSpecularIntensity" type="0" />
+                <Variable name="TeamColor" type="0" />
+            </Variables>
+        </ModelNode>
+        <ModelNode name="tower_ballista_ch/polySurface26" material="NotACastleChar">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Units/Catapult_Diffuse" />
+                <Texture name="NormalMap" value="tex:Units/Catapult_Normal" />
+                <Texture name="SpecularMap" value="tex:Units/Catapult_Specular" />
+            </Textures>
+            <Variables>
+                <Variable name="MatColor" type="0" />
+                <Variable name="MatSpecularIntensity" type="0" />
+            </Variables>
+        </ModelNode>
+    </States>
+    <Takes>
+        <Take name="Take 001">
+            <Clip name="fire" start="65" stop="98" post="0" pre="0">
+                <Event name="fire" category="" type="1" mark="5" />
+            </Clip>
+            <Clip name="load" start="2" stop="65" post="0" pre="0">
+                <Event name="loaddone" category="" type="0" mark="0" />
+            </Clip>
+            <Clip name="idle" start="64" stop="65" post="1" pre="0" />
+        </Take>
+    </Takes>
+</Nebula>

@@ -6,19 +6,6 @@ options:
 files:
     - bootstrap.py
     - main.py
-    - update.py
-    - agent.py
-    - state.py
-    - agent_manager.py
-    - message.py
-    - places.py
     - button_input.py
-    - map.py
-    - path_manager.py
-    - depth_first_search.py
-    - breadth_first_search.py
-    - a_star.py
-    - wall_search.py
-    - item_manager.py
-    - worker.py
-    - explorer.py
+    - Grupp1/main.py
+    - Grupp2/main.py

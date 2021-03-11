@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="1">
+    <Options exportFlags="4" exportMode="1" scale="0.015000" />
+    <States>
+        <ModelNode name="Unit_Rifleman_ch/mesh" material="NotACastleChar">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Units/rifleman_diffuse" />
+                <Texture name="NormalMap" value="tex:Units/rifleman_normals" />
+                <Texture name="SpecularMap" value="tex:Units/rifleman_specular" />
+                <Texture name="TeamColorMask" value="tex:Units/rifleman_mask" />
+            </Textures>
+            <Variables>
+                <Variable name="MatSpecularIntensity" type="0" />
+                <Variable name="TeamColor" type="0" />
+            </Variables>
+        </ModelNode>
+        <ModelNode name="Unit_Rifleman_ch/polySurface18" material="NotACastleChar">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Units/rifleman_diffuse" />
+                <Texture name="NormalMap" value="tex:Units/rifleman_normals" />
+                <Texture name="SpecularMap" value="tex:Units/rifleman_specular" />
+            </Textures>
+            <Variables>
+                <Variable name="MatColor" type="0" />
+                <Variable name="MatSpecularIntensity" type="0" />
+            </Variables>
+        </ModelNode>
+        <ModelNode name="mesh" material="sur:team_units/blue_Unit_Rifleman">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:system/placeholder" />
+                <Texture name="NormalMap" value="tex:system/nobump" />
+            </Textures>
+        </ModelNode>
+    </States>
+    <Takes>
+        <Take name="Take 001">
+            <Clip name="idle" start="2" stop="3" post="1" pre="0" />
+            <Clip name="walk" start="2" stop="30" post="1" pre="0" />
+            <Clip name="aim" start="31" stop="86" post="0" pre="0">
+                <Event name="aimed" category="" type="1" mark="54" />
+            </Clip>
+            <Clip name="aim loop" start="77" stop="96" post="1" pre="0" />
+            <Clip name="fire" start="97" stop="124" post="0" pre="0">
+                <Event name="fire" category="" type="1" mark="1" />
+                <Event name="gunshot" category="sound" type="1" mark="1" />
+                <Event name="gun_fire" category="attachment" type="1" mark="1" />
+            </Clip>
+            <Clip name="load" start="125" stop="361" post="0" pre="0">
+                <Event name="loaddone" category="" type="1" mark="0" />
+            </Clip>
+            <Clip name="death" start="370" stop="400" post="0" pre="0">
+                <Event name="death" category="" type="1" mark="29" />
+                <Event name="soldierdeath" category="sound" type="1" mark="0" />
+            </Clip>
+        </Take>
+    </Takes>
+</Nebula>

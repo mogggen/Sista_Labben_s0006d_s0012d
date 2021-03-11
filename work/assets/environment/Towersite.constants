@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="4">
+    <Model name="environment/Towersite" bboxcenter="0.000000,0.000000,0.000000,1.000000" bboxextents="4.848275,0.000000,4.848275,0.000000">
+        <ShapeNodes>
+            <ShapeNode name="asdadd" type="static" path="root/asdadd" useLOD="false" primitive="0" position="0.000000,0.000000,0.000000,1.000000" rotation="0.000000,0.000000,0.000000,1.000000" scale="1.000000,1.000000,1.000000,0.000000" mesh="msh:environment/Towersite.nvx2" bboxcenter="0.000000,0.000000,0.000000,1.000000" bboxextents="4.848275,0.000000,4.848275,0.000000" />
+        </ShapeNodes>
+    </Model>
+</Nebula>

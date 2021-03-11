@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="1">
+    <Options exportFlags="4" exportMode="0" scale="0.010000" />
+    <States>
+        <ModelNode name="Upgrade_Siege_ch/polySurface38" material="Skinned">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Buildings/Upgrade_Siege_Diffuse" />
+                <Texture name="NormalMap" value="tex:Buildings/Upgrade_Siege_Normals" />
+                <Texture name="SpecularMap" value="tex:Buildings/Upgrade_Siege_Specular" />
+            </Textures>
+            <Variables>
+                <Variable name="MatSpecularIntensity" type="0" />
+            </Variables>
+        </ModelNode>
+        <ModelNode name="root/polySurface38" material="sur:team_buildings/red_Upgrade_Siege">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:system/placeholder" />
+                <Texture name="NormalMap" value="tex:system/nobump" />
+            </Textures>
+        </ModelNode>
+    </States>
+</Nebula>

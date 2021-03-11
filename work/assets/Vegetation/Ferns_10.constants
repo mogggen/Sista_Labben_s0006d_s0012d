@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="4">
+    <Model name="Vegetation/Ferns_10" bboxcenter="32.541924,6.755257,-80.875214,1.000000" bboxextents="38.344425,8.177493,40.497776,0.000000">
+        <ShapeNodes>
+            <ShapeNode name="Ferns_10" type="static" path="root/Ferns_10" useLOD="false" primitive="0" position="0.000000,0.000000,0.000000,1.000000" rotation="0.000000,0.000000,0.000000,1.000000" scale="1.000000,1.000000,1.000000,0.000000" mesh="msh:Vegetation/Ferns_10.nvx2" bboxcenter="32.541924,6.755257,-80.875214,1.000000" bboxextents="38.344425,8.177493,40.497776,0.000000" />
+        </ShapeNodes>
+    </Model>
+</Nebula>

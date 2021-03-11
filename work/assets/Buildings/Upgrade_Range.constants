@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="4">
+    <Model name="Buildings/Upgrade_Range" bboxcenter="0.798502,2.130938,0.528095,1.000000" bboxextents="3.769649,2.155382,5.194184,0.000000">
+        <ShapeNodes>
+            <ShapeNode name="polySurface28" type="static" path="root/polySurface28" useLOD="false" primitive="0" position="0.000000,0.000000,0.000000,1.000000" rotation="0.000000,0.000000,0.000000,1.000000" scale="1.000000,1.000000,1.000000,0.000000" mesh="msh:Buildings/Upgrade_Range.nvx2" bboxcenter="0.798502,2.130938,0.528095,1.000000" bboxextents="3.769649,2.155382,5.194184,0.000000" />
+        </ShapeNodes>
+    </Model>
+</Nebula>

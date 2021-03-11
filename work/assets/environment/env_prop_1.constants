@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="4">
+    <Model name="environment/env_prop_1" bboxcenter="101.530487,9.050423,-0.858948,1.000000" bboxextents="63.533440,22.150927,146.164917,0.000000">
+        <ShapeNodes>
+            <ShapeNode name="polySurface4703" type="static" path="root/polySurface4703" useLOD="false" primitive="0" position="0.000000,0.000000,0.000000,1.000000" rotation="0.000000,0.000000,0.000000,1.000000" scale="1.000000,1.000000,1.000000,0.000000" mesh="msh:environment/env_prop_1.nvx2" bboxcenter="101.530487,9.050423,-0.858948,1.000000" bboxextents="63.533440,22.150927,146.164917,0.000000" />
+        </ShapeNodes>
+    </Model>
+</Nebula>

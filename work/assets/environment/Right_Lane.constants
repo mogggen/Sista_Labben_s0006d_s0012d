@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="4">
+    <Model name="environment/Right_Lane" bboxcenter="8353.359375,-161.604309,2.281250,1.000000" bboxextents="6710.684082,581.863647,17455.273438,0.000000">
+        <ShapeNodes>
+            <ShapeNode name="Right_Lane" type="static" path="root/Right_Lane" useLOD="false" primitive="0" position="0.000000,0.000000,0.000000,1.000000" rotation="0.000000,0.000000,0.000000,1.000000" scale="1.000000,1.000000,1.000000,0.000000" mesh="msh:environment/Right_Lane.nvx2" bboxcenter="8353.359375,-161.604309,2.281250,1.000000" bboxextents="6710.684082,581.863647,17455.273438,0.000000" />
+        </ShapeNodes>
+    </Model>
+</Nebula>

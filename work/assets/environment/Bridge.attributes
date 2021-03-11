@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="1">
+    <Options exportFlags="4" exportMode="0" scale="0.010000" />
+    <States>
+        <ModelNode name="root/polySurface216" material="sur:environment/Bridge">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:system/placeholder" />
+                <Texture name="NormalMap" value="tex:system/nobump" />
+            </Textures>
+        </ModelNode>
+        <ModelNode name="root/polySurface88" material="Static">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:environment/bridge_diffuse" />
+                <Texture name="NormalMap" value="tex:environment/bridge_normals" />
+            </Textures>
+        </ModelNode>
+    </States>
+</Nebula>

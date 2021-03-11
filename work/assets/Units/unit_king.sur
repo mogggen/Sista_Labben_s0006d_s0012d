@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula>
+    <Surface template="NotACastleChar">
+        <Param name="AlbedoMap" value="tex:Units/king_diffuse" />
+        <Param name="SpecularMap" value="tex:Units/king_specular" />
+        <Param name="NormalMap" value="tex:Units/king_normals" />
+        <Param name="RoughnessMap" value="tex:system/white" />
+        <Param name="CavityMap" value="tex:system/white" />
+        <Param name="MatAlbedoIntensity" value="1.000000,1.000000,1.000000,1.000000" />
+        <Param name="MatSpecularIntensity" value="1.000000,1.000000,1.000000,1.000000" />
+        <Param name="MatRoughnessIntensity" value="0.000000" />
+        <Param name="TeamColorMask" value="tex:Units/king_mask" />
+        <Param name="TeamColor" value="1.000000,1.000000,1.000000,0.000000" />
+    </Surface>
+</Nebula>

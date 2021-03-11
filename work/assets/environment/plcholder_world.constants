@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="4">
+    <Model name="environment/plcholder_world" bboxcenter="0.000000,0.000000,0.000000,1.000000" bboxextents="100.500000,0.000000,100.000000,0.000000">
+        <ShapeNodes>
+            <ShapeNode name="pPlane1" type="static" path="root/pPlane1" useLOD="false" primitive="0" position="0.000000,41.116665,0.000000,1.000000" rotation="0.000000,0.000000,0.000000,1.000000" scale="1.000000,1.000000,1.000000,0.000000" mesh="msh:environment/plcholder_world.nvx2" bboxcenter="0.000000,0.000000,0.000000,1.000000" bboxextents="100.500000,0.000000,100.000000,0.000000" />
+        </ShapeNodes>
+    </Model>
+</Nebula>

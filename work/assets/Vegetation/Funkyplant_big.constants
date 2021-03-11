@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="4">
+    <Model name="Vegetation/Funkyplant_big" bboxcenter="0.000000,-0.000000,0.000000,1.000000" bboxextents="1.110515,0.182069,1.239983,0.000000">
+        <ShapeNodes>
+            <ShapeNode name="Funkyplantbig" type="static" path="root/Funkyplantbig" useLOD="false" primitive="0" position="0.000000,0.000000,0.000000,1.000000" rotation="0.000000,0.000000,0.000000,1.000000" scale="1.000000,1.000000,1.000000,0.000000" mesh="msh:Vegetation/Funkyplant_big.nvx2" bboxcenter="0.000000,-0.000000,0.000000,1.000000" bboxextents="1.110515,0.182069,1.239983,0.000000" />
+        </ShapeNodes>
+    </Model>
+</Nebula>

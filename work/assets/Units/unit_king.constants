@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="4">
+    <Model name="Units/unit_king" bboxcenter="-0.000033,1.508052,-0.098772,1.000000" bboxextents="1.927976,1.499748,0.602030,0.000000">
+        <CharacterNodes>
+            <CharacterNode name="unit_king_ch" animation="ani:Units/unit_king.nax3" skeleton="ske:Units/unit_king.nsk3">
+                <Skinlist name="unit_king">
+                    <Skin name="mesh" />
+                </Skinlist>
+            </CharacterNode>
+        </CharacterNodes>
+        <Skins>
+            <Skin name="mesh" type="skeletal" path="mesh" bboxcenter="-0.000033,1.508052,-0.098772,1.000000" bboxextents="1.927976,1.499748,0.602030,0.000000" position="0.000000,0.000000,0.000000,1.000000" rotation="0.000000,0.000000,0.000000,1.000000" scale="1.000000,1.000000,1.000000,0.000000" mesh="msh:Units/unit_king.nvx2">
+                <Fragment name="mesh_0" path="mesh/mesh_0" primitive="0">
+                    <Joints>20, 0, 13, 19, 6, 17, 10, 9, 8, 4, 2, 3, 1, 15, 11, 12, 14, 16, 5, 7, 18
+                    </Joints>
+                </Fragment>
+            </Skin>
+        </Skins>
+    </Model>
+</Nebula>

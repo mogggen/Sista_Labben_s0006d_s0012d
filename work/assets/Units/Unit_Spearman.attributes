@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="1">
+    <Options exportFlags="4" exportMode="1" scale="0.015000" />
+    <States>
+        <ModelNode name="Unit_Spearman_ch/mesh" material="NotACastleChar">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Units/spearman_diffuse" />
+                <Texture name="NormalMap" value="tex:Units/spearman_normals" />
+                <Texture name="SpecularMap" value="tex:Units/spearman_specular" />
+                <Texture name="TeamColorMask" value="tex:Units/spearman_mask" />
+            </Textures>
+            <Variables>
+                <Variable name="MatSpecularIntensity" type="0" />
+                <Variable name="TeamColor" type="0" />
+            </Variables>
+        </ModelNode>
+        <ModelNode name="Unit_Spearman_ch/polySurface29" material="NotACastleChar">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Units/spearman_diffuse" />
+                <Texture name="NormalMap" value="tex:Units/spearman_normals" />
+                <Texture name="SpecularMap" value="tex:Units/spearman_specular" />
+                <Texture name="TeamColorMask" value="tex:Units/spearman_mask" />
+            </Textures>
+            <Variables>
+                <Variable name="MatColor" type="0" />
+                <Variable name="MatSpecularIntensity" type="0" />
+                <Variable name="TeamColor" type="0" />
+            </Variables>
+        </ModelNode>
+        <ModelNode name="mesh" material="sur:Units/Unit_Spearman">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:system/placeholder" />
+                <Texture name="NormalMap" value="tex:system/nobump" />
+            </Textures>
+        </ModelNode>
+        <ModelNode name="unit_spearman_ch/polySurface29" material="Skinned">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Units/spearman_diffuse" />
+                <Texture name="NormalMap" value="tex:Units/spearman_normals" />
+            </Textures>
+        </ModelNode>
+    </States>
+    <Takes>
+        <Take name="Take 001">
+            <Clip name="walk" start="2" stop="25" post="1" pre="0" />
+            <Clip name="charge" start="27" stop="50" post="1" pre="0" />
+            <Clip name="taunt" start="52" stop="92" post="0" pre="0">
+                <Event name="tauntdone" category="" type="1" mark="22" />
+            </Clip>
+            <Clip name="idle" start="93" stop="108" post="1" pre="0" />
+            <Clip name="attack_1" start="109" stop="160" post="0" pre="0">
+                <Event name="hit" category="" type="1" mark="20" />
+                <Event name="swordclang" category="sound" type="1" mark="20" />
+            </Clip>
+            <Clip name="attack_2" start="160" stop="212" post="0" pre="0">
+                <Event name="hit" category="" type="1" mark="26" />
+                <Event name="swordclang" category="sound" type="1" mark="20" />
+            </Clip>
+            <Clip name="attack_3" start="213" stop="260" post="0" pre="0">
+                <Event name="hit" category="" type="1" mark="28" />
+                <Event name="swordclang" category="sound" type="1" mark="20" />
+            </Clip>
+            <Clip name="death" start="267" stop="308" post="0" pre="0">
+                <Event name="death" category="" type="1" mark="40" />
+                <Event name="soldierdeath" category="sound" type="1" mark="0" />
+            </Clip>
+        </Take>
+    </Takes>
+</Nebula>

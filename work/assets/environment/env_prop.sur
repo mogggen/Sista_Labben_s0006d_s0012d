@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula>
+    <Surface template="Static">
+        <Param name="AlbedoMap" value="tex:Units/Knight_Diffuse" />
+        <Param name="ParameterMap" value="tex:system/default_material" />
+        <Param name="NormalMap" value="tex:Units/Knight_Normals" />
+        <Param name="RoughnessMap" value="tex:system/white" />
+        <Param name="CavityMap" value="tex:system/white" />
+        <Param name="MatAlbedoIntensity" value="1.000000,1.000000,1.000000,1.000000" />
+        <Param name="MatSpecularIntensity" value="1.000000,1.000000,1.000000,1.000000" />
+        <Param name="MatRoughnessIntensity" value="1.000000" />
+    </Surface>
+</Nebula>

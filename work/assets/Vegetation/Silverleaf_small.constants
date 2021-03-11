@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="4">
+    <Model name="Vegetation/Silverleaf_small" bboxcenter="-0.002774,0.015892,-0.023500,1.000000" bboxextents="1.666654,0.366871,1.665308,0.000000">
+        <ShapeNodes>
+            <ShapeNode name="Silverleafbushsmall" type="static" path="root/Silverleafbushsmall" useLOD="false" primitive="0" position="0.000000,0.000000,0.000000,1.000000" rotation="0.000000,0.000000,0.000000,1.000000" scale="1.000000,1.000000,1.000000,0.000000" mesh="msh:Vegetation/Silverleaf_small.nvx2" bboxcenter="-0.002774,0.015892,-0.023500,1.000000" bboxextents="1.666654,0.366871,1.665308,0.000000" />
+        </ShapeNodes>
+    </Model>
+</Nebula>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="4">
+    <Model name="Buildings/tower_ballista" bboxcenter="0.255438,1.273575,0.060004,1.000000" bboxextents="2.626302,2.028038,2.198225,0.000000">
+        <CharacterNodes>
+            <CharacterNode name="tower_ballista_ch" animation="ani:Buildings/tower_ballista.nax3" skeleton="ske:Buildings/tower_ballista.nsk3">
+                <Skinlist name="tower_ballista">
+                    <Skin name="mesh" />
+                </Skinlist>
+            </CharacterNode>
+        </CharacterNodes>
+        <Skins>
+            <Skin name="mesh" type="skeletal" path="mesh" bboxcenter="0.255438,1.273575,0.060004,1.000000" bboxextents="2.626302,2.028038,2.198225,0.000000" position="0.000000,0.000000,0.000000,1.000000" rotation="0.000000,0.000000,0.000000,1.000000" scale="1.000000,1.000000,1.000000,0.000000" mesh="msh:Buildings/tower_ballista.nvx2">
+                <Fragment name="mesh_0" path="mesh/mesh_0" primitive="0">
+                    <Joints>0, 1, 8, 2, 6, 5, 7, 3
+                    </Joints>
+                </Fragment>
+            </Skin>
+        </Skins>
+    </Model>
+</Nebula>

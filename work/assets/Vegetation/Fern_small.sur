@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula>
+    <Surface template="Static + Alpha test">
+        <Param name="AlbedoMap" value="tex:Vegetation/Bushes_01" />
+        <Param name="NormalMap" value="tex:system/nobump" />
+        <Param name="AlphaSensitivity" value="0.650000" />
+        <Param name="WindDirection" value="1.000000,0.000000,0.000000,0.000000" />
+        <Param name="WindWaveSize" value="1.000000" />
+        <Param name="WindSpeed" value="0.200000" />
+        <Param name="WindForce" value="0.300000" />
+        <Param name="WindInverseStrength" value="0.320000" />
+    </Surface>
+</Nebula>

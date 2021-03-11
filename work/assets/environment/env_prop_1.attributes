@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="1">
+    <Options exportFlags="4" exportMode="0" scale="0.010000" />
+    <States>
+        <ModelNode name="root/polySurface4547" material="Static">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Units/Knight_Diffuse" />
+                <Texture name="NormalMap" value="tex:Units/Knight_Normals" />
+            </Textures>
+        </ModelNode>
+        <ModelNode name="root/polySurface4703" material="sur:environment/env_prop">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:system/placeholder" />
+                <Texture name="NormalMap" value="tex:system/nobump" />
+            </Textures>
+        </ModelNode>
+    </States>
+</Nebula>

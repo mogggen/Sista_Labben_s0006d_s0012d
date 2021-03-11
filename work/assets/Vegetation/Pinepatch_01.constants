@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="4">
+    <Model name="Vegetation/Pinepatch_01" bboxcenter="0.000000,5.035256,0.000000,1.000000" bboxextents="14.706650,5.206264,11.727201,0.000000">
+        <ShapeNodes>
+            <ShapeNode name="Pinepatch_01" type="static" path="root/Pinepatch_01" useLOD="false" primitive="0" position="0.000000,0.000000,0.000000,1.000000" rotation="0.000000,0.000000,0.000000,1.000000" scale="1.000000,1.000000,1.000000,0.000000" mesh="msh:Vegetation/Pinepatch_01.nvx2" bboxcenter="0.000000,5.035256,0.000000,1.000000" bboxextents="14.706650,5.206264,11.727201,0.000000" />
+        </ShapeNodes>
+    </Model>
+</Nebula>

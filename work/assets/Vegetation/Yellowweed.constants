@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="4">
+    <Model name="Vegetation/Yellowweed" bboxcenter="-0.000001,0.000000,-0.000001,1.000000" bboxextents="0.554950,1.044722,0.811719,0.000000">
+        <ShapeNodes>
+            <ShapeNode name="Yellowweed" type="static" path="root/Yellowweed" useLOD="false" primitive="0" position="0.000000,0.000000,0.000000,1.000000" rotation="0.000000,0.000000,0.000000,1.000000" scale="1.000000,1.000000,1.000000,0.000000" mesh="msh:Vegetation/Yellowweed.nvx2" bboxcenter="-0.000001,0.000000,-0.000001,1.000000" bboxextents="0.554950,1.044722,0.811719,0.000000" />
+        </ShapeNodes>
+    </Model>
+</Nebula>

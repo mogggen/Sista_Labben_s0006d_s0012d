@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula>
+    <Surface template="Multilayered">
+        <Param name="AlbedoMap" value="tex:ground/dirt_diff" />
+        <Param name="ParameterMap" value="tex:system/default_material" />
+        <Param name="NormalMap" value="tex:system/nobump" />
+        <Param name="MatAlbedoIntensity" value="1.000000,1.000000,1.000000,1.000000" />
+        <Param name="MatSpecularIntensity" value="0.000000,0.000000,0.000000,1.000000" />
+        <Param name="MatRoughnessIntensity" value="1.000000" />
+        <Param name="NumXTiles" value="10" />
+        <Param name="NumYTiles" value="10" />
+        <Param name="AlbedoMap2" value="tex:ground/grass_diff" />
+        <Param name="AlbedoMap3" value="tex:ground/Cliffs_diffuse" />
+        <Param name="ParameterMap2" value="tex:system/default_material" />
+        <Param name="ParameterMap3" value="tex:system/default_material" />
+        <Param name="NormalMap2" value="tex:system/nobump" />
+        <Param name="NormalMap3" value="tex:ground/Cliffs_normals" />
+        <Param name="EmissiveMap2" value="tex:system/black" />
+        <Param name="EmissiveMap3" value="tex:system/black" />
+    </Surface>
+</Nebula>

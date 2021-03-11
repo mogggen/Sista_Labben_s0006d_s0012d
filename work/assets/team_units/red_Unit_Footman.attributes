@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="1">
+    <Options exportFlags="4" exportMode="1" scale="0.015000" />
+    <States>
+        <ModelNode name="Unit_Footman_ch/mesh" material="NotACastleChar">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Units/Footman_Diffuse" />
+                <Texture name="NormalMap" value="tex:Units/Footman_Normal" />
+                <Texture name="SpecularMap" value="tex:Units/Footman_Specular" />
+                <Texture name="TeamColorMask" value="tex:Units/Footman_Mask" />
+            </Textures>
+            <Variables>
+                <Variable name="MatSpecularIntensity" type="0" />
+                <Variable name="TeamColor" type="0" />
+            </Variables>
+        </ModelNode>
+        <ModelNode name="Unit_Footman_ch/polySurface1" material="NotACastleChar">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:Units/Footman_Diffuse" />
+                <Texture name="NormalMap" value="tex:Units/Footman_Normal" />
+                <Texture name="SpecularMap" value="tex:Units/Footman_Specular" />
+            </Textures>
+            <Variables>
+                <Variable name="MatColor" type="0" />
+                <Variable name="MatSpecularIntensity" type="0" />
+            </Variables>
+        </ModelNode>
+        <ModelNode name="mesh" material="sur:team_units/red_Unit_Footman">
+            <Textures>
+                <Texture name="DiffuseMap" value="tex:system/placeholder" />
+                <Texture name="NormalMap" value="tex:system/nobump" />
+            </Textures>
+        </ModelNode>
+    </States>
+    <Takes>
+        <Take name="Take 001">
+            <Clip name="walk" start="1" stop="21" post="1" pre="0" />
+            <Clip name="charge" start="22" stop="42" post="1" pre="0" />
+            <Clip name="taunt" start="43" stop="73" post="0" pre="0">
+                <Event name="tauntdone" category="" type="1" mark="28" />
+            </Clip>
+            <Clip name="attack_1" start="74" stop="114" post="0" pre="0">
+                <Event name="hit" category="" type="1" mark="20" />
+                <Event name="swordclang" category="sound" type="1" mark="20" />
+            </Clip>
+            <Clip name="attack_2" start="115" stop="155" post="0" pre="0">
+                <Event name="hit" category="" type="1" mark="18" />
+                <Event name="swordclang" category="sound" type="1" mark="18" />
+            </Clip>
+            <Clip name="attack_3" start="156" stop="196" post="0" pre="0">
+                <Event name="hit" category="" type="1" mark="20" />
+                <Event name="swordclang" category="sound" type="1" mark="20" />
+            </Clip>
+            <Clip name="idle" start="196" stop="216" post="1" pre="0" />
+            <Clip name="death" start="218" stop="275" post="0" pre="0">
+                <Event name="death" category="" type="1" mark="56" />
+                <Event name="soldierdeath" category="sound" type="1" mark="0" />
+            </Clip>
+        </Take>
+    </Takes>
+</Nebula>

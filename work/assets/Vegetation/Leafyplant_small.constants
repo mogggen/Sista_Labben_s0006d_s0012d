@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Nebula version="4">
+    <Model name="Vegetation/Leafyplant_small" bboxcenter="-0.000000,0.000000,-0.000000,1.000000" bboxextents="1.263680,0.415894,1.425798,0.000000">
+        <ShapeNodes>
+            <ShapeNode name="Leafybushsmall" type="static" path="root/Leafybushsmall" useLOD="false" primitive="0" position="0.000000,0.000000,0.000000,1.000000" rotation="0.000000,0.000000,0.000000,1.000000" scale="1.000000,1.000000,1.000000,0.000000" mesh="msh:Vegetation/Leafyplant_small.nvx2" bboxcenter="-0.000000,0.000000,-0.000000,1.000000" bboxextents="1.263680,0.415894,1.425798,0.000000" />
+        </ShapeNodes>
+    </Model>
+</Nebula>
