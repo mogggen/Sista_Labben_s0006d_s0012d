@@ -1,4 +1,4 @@
-(no whitespace allowed ANYWHERE)
+(no whitespace allowed ANYWHERE in path)
 Shift-vänsterclick i repos mappen och välj "Öppna powershell fönster här" eller "Open powershell windows here"
 öppna powershell.exe och skriv kommado-raderna nedan:
 
@@ -16,12 +16,15 @@ cd ..\nebula-toolkit\
 .\fips build
 
 (add enviorment variables to PATH)
+(the enviorment variable:)
+(C:\Users\{din användare}\source\repos\Last_Nebula\fips-deploy\nebula-toolkit\win64-vstudio-release\)
 
 .\fips fetch
 
 cd ..\Sista_Labben_s0006d_s0012d\
 
 .\fips physx build win-vs16
+(checkout this commit first in Dutterheim/fips-anyfx: a74f66c2c631311765d084bbe59e58e7af7dc4c7)
 .\fips anyfx setup
 
 .\fips nebula set toolkit ..\nebula
@@ -29,8 +32,10 @@ cd ..\Sista_Labben_s0006d_s0012d\
 .\fips set config vulkan-win64-vs2019-debug (".\fips set config vulkan-win64-vs2017-debug" om du avänder visual studio 2017 istället för 2019)
 .\fips gen
 
-.\fips build
 .\fips open
+(sätt nebula-demo till 'start up project')
+(build->build solution)
+(stäng ned visual studio)
 .\fips physx deploy
 
 
