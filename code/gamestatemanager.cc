@@ -111,6 +111,9 @@ GameStateManager::OnActivate()
 
     } // #################################
 
+    //
+    // Copy 'n' pasted from nota.cc
+    //
     {
         auto gid = Graphics::CreateEntity();Graphics::RegisterEntity<Models::ModelContext, Visibility::ObservableContext>(gid);
         Models::ModelContext::Setup(gid, "mdl:environment/Groundplane.n3", "gid", [gid]()
@@ -196,13 +199,11 @@ GameStateManager::OnActivate()
 //for (int i = 0; i < 3; i++){auto gid = Graphics::CreateEntity();Graphics::RegisterEntity<Models::ModelContext, Visibility::ObservableContext,Characters::CharacterContext>(gid);Models::ModelContext::Setup(gid, modelRes[i], "gid", [gid, i](){Visibility::ObservableContext::Setup(gid, Visibility::VisibilityEntityType::Model);Models::ModelContext::SetTransform(gid, Math::translation(Math::vec3(0,0, i * 2)));});Characters::CharacterContext::Setup(gid, skeletonRes[i], animationRes[i], "Viewer");Characters::CharacterContext::PlayClip(gid, nullptr, 0, 0, Characters::Append, 1.0f, 1, Util::RandomFloat() * 100.0f, 0.0f, 0.0f, Util::RandomFloat() * 100.0f);}
 
 
-    {
-        Game::EntityCreateInfo info;
-        info.immediate = true;
-        info.templateId = Game::GetTemplateId("Buildings/knob_reflective"_atm);
-        Game::Entity entity = Game::CreateEntity(info);
-        Game::SetProperty(entity, Game::GetPropertyId("WorldTransform"_atm), Math::scaling(5, 5, 5) * Math::translation({-3, 0, 0 }));
-    }
+
+    //
+    // end copy 'n' paste
+    //
+
 
     GraphicsFeature::GraphicsFeatureUnit::Instance()->AddRenderUICallback([]()
     {
