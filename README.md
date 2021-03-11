@@ -32,11 +32,11 @@ The battleground is: "mdl:environment/Groundplane.n3"
 Use the navigation mesh provided in the files directory on canvas
 Here are all the assets, including a small code snippet that sets up the battleground:
 
-nota.cc https://github.com/sirAgg/Sista_Labben_s0006d_s0012d/blob/main/nota.cc
+nota.cc https://github.com/sirAgg/Sista_Labben_s0006d_s0012d/blob/4491a66d555b25f18e3678b423909ad23b4ed922/nota.cc
 
-assets.zip https://github.com/sirAgg/Sista_Labben_s0006d_s0012d/blob/main/assets.zip
+assets.zip https://github.com/sirAgg/Sista_Labben_s0006d_s0012d/blob/4491a66d555b25f18e3678b423909ad23b4ed922/assets.zip
 
-export_navigation.zip https://github.com/sirAgg/Sista_Labben_s0006d_s0012d/blob/main/export_navigation.zip
+export_navigation.zip https://github.com/sirAgg/Sista_Labben_s0006d_s0012d/blob/4491a66d555b25f18e3678b423909ad23b4ed922/export_navigation.zip
 
 The export_navigation archive can be unzipped directly to the export folder. This contains a simplified nav-mesh. There are no duplicate vertices or edges.
 Checkout Legacy::Nvx2StreamReader - for loading meshes on CPU
