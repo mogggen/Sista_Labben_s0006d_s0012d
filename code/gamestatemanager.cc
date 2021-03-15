@@ -26,6 +26,8 @@
 #include "io/console.h"
 #include "util/random.h"
 
+#include "navmesh.h"
+
 #include <chrono>
 
 #ifdef __WIN32__
@@ -204,10 +206,16 @@ GameStateManager::OnActivate()
     // end copy 'n' paste
     //
 
+    //
+    // Loading in navmesh
+    //
+   
+    NavMesh::Init();
+    NavMesh::Instance()->Load("msh:navigation/navmesh.nvx2");
 
     GraphicsFeature::GraphicsFeatureUnit::Instance()->AddRenderUICallback([]()
     {
-        Scripting::ScriptServer::Instance()->Eval("NebulaDraw()");
+        //Scripting::ScriptServer::Instance()->Eval("NebulaDraw()");
     });
 
     //GraphicsFeature::GraphicsFeatureUnit::Instance()->SetGraphicsDebugging(true);
@@ -224,7 +232,7 @@ GameStateManager::OnBeginFrame()
         Core::SysFunc::Exit(0);
     }
     
-    Scripting::ScriptServer::Instance()->Eval("NebulaUpdate()");
+    //Scripting::ScriptServer::Instance()->Eval("NebulaUpdate()");
 }
 
 //------------------------------------------------------------------------------
