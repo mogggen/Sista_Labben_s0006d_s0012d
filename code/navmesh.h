@@ -7,7 +7,12 @@
 
 namespace Demo
 {
-
+    struct HalfEdge {
+        int vertIdx;
+        int nextEdge;
+        int neighbourEdge;
+        int face;
+    };
 class NavMesh
 {
     __DeclareSingleton(NavMesh);
@@ -16,9 +21,12 @@ public:
     static void Init();
     void Load(const char* filename);
     void DbgDraw();
+    void recDraw(int edge, int recDepth);
      
 private:
-    Ptr<Legacy::Nvx2StreamReader> nvx2Reader;
+    Util::Array<Math::vec3> verticies;
+    Util::Array<int> faces;
+    Util::Array<HalfEdge> halfEdgeArray;
 };
 
 } // End namespace Demo
