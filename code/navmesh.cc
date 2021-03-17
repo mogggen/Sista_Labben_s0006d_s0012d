@@ -117,6 +117,31 @@ void NavMesh::recDraw(int edge, int recDepth) {
     }
 }
 
+int NavMesh::getFace(int num)
+{ 
+    return Singleton->faces[num];
+}
+Math::vec3 NavMesh::getVertex(int num)
+{
+    return Singleton->verticies[num];
+}
+HalfEdge NavMesh::getHalfEdge(int num)
+{
+    return Singleton->halfEdgeArray[num];
+}
+int  NavMesh::getNumFace()
+{
+    return (int)Singleton->faces.size();
+}
+int NavMesh::getNumVertex()
+{
+    return (int)Singleton->verticies.size();
+}
+int NavMesh::getNumHalfEdge()
+{
+    return (int)Singleton->halfEdgeArray.size();
+}
+
 void NavMesh::DbgDraw()
 {
 
@@ -124,7 +149,7 @@ void NavMesh::DbgDraw()
 
 
 
-   /* for (int i = 0; i < faces.size(); i++) {
+    for (int i = 0; i < faces.size(); i++) {
         int edgeIndex = faces[i];
         for (int j = 0; j < 3; j++) {
             int vertexA = halfEdgeArray[edgeIndex].vertIdx;
@@ -135,7 +160,7 @@ void NavMesh::DbgDraw()
             Im3d::Im3dContext::DrawLine(Math::line(pA, pB), 10, Math::vec4(0.7, 0, 1, 1));
 
         }
-    }*/
+    }
 
     /*for (int i = 0; i < nvx2Reader->GetNumIndices(); i += 3) {
         int indexA = vertWidth * nvx2Reader->GetIndexData()[i*2];

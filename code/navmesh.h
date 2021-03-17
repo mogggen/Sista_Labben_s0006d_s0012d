@@ -22,6 +22,12 @@ public:
     void Load(const char* filename);
     void DbgDraw();
     void recDraw(int edge, int recDepth);
+    static int getFace(int num);
+    static Math::vec3 getVertex(int num);
+    static HalfEdge getHalfEdge(int num);
+    static int getNumFace();
+    static int getNumVertex();
+    static int getNumHalfEdge();
      
 private:
     Util::Array<Math::vec3> verticies;

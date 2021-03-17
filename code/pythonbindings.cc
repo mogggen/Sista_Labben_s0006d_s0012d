@@ -23,6 +23,7 @@
 #include "managers/playermanager.h"
 #include "graphicsfeature/graphicsfeatureunit.h"
 #include "ids/idgenerationpool.h"
+#include "navmesh.h"
 
 #define defPropertyAccessor(type, name) def_property(#name,\
         [](Game::Entity& e){\
@@ -214,6 +215,27 @@ PYBIND11_EMBEDDED_MODULE(imgui, m)
     m.def("Begin", &ImGui::Begin);
     m.def("End", &ImGui::End);
     m.def("Text", [](const char* text){ImGui::TextUnformatted(text);});
+}
+
+PYBIND11_EMBEDDED_MODULE(navMesh, m)
+{
+    py::class_<Demo::HalfEdge>(m, "HalfEdge")
+        .def_readwrite("vertIdx", &Demo::HalfEdge::vertIdx)
+        .def_readwrite("nextEdge", &Demo::HalfEdge::nextEdge)
+        .def_readwrite("neighbourEdge", &Demo::HalfEdge::neighbourEdge)
+        .def_readwrite("face", &Demo::HalfEdge::face);
+
+
+    m.def("getVertex", [](int num)
+    {
+        auto vertex = Demo::NavMesh::getVertex(num);
+        return Math::point(vertex);
+    });
+    m.def("getHalfEdge", &Demo::NavMesh::getHalfEdge);
+    m.def("getFace", &Demo::NavMesh::getFace);
+    m.def("getNumVertex", &Demo::NavMesh::getNumVertex);
+    m.def("getNumHalfEdge", &Demo::NavMesh::getNumHalfEdge);
+    m.def("getNumFace", &Demo::NavMesh::getNumFace);
 }
 
 }
