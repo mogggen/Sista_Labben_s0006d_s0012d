@@ -1,0 +1,25 @@
+{
+	"namespace": "Demo",
+	"includes": [
+        "math/vec3.h",
+        "game/entity.h"
+    ],
+    "enums": {
+        "agentType": {
+            "WORKER":  0,
+            "SCOUT":  1,
+            "SOLDIER": 2,
+            "KILNER": 3,
+            "SMITH": 4,
+            "SMELTER": 5,
+            "BUILDER": 6
+        }
+    },
+    "properties": {
+        "Agent":{
+            "position"      : "vec3",
+            "targetPosition": "vec3",
+            "type"          : "Demo::agentType"
+        }
+    }
+}

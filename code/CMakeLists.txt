@@ -38,6 +38,9 @@ fips_dir(.)
         nebula_add_nidl(
             input.nidl
             movement.nidl
+	    agent.nidl
+	    health.nidl
+	    team.nidl
         )
 
 fips_deps(foundation application render resource dynui scripting editor)

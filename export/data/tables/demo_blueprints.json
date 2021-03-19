@@ -55,7 +55,9 @@
             "properties": [
                 "WorldTransform",
                 "ModelResource",
-                "Agent"
+                "Agent",
+                "Health",
+                "Team"
             ]
         }
     }

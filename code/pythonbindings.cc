@@ -17,6 +17,9 @@
 #include "timing/timer.h"
 #include "properties/input.h"
 #include "properties/movement.h"
+#include "properties/agent.h"
+#include "properties/health.h"
+#include "properties/team.h"
 #include "imgui.h"
 #include "dynui/im3d/im3dcontext.h"
 #include "input/keyboard.h"
@@ -104,12 +107,8 @@ PYBIND11_EMBEDDED_MODULE(demo, m)
  
     py::class_<Demo::Agent>(m, "Agent")
         .defReadWriteVec3(Demo::Agent, position)
-        .defReadWrite(Demo::Agent, tiredness)
-        .defReadWrite(Demo::Agent, hunger)
-        .defReadWrite(Demo::Agent, thirst)
-        .defReadWrite(Demo::Agent, social_metric)
-        .defReadWrite(Demo::Agent, money)
-        .defReadWrite(Demo::Agent, food_storage);
+        .defReadWriteVec3(Demo::Agent, targetPosition)
+        .defReadWrite(Demo::Agent, type);
 
 
     m.def("HelloSayer", [](){IO::Console::Instance()->Print("I am saying HELLO!!!");}, "Says hello.");
