@@ -20,6 +20,8 @@ fips_dir(.)
         gamestatemanager.cc
         pythonbindings.h
         pythonbindings.cc
+        navmesh.h
+        navmesh.cc
     )
 
     fips_dir(managers)

@@ -9,3 +9,4 @@ files:
     - button_input.py
     - Grupp1/main.py
     - Grupp2/main.py
+    - statParser.py

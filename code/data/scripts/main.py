@@ -1,6 +1,7 @@
 from Grupp1 import main as Grupp1main
 from Grupp2 import main as Grupp2main
 import button_input
+import statParser
 import math
 import nmath
 
@@ -15,6 +16,7 @@ left_mouse   = button_input.ButtonInput(demo.IsLeftMouseDown)
 right_mouse  = button_input.ButtonInput(demo.IsRightMouseDown)
 
 paused = False
+statParser.loadStats()
 
 # Runs once every frame
 def NebulaUpdate():
