@@ -226,15 +226,20 @@ PYBIND11_EMBEDDED_MODULE(navMesh, m)
 
 
     m.def("getVertex", [](int num)
-    {
-        auto vertex = Demo::NavMesh::getVertex(num);
-        return Math::point(vertex);
-    });
+        {
+            auto vertex = Demo::NavMesh::getVertex(num);
+            return Math::point(vertex);
+        });
     m.def("getHalfEdge", &Demo::NavMesh::getHalfEdge);
     m.def("getFace", &Demo::NavMesh::getFace);
     m.def("getNumVertex", &Demo::NavMesh::getNumVertex);
     m.def("getNumHalfEdge", &Demo::NavMesh::getNumHalfEdge);
     m.def("getNumFace", &Demo::NavMesh::getNumFace);
+    m.def("getCenter", [](int num)
+        {
+            auto vertex = Demo::NavMesh::getCenter(num);
+            return Math::point(vertex);
+        });
 }
 
 }

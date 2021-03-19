@@ -146,7 +146,7 @@ Math::vec3 NavMesh::getCenter(int face)
     Math::vec3 pointA = Singleton->verticies[Singleton->halfEdgeArray[Singleton->faces[face]].vertIdx];
     Math::vec3 pointB = Singleton->verticies[Singleton->halfEdgeArray[Singleton->faces[face]+1].vertIdx];
     Math::vec3 pointC = Singleton->verticies[Singleton->halfEdgeArray[Singleton->faces[face]+2].vertIdx];
-    return (pointA+pointB+pointC)* 0.333333333333333f;
+    return (pointA + pointB + pointC) * .3333333433F;
 }
 
 void NavMesh::DbgDraw()
