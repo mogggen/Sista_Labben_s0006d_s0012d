@@ -18,6 +18,8 @@ _deps
 .idea/
 #<fips
 
+!export/meshes/navigation/navmesh.nvx2
+!export/models/navigation/navmesh.n3
 export_win32/*
 export/*
 

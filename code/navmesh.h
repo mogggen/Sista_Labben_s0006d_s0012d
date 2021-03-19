@@ -28,6 +28,7 @@ public:
     static int getNumFace();
     static int getNumVertex();
     static int getNumHalfEdge();
+    static Math::vec3 getCenter(int face);
      
 private:
     Util::Array<Math::vec3> verticies;

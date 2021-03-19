@@ -141,6 +141,13 @@ int NavMesh::getNumHalfEdge()
 {
     return (int)Singleton->halfEdgeArray.size();
 }
+Math::vec3 NavMesh::getCenter(int face)
+{
+    Math::vec3 pointA = Singleton->verticies[Singleton->halfEdgeArray[Singleton->faces[face]].vertIdx];
+    Math::vec3 pointB = Singleton->verticies[Singleton->halfEdgeArray[Singleton->faces[face]+1].vertIdx];
+    Math::vec3 pointC = Singleton->verticies[Singleton->halfEdgeArray[Singleton->faces[face]+2].vertIdx];
+    return (pointA+pointB+pointC)* 0.333333333333333f;
+}
 
 void NavMesh::DbgDraw()
 {
@@ -160,7 +167,12 @@ void NavMesh::DbgDraw()
             Im3d::Im3dContext::DrawLine(Math::line(pA, pB), 10, Math::vec4(0.7, 0, 1, 1));
 
         }
+        Math::vec3 vector = getCenter(i);
+        Im3d::Im3dContext::DrawPoint(Math::vec3(vector), 10, Math::vec4(0, 0, 0, 1));
     }
+    
+
+    
 
     /*for (int i = 0; i < nvx2Reader->GetNumIndices(); i += 3) {
         int indexA = vertWidth * nvx2Reader->GetIndexData()[i*2];
