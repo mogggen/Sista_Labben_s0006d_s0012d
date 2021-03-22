@@ -129,7 +129,7 @@ PYBIND11_EMBEDDED_MODULE(demo, m)
             info.immediate = true;
             info.templateId = Game::GetTemplateId(atom);
             auto e = Game::CreateEntity(info);
-            n_printf("created entity %d %d\n", Ids::Generation(e.id), Ids::Index(e.id));
+            //n_printf("created entity %d %d\n", Ids::Generation(e.id), Ids::Index(e.id));
             return e;
             });
 

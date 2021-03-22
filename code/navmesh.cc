@@ -50,7 +50,7 @@ void NavMesh::Load(const char* filename)
     if(!nvx2Reader->Open(nullptr))
     {
         // handle error
-        n_assert(false, "Failed to open navmesh");
+        //n_assert(false, "Failed to open navmesh");
     }
 
     float* verticiesData = nvx2Reader->GetVertexData();
@@ -71,8 +71,8 @@ void NavMesh::Load(const char* filename)
         int indexB = nvx2Reader->GetIndexData()[i * 2 + 2];
         int indexC = nvx2Reader->GetIndexData()[i * 2 + 4];
 
-        int faceIndex = faces.size();
-        int edgeIndex = halfEdgeArray.size();
+        int faceIndex = (int)faces.size();
+        int edgeIndex = (int)halfEdgeArray.size();
         halfEdgeArray.Append(HalfEdge{indexA, edgeIndex+1, -1, faceIndex});
         halfEdgeArray.Append(HalfEdge{indexB, edgeIndex+2, -1, faceIndex});
         halfEdgeArray.Append(HalfEdge{indexC, edgeIndex+0, -1, faceIndex});

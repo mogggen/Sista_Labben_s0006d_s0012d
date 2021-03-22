@@ -81,6 +81,7 @@ ProcessPlayerInput()
             {
                 input.forward = (char)io.KeysDown[Input::Key::W] - (char)io.KeysDown[Input::Key::S];
                 input.strafe  = (char)io.KeysDown[Input::Key::D] - (char)io.KeysDown[Input::Key::A];
+                input.boost   = io.KeysDown[Input::Key::Shift];
                 input.left_mouse  = mouse->ButtonPressed(Input::MouseButton::Code::LeftButton);
                 input.right_mouse = mouse->ButtonPressed(Input::MouseButton::Code::RightButton);
                 input.scroll  = (char)mouse->WheelForward();
@@ -92,6 +93,7 @@ ProcessPlayerInput()
             {
                 input.forward = 0;
                 input.strafe  = 0;
+                input.boost = false;
                 input.left_mouse = false;
                 input.right_mouse = false;
                 input.scroll = 0;

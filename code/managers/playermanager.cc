@@ -102,6 +102,12 @@ PlayerManager::OnBeginFrame()
 {
      auto input = Game::GetProperty<Demo::PlayerInput>(Singleton->playerEntity, Game::GetPropertyId("PlayerInput"_atm));
     // Move
+
+    float move_speed = 0.2f;
+
+    if(input.boost)
+        move_speed = 0.5f;
+
     float move_forward = input.forward*0.2f;
     float move_strafe  = input.strafe *0.2f;
     float yaw          = Singleton->tdc.yaw;

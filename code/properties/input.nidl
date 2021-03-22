@@ -10,6 +10,10 @@
                 "_type_"    : "char",
                 "_default_" : 0
             },
+            "boost": {
+                "_type_"    : "bool",
+                "_default_" : false
+            },
             "left_mouse": {
                 "_type_"    : "bool",
                 "_default_" : false
