@@ -1,6 +1,6 @@
 try:
     import demo, nmath, util, imgui, navMesh
-    print("Bootstrap successful.");
+    print("Bootstrap successful.")
 
     def SetFieldOfView(fov):
         p = demo.GetPlayer()

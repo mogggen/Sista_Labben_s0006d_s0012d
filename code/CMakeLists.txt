@@ -32,14 +32,17 @@ fips_dir(.)
             inputmanager.cc
             movementmanager.h
             movementmanager.cc
-            agnetmanager.h
-            agnetmanager.cc
+            agentmanager.h
+            agentmanager.cc
         )
 
     fips_dir(properties)
         nebula_add_nidl(
             input.nidl
             movement.nidl
+	    agent.nidl
+	    health.nidl
+	    team.nidl
         )
 
 fips_deps(foundation application render resource dynui scripting editor)

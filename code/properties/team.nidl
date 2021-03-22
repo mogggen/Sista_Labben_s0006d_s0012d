@@ -1,0 +1,14 @@
+{
+	"namespace": "Demo",
+    "enums": {
+        "teamEnum": {
+            "GRUPP_1":  0,
+            "GRUPP_2":  1
+        }
+    },
+    "properties": {
+        "Team":{
+            "team":     "Demo::teamEnum"
+        }
+    }
+}

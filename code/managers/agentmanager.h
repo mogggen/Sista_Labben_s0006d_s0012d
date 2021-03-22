@@ -1,5 +1,5 @@
-#ifndef AGNETMANAGER_H
-#define AGNETMANAGER_H 
+#ifndef AGENTMANAGER_H
+#define AGENTMANAGER_H 
 
 //------------------------------------------------------------------------------
 /**
@@ -41,4 +41,4 @@ private:
 };
 
 } // namespace Game
-#endif /* AGNETMANAGER_H */
+#endif /* AGENTMANAGER_H */

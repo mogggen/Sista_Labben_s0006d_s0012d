@@ -1,14 +1,15 @@
 {
     "blueprint": "AgentEntity",
-    "properties": {
-        "ModelResource": "mdl:dev/guy.n3",
-        "Agent": {
-            "tiredness"     : 100,
-            "hunger"        : 100,
-            "thirst"        : 100,
-            "social_metric" : 150,
-            "money"         : 150,
-            "food_storage"  : 7
-        }
+  "properties": {
+    "ModelResource": "mdl:dev/guy.n3",
+    "Agent": {
+      "type": "WORKER"
+    },
+    "Health": {
+      "hp": 5
+    },
+    "Team": {
+      "team": "GRUPP_1"
     }
+  }
 }
