@@ -1,5 +1,5 @@
 try:
-    import demo, nmath, util, imgui, navMesh
+    import demo, nmath, util, imgui, navMesh, resourcemanger
     print("Bootstrap successful.")
 
     def SetFieldOfView(fov):

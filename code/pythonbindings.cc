@@ -394,6 +394,8 @@ PYBIND11_EMBEDDED_MODULE(navMesh, m)
             auto vertex = Demo::NavMesh::getCenter(num);
             return Math::point(vertex);
         });
+    m.def("isInTriangle", &Demo::NavMesh::isInTriangle);
+    m.def("isOnNavMesh", &Demo::NavMesh::isOnNavMesh);
 }
 
 PYBIND11_EMBEDDED_MODULE(buildings, m) {
