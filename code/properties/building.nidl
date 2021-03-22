@@ -1,0 +1,22 @@
+{
+	"namespace": "Demo",
+	"includes": [
+        "math/vec3.h",
+        "game/entity.h"
+    ],
+    "enums": {
+        "buildingType": {
+            "KILN":  0,
+            "SMELTERY":  1,
+            "BLACKSMITH": 2,
+            "TRAININGCAMP": 3,
+        }
+    },
+    "properties": {
+        "Building":{
+            "position"      : "vec3",
+            "hasWorker"     : "bool",
+            "type"          : "Demo::buildingType"
+        }
+    }
+}

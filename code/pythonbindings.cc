@@ -264,4 +264,8 @@ PYBIND11_EMBEDDED_MODULE(navMesh, m)
         });
 }
 
+PYBIND11_EMBEDDED_MODULE(buildings, m) {
+
+}
+
 }
