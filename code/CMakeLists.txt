@@ -34,6 +34,8 @@ fips_dir(.)
             movementmanager.cc
             agnetmanager.h
             agnetmanager.cc
+	    messagesystem.h
+	    messagesystem.cc
         )
 
     fips_dir(properties)
