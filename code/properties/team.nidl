@@ -2,8 +2,8 @@
 	"namespace": "Demo",
     "enums": {
         "teamEnum": {
-            "GRUPP_1":  0,
-            "GRUPP_2":  1
+            "GRUPP_1":  1,
+            "GRUPP_2":  2
         }
     },
     "properties": {

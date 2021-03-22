@@ -60,6 +60,12 @@ AgentManager::Create()
             {
                 Math::mat4& t = transforms[i];
                 Agent& a = agents[i];
+                
+                //Moving every agent towards their target position every frame
+                a.position = a.position + Math::normalize(a.targetPosition - a.position) * 1 * Game::TimeManager::GetTimeSource(TIMESOURCE_GAMEPLAY)->frameTime;
+                if (Math::length(a.targetPosition - a.position) < 0.1f) {
+                    a.position = a.targetPosition;
+                }
 
                 Math::vec4 p = Math::vec4(a.position, 1.0);
         

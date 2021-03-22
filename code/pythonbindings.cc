@@ -62,6 +62,8 @@ PYBIND11_EMBEDDED_MODULE(demo, m)
         .defPropertyAccessor(Demo::Movement,        Movement)
         .defPropertyAccessor(Demo::Marker,          Marker)
         .defPropertyAccessor(Demo::Agent,           Agent)
+        .defPropertyAccessor(Demo::Health,           Health)
+        .defPropertyAccessor(Demo::Team,           Team)
         .defPropertyAccessor(GraphicsFeature::Camera, Camera);
 
     m.def("Delete", [](Game::Entity& e)
@@ -111,6 +113,26 @@ PYBIND11_EMBEDDED_MODULE(demo, m)
         .defReadWriteVec3(Demo::Agent, targetPosition)
         .defReadWrite(Demo::Agent, type);
 
+    py::enum_<Demo::agentType>(m, "agentType")
+        .value("WORKER", Demo::WORKER)
+        .value("SCOUT", Demo::SCOUT)
+        .value("SOLDIER", Demo::SOLDIER)
+        .value("KILNER", Demo::KILNER)
+        .value("SMITH", Demo::SMITH)
+        .value("SMELTER", Demo::SMELTER)
+        .value("BUILDER", Demo::BUILDER)
+        .export_values();
+
+    py::class_<Demo::Health>(m, "Health")
+        .defReadWrite(Demo::Health, hp);
+
+    py::class_<Demo::Team>(m, "Team")
+        .defReadWrite(Demo::Team, team);
+
+    py::enum_<Demo::teamEnum>(m, "teamEnum")
+        .value("GRUPP_1", Demo::GRUPP_1)
+        .value("GRUPP_2", Demo::GRUPP_2)
+        .export_values();
 
     m.def("HelloSayer", [](){IO::Console::Instance()->Print("I am saying HELLO!!!");}, "Says hello.");
     m.def("SpawnCube", [](Math::point& p){
