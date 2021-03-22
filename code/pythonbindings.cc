@@ -6,6 +6,7 @@
 #include "pythonbindings.h"
 #include "pybind11/pybind11.h"
 #include "pybind11/operators.h"
+#include "pybind11/functional.h"
 #include "pybind11/cast.h"
 #include "pybind11/pytypes.h"
 #include "io/console.h"
@@ -20,11 +21,14 @@
 #include "properties/agent.h"
 #include "properties/health.h"
 #include "properties/team.h"
+#include "properties/building.h"
 #include "imgui.h"
 #include "dynui/im3d/im3dcontext.h"
 #include "input/keyboard.h"
 #include "managers/playermanager.h"
 #include "graphicsfeature/graphicsfeatureunit.h"
+#include "graphics/graphicsentity.h"
+#include "models/modelcontext.h"
 #include "ids/idgenerationpool.h"
 #include "navmesh.h"
 
@@ -64,7 +68,8 @@ PYBIND11_EMBEDDED_MODULE(demo, m)
         .defPropertyAccessor(Demo::Agent,           Agent)
         .defPropertyAccessor(Demo::Health,           Health)
         .defPropertyAccessor(Demo::Team,           Team)
-        .defPropertyAccessor(GraphicsFeature::Camera, Camera);
+        .defPropertyAccessor(GraphicsFeature::Camera, Camera)
+        .def(py::self == py::self);
 
     m.def("Delete", [](Game::Entity& e)
             {
@@ -133,6 +138,133 @@ PYBIND11_EMBEDDED_MODULE(demo, m)
         .value("GRUPP_1", Demo::GRUPP_1)
         .value("GRUPP_2", Demo::GRUPP_2)
         .export_values();
+
+    m.def("ForHealthTeam",[](std::function<void(Demo::Health&, Demo::Team&)> &callback)
+    {
+        Game::FilterCreateInfo info;
+        info.inclusive[0] = Game::GetPropertyId("Health");
+        info.access[0]    = Game::AccessMode::READ;
+        info.inclusive[1] = Game::GetPropertyId("Team");
+        info.access[1]    = Game::AccessMode::READ;
+        info.numInclusive = 2;
+
+        Game::Filter ht_filter = Game::CreateFilter(info);
+
+        Game::Dataset ht_data = Game::Query(ht_filter);
+        for (int v = 0; v < ht_data.numViews; v++)
+        {
+            Game::Dataset::CategoryTableView const& view = ht_data.views[v];
+            Demo::Health* const healths = (Demo::Health*)view.buffers[0];
+            Demo::Team* const teams = (Demo::Team*)view.buffers[1];
+
+            for (IndexT i = 0; i < view.numInstances; ++i)
+            {
+                callback(healths[i], teams[i]);
+            }
+        }
+    });
+    m.def("ForAgentTeam",[](std::function<void(Demo::Agent&, Demo::Team&)> &callback)
+    {
+        Game::FilterCreateInfo info;
+        info.inclusive[0] = Game::GetPropertyId("Agent");
+        info.access[0]    = Game::AccessMode::READ;
+        info.inclusive[1] = Game::GetPropertyId("Team");
+        info.access[1]    = Game::AccessMode::READ;
+        info.numInclusive = 2;
+
+        Game::Filter filter = Game::CreateFilter(info);
+
+        Game::Dataset data = Game::Query(filter);
+        for (int v = 0; v < data.numViews; v++)
+        {
+            Game::Dataset::CategoryTableView const& view = data.views[v];
+            Demo::Agent* const agents = (Demo::Agent*)view.buffers[0];
+            Demo::Team* const teams = (Demo::Team*)view.buffers[1];
+
+            for (IndexT i = 0; i < view.numInstances; ++i)
+            {
+                callback(agents[i], teams[i]);
+            }
+        }
+    });
+    m.def("ForBuildingTeam",[](std::function<void(Demo::Building&, Demo::Team&)> &callback)
+    {
+        Game::FilterCreateInfo info;
+        info.inclusive[0] = Game::GetPropertyId("Building");
+        info.access[0]    = Game::AccessMode::READ;
+        info.inclusive[1] = Game::GetPropertyId("Team");
+        info.access[1]    = Game::AccessMode::READ;
+        info.numInclusive = 2;
+
+        Game::Filter filter = Game::CreateFilter(info);
+
+        Game::Dataset data = Game::Query(filter);
+        for (int v = 0; v < data.numViews; v++)
+        {
+            Game::Dataset::CategoryTableView const& view = data.views[v];
+            Demo::Building* const buildings = (Demo::Building*)view.buffers[0];
+            Demo::Team* const teams = (Demo::Team*)view.buffers[1];
+
+            for (IndexT i = 0; i < view.numInstances; ++i)
+            {
+                callback(buildings[i], teams[i]);
+            }
+        }
+    });
+    m.def("ForAgentHealthTeam",[](std::function<void(Demo::Agent&, Demo::Health&, Demo::Team&)> &callback)
+    {
+        Game::FilterCreateInfo info;
+        info.inclusive[0] = Game::GetPropertyId("Agent");
+        info.access[0]    = Game::AccessMode::READ;
+        info.inclusive[1] = Game::GetPropertyId("Health");
+        info.access[1]    = Game::AccessMode::READ;
+        info.inclusive[2] = Game::GetPropertyId("Team");
+        info.access[2]    = Game::AccessMode::READ;
+        info.numInclusive = 3;
+
+        Game::Filter filter = Game::CreateFilter(info);
+
+        Game::Dataset data = Game::Query(filter);
+        for (int v = 0; v < data.numViews; v++)
+        {
+            Game::Dataset::CategoryTableView const& view = data.views[v];
+            Demo::Agent* const agents = (Demo::Agent*)view.buffers[0];
+            Demo::Health* const healths = (Demo::Health*)view.buffers[1];
+            Demo::Team* const teams = (Demo::Team*)view.buffers[2];
+
+            for (IndexT i = 0; i < view.numInstances; ++i)
+            {
+                callback(agents[i], healths[i], teams[i]);
+            }
+        }
+    });
+    m.def("ForBuildingHealthTeam",[](std::function<void(Demo::Building&, Demo::Health&, Demo::Team&)> &callback)
+    {
+        Game::FilterCreateInfo info;
+        info.inclusive[0] = Game::GetPropertyId("Building");
+        info.access[0]    = Game::AccessMode::READ;
+        info.inclusive[1] = Game::GetPropertyId("Health");
+        info.access[1]    = Game::AccessMode::READ;
+        info.inclusive[2] = Game::GetPropertyId("Team");
+        info.access[2]    = Game::AccessMode::READ;
+        info.numInclusive = 3;
+
+        Game::Filter filter = Game::CreateFilter(info);
+
+        Game::Dataset data = Game::Query(filter);
+        for (int v = 0; v < data.numViews; v++)
+        {
+            Game::Dataset::CategoryTableView const& view = data.views[v];
+            Demo::Building* const buildings = (Demo::Building*)view.buffers[0];
+            Demo::Health* const healths = (Demo::Health*)view.buffers[1];
+            Demo::Team* const teams = (Demo::Team*)view.buffers[2];
+
+            for (IndexT i = 0; i < view.numInstances; ++i)
+            {
+                callback(buildings[i], healths[i], teams[i]);
+            }
+        }
+    });
 
     m.def("HelloSayer", [](){IO::Console::Instance()->Print("I am saying HELLO!!!");}, "Says hello.");
     m.def("SpawnCube", [](Math::point& p){
