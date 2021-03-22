@@ -32,10 +32,15 @@ fips_dir(.)
             inputmanager.cc
             movementmanager.h
             movementmanager.cc
+<<<<<<< HEAD
             agnetmanager.h
             agnetmanager.cc
 	    messagesystem.h
 	    messagesystem.cc
+=======
+            agentmanager.h
+            agentmanager.cc
+>>>>>>> origin/main
         )
 
     fips_dir(properties)
@@ -45,6 +50,7 @@ fips_dir(.)
 	    agent.nidl
 	    health.nidl
 	    team.nidl
+	    building.nidl
         )
 
 fips_deps(foundation application render resource dynui scripting editor)

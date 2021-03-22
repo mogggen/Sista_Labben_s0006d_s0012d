@@ -29,6 +29,8 @@ public:
     static int getNumVertex();
     static int getNumHalfEdge();
     static Math::vec3 getCenter(int face);
+    static bool isInTriangle(Math::vec2 p, int face);
+    static bool isOnNavMesh(Math::vec2 p);
      
 private:
     Util::Array<Math::vec3> verticies;
