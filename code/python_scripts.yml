@@ -10,3 +10,4 @@ files:
     - Grupp1/main.py
     - Grupp2/main.py
     - statParser.py
+    - fog_of_war.py

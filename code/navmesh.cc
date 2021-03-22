@@ -50,7 +50,7 @@ void NavMesh::Load(const char* filename)
     if(!nvx2Reader->Open(nullptr))
     {
         // handle error
-        n_assert(false, "Failed to open navmesh");
+        //n_assert(false, "Failed to open navmesh");
     }
 
     float* verticiesData = nvx2Reader->GetVertexData();
@@ -71,8 +71,8 @@ void NavMesh::Load(const char* filename)
         int indexB = nvx2Reader->GetIndexData()[i * 2 + 2];
         int indexC = nvx2Reader->GetIndexData()[i * 2 + 4];
 
-        int faceIndex = faces.size();
-        int edgeIndex = halfEdgeArray.size();
+        int faceIndex = (int)faces.size();
+        int edgeIndex = (int)halfEdgeArray.size();
         halfEdgeArray.Append(HalfEdge{indexA, edgeIndex+1, -1, faceIndex});
         halfEdgeArray.Append(HalfEdge{indexB, edgeIndex+2, -1, faceIndex});
         halfEdgeArray.Append(HalfEdge{indexC, edgeIndex+0, -1, faceIndex});
@@ -141,6 +141,13 @@ int NavMesh::getNumHalfEdge()
 {
     return (int)Singleton->halfEdgeArray.size();
 }
+Math::vec3 NavMesh::getCenter(int face)
+{
+    Math::vec3 pointA = Singleton->verticies[Singleton->halfEdgeArray[Singleton->faces[face]].vertIdx];
+    Math::vec3 pointB = Singleton->verticies[Singleton->halfEdgeArray[Singleton->faces[face]+1].vertIdx];
+    Math::vec3 pointC = Singleton->verticies[Singleton->halfEdgeArray[Singleton->faces[face]+2].vertIdx];
+    return (pointA + pointB + pointC) * .3333333433F;
+}
 
 void NavMesh::DbgDraw()
 {
@@ -160,7 +167,12 @@ void NavMesh::DbgDraw()
             Im3d::Im3dContext::DrawLine(Math::line(pA, pB), 10, Math::vec4(0.7, 0, 1, 1));
 
         }
+        Math::vec3 vector = getCenter(i);
+        Im3d::Im3dContext::DrawPoint(Math::vec3(vector), 10, Math::vec4(0, 0, 0, 1));
     }
+    
+
+    
 
     /*for (int i = 0; i < nvx2Reader->GetNumIndices(); i += 3) {
         int indexA = vertWidth * nvx2Reader->GetIndexData()[i*2];

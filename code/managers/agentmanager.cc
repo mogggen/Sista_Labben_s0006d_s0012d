@@ -3,7 +3,7 @@
 //  (C) 2020 Individual contributors, see AUTHORS file
 //------------------------------------------------------------------------------
 #include "application/stdneb.h"
-#include "agnetmanager.h"
+#include "agentmanager.h"
 #include "basegamefeature/managers/entitymanager.h"
 #include "properties/movement.h"
 #include "properties/input.h"

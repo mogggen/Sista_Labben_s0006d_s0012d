@@ -32,8 +32,8 @@ fips_dir(.)
             inputmanager.cc
             movementmanager.h
             movementmanager.cc
-            agnetmanager.h
-            agnetmanager.cc
+            agentmanager.h
+            agentmanager.cc
         )
 
     fips_dir(properties)

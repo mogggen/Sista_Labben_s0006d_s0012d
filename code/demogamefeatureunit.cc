@@ -10,7 +10,7 @@
 #include "managers/inputmanager.h"
 #include "managers/movementmanager.h"
 #include "managers/playermanager.h"
-#include "managers/agnetmanager.h"
+#include "managers/agentmanager.h"
 #include "scripting/python/pythonserver.h"
 
 namespace Demo
