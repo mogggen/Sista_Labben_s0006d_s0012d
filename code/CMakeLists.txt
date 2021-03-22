@@ -43,6 +43,7 @@ fips_dir(.)
 	    agent.nidl
 	    health.nidl
 	    team.nidl
+	    building.nidl
         )
 
 fips_deps(foundation application render resource dynui scripting editor)
