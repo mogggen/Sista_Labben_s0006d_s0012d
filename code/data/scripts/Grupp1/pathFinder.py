@@ -1,93 +1,159 @@
 import navMesh
+import demo, nmath
+import math
 
-# Slightly modified heuristic function to fit the goal of the AI.
-def heuristic(neighbour, finish, g, r):
-    multiplier = 1
-    if r[0] == 0 or r[1] == 0:
-        neighbour.append(g+1) # g
-    else:
-        neighbour.append(g+1.4)
+class Node:
+    face = -1
+    parent_idx = -1
+    g = 0
+    f = -1
 
-    # If ground is slow to walk on, prioritize it less.
-    if not FogOfWar.fogOfWar[neighbour[0]][neighbour[1]]:
-        multiplier *= 0.7
+    def __init__(self, face, parent):
+        self.face = face
+        self.parent_idx = parent
 
-    dx = abs(neighbour[0] - finish[0])
-    dy = abs(neighbour[1] - finish[1])
+    def __repr__(self):
+        return "{ " + str(self.face) + ", " + str(self.parent_idx) + ", "+ str(self.g) + ", " + str(self.f) +" }"
 
-    neighbour.append(dx + dy) # h
-    neighbour.append(multiplier * (dx + dy) + (1.4 - 2 * multiplier) * min(dx, dy)) # f
+class AStar:
+    
+    def manhattan_dist(a, b):
+        return abs(a.x - b.x) + abs(a.y - b.y)
+    
+    def euclidean_dist(a, b):
+        return math.sqrt((a.x - b.x)**2 + (a.y - b.y)**2)
 
-    return neighbour
+    def diagonal_dist(a, b):
+        return max(abs(a.x - b.x),abs(a.y - b.y))
 
-# Checks if current neighbour is better than what is currently in the open list and then adds it.
-def addToOpen(openList, closedList, neighbour):
-    for node in openList:
-        if neighbour[0] == node[0] and neighbour[1] == node[1]:
-            if neighbour[5] >= node[5]:
-                return
-            openList.remove(node)
-            openList.append(neighbour)
-            return
+    def start(self, path):
+        self.open = []
+        self.closed = []
+        self.nodes = {}
 
-    for node in closedList:
-        if neighbour[0] == node[0] and neighbour[1] == node[1]:
-            if neighbour[5] >= node[5]:
-                return
-            closed.remove(node)
-            openList.append(neighbour)
-            return
-    openList.append(neighbour)
+        start_face = navMesh.findInNavMesh(path.start_pos)
+        start_node = Node(start_face, -1)
 
-# A* pathfinding algorithm, look it up if you need more info...
-def findPath(startPos, finishPos, agent):
-    i = 0
-    openList = []
-    closedList = []
-    nodes = []
-    start = [startPos[0], startPos[1], -1, 0, 0, 0]
-    finish = [finishPos[0], finishPos[1], 0, 0, 0, 0]
-    openList.append(start)
+        self.nodes[start_face] = start_node
+        self.open.append(start_node)
 
-    while len(openList) > 0:
-        #Sort list
-        openList.sort(key=lambda x: x[5])
+    def step(self, path):
+        current_node = self.open.pop(0)
 
-        #Pop lowest cost
-        currentPos = openList.pop(0)
-        nodes.append(currentPos)
-        closedList.append(currentPos)
-        if currentPos[0] == finish[0] and currentPos[1] == finish[1]:
-            path = []
-            while currentPos[2] != -1:
-                path.append((currentPos[0], currentPos[1]))
-                currentPos = nodes[currentPos[2]]
-            path.append((start[0], start[1]))
-            return path[::-1]
+        print("1")
 
-        for next in r:
-            # Checks if agent can walk here or not
-            if nonExplorer and not FogOfWar.fogOfWar[next[0] + currentPos[0]][next[1] + currentPos[1]]:
+        if navMesh.isInFace(path.goal_pos, current_node.face):
+            #TODO(mange)
+            reverse_path = []
+            pos = list((int(current_pos.x),int(current_pos.y)))
+
+            while pos[0] > 0:
+                reverse_path.append(nmath.Float2(pos[0], pos[1]))
+                pos = self.parents[pos[0]][pos[1]]
+
+            path.points = reverse_path
+            path.points.reverse()
+            return True
+
+
+        current_g_value = current_node.g
+        #neighbours = game_map.get_neighbours(int(current_pos.x), int(current_pos.y))
+
+        print("2")
+        current_pos = nmath.Vec4(navMesh.getCenterOfFace(current_node.face))
+
+        print("3")
+        curr_halfedge_idx = current_node.face;
+        for _ in range(3):
+            print("4")
+            curr_halfedge = navMesh.getHalfEdge(curr_halfedge_idx)
+            print("halfedge idx ", curr_halfedge_idx)
+            curr_halfedge_idx = curr_halfedge.nextEdge;
+            if curr_halfedge.neighbourEdge < 0:
                 continue
 
-            if mapList[next[0] + currentPos[0]][next[1] + currentPos[1]] in unwalkables:
+            print("5")
+            neighbour = navMesh.getHalfEdge(curr_halfedge.neighbourEdge)
+            neighbour_face = navMesh.getFace(neighbour.face)
+            
+            print("6")
+            neighbour_pos = nmath.Vec4(navMesh.getCenterOfFace(neighbour_face))
+            print("7")
+
+            neighbour_node = self.nodes.get(neighbour_face, None)
+            print("neighbour face: ", neighbour_face) 
+
+            print("8")
+            if neighbour_node == None:
+                neighbour_node = Node(neighbour_face, current_node.face)
+                self.nodes[neighbour_face] = neighbour_node
+            print("9")
+            
+            prev_f_value = neighbour_node.f
+            print("prev_f ", neighbour_node.f)
+
+            g_value = abs(nmath.Vec4.length3(neighbour_pos - current_pos))
+
+            g_value += current_g_value
+
+            print("10")
+
+
+            #h_value = AStar.euclidean_dist(path.goal_pos, nmath.Float2(neighbour_pos.x, neighbour_pos.z))
+            h_value = abs(nmath.Vec4.length3(nmath.Vec4(path.goal_pos.x, 0, path.goal_pos.y, 0) - neighbour_pos))
+            f_value = g_value + h_value
+            print("11")
+
+            if prev_f_value < 0 or prev_f_value > f_value:
+                print("12")
+                neighbour_node.f = f_value
+                neighbour_node.g = g_value
+                if prev_f_value < 0:
+                    self.open.append(neighbour_node)
+                    print("13")
+
+        print("14")
+        self.closed.append(current_node)
+        print("15")
+
+        self.open.sort(key= lambda e : e.f)
+        print("16")
+
+        print(self.open)
+
+        return False
+
+
+    def __repr__(self):
+        return "A*"
+
+
+    def visualize(self, path):
+        demo.DrawDot(nmath.Point(path.goal_pos.x, 0, path.goal_pos.y), 15, nmath.Vec4(1,0,0,1))
+
+        for o in self.closed:
+            if o.parent_idx < 0:
                 continue
+            parent_pos = navMesh.getCenterOfFace(self.nodes[o.parent_idx].face)
+            pos = navMesh.getCenterOfFace(o.face)
+            demo.DrawLine(pos, parent_pos, 4.0, nmath.Vec4(1,1,0,1))
+        
+        for o in self.open:
+            if o.parent_idx < 0:
+                continue
+            parent_pos = navMesh.getCenterOfFace(self.nodes[o.parent_idx].face)
+            pos = navMesh.getCenterOfFace(o.face)
+            demo.DrawLine(pos, parent_pos, 4.0, nmath.Vec4(1,1,0,1))
 
-            elif next == (1, 1):
-                if mapList[currentPos[0]][currentPos[1] + 1] in unwalkables or mapList[currentPos[0] + 1][currentPos[1]] in unwalkables:
-                    continue
-            elif next == (-1, 1):
-                if mapList[currentPos[0]][currentPos[1] + 1] in unwalkables or mapList[currentPos[0] + -1][currentPos[1]] in unwalkables:
-                    continue
-            elif next == (1, -1):
-                if mapList[currentPos[0]][currentPos[1] + -1] in unwalkables or mapList[currentPos[0] + 1][currentPos[1]] in unwalkables:
-                    continue
-            elif next == (-1, -1):
-                if mapList[currentPos[0]][currentPos[1] + -1] in unwalkables or mapList[currentPos[0] + -1][currentPos[1]] in unwalkables:
-                    continue
 
-            neighbour = [next[0] + currentPos[0], next[1] + currentPos[1], i]
-            heuristic(neighbour, finish, currentPos[3], r)
+        for o in self.closed:
+            demo.DrawDot(navMesh.getCenterOfFace(o.face), 10, nmath.Vec4(0,0,1,1))
+            
+        for o in self.open:
+            demo.DrawDot(navMesh.getCenterOfFace(o.face), 20, nmath.Vec4(0,1,0,1))
+        
 
-            addToOpen(openList, closedList, neighbour)
-        i += 1
+        #prev_p = path.start_pos
+        #for p in path.points:
+        #    demo.DrawLine(nmath.Point(p.x, 0.1, p.y), nmath.Point(prev_p.x, 0.1, prev_p.y), 4.0, nmath.Vec4(1,0,0,1))
+        #    prev_p = p

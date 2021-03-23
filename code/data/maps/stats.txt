@@ -12,10 +12,10 @@ walkingSlowed:20
 amountOfWorkers:50
 
 #Health
-workerHealth:5
-explorerHealth:5
-artisanHealth:5
-soldierHealth:10
+workerHealth:2
+explorerHealth:2
+artisanHealth:2
+soldierHealth:4
 
 #UpgradeTime
 explorerUpgradeTime:60
@@ -30,23 +30,26 @@ soldierAttackSpeed:1
 #Kiln
 kilnBuildTime:60
 kilnWoodCost:10
-kilnHealth:20
+kilnHealth:12
 
 #Smeltery
 smelteryBuildTime:120
 smelteryWoodCost:10
-smelteryHealth:20
+smelteryHealth:12
 
 #Blacksmith
 blacksmithBuildTime:180
 blacksmithWoodCost:10
 blacksmithIronCost:3
-blacksmithHealth:20
+blacksmithHealth:12
 
 #TrainingCamp
 trainingCampBuildTime:120
 trainingCampWoodCost:10
-trainingCampHealth:20
+trainingCampHealth:12
+
+#Castle
+castleHealth:25
 
 ##Products##
 #CoalCreation

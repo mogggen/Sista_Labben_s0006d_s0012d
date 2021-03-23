@@ -141,12 +141,97 @@ int NavMesh::getNumHalfEdge()
 {
     return (int)Singleton->halfEdgeArray.size();
 }
-Math::vec3 NavMesh::getCenter(int face)
+Math::vec3 NavMesh::getCenter(int face_idx)
 {
-    Math::vec3 pointA = Singleton->verticies[Singleton->halfEdgeArray[Singleton->faces[face]].vertIdx];
-    Math::vec3 pointB = Singleton->verticies[Singleton->halfEdgeArray[Singleton->faces[face]+1].vertIdx];
-    Math::vec3 pointC = Singleton->verticies[Singleton->halfEdgeArray[Singleton->faces[face]+2].vertIdx];
+    Math::vec3 pointA = Singleton->verticies[Singleton->halfEdgeArray[Singleton->faces[face_idx]].vertIdx];
+    Math::vec3 pointB = Singleton->verticies[Singleton->halfEdgeArray[Singleton->faces[face_idx]+1].vertIdx];
+    Math::vec3 pointC = Singleton->verticies[Singleton->halfEdgeArray[Singleton->faces[face_idx]+2].vertIdx];
     return (pointA + pointB + pointC) * .3333333433F;
+}
+Math::vec3 NavMesh::getCenterOfFace(int face)
+{
+    Math::vec3 pointA = Singleton->verticies[Singleton->halfEdgeArray[face].vertIdx];
+    Math::vec3 pointB = Singleton->verticies[Singleton->halfEdgeArray[face+1].vertIdx];
+    Math::vec3 pointC = Singleton->verticies[Singleton->halfEdgeArray[face+2].vertIdx];
+    return (pointA + pointB + pointC) * .3333333433F;
+}
+
+//source:https://stackoverflow.com/questions/2049582/how-to-determine-if-a-point-is-in-a-2d-triangle
+
+float sign(Math::vec2 p1, Math::vec2 p2, Math::vec2 p3)
+{
+    return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
+}
+
+bool NavMesh::isInTriangle(Math::vec2 p, int face)
+{
+    Math::vec3 a3 = Singleton->verticies[Singleton->halfEdgeArray[Singleton->faces[face]].vertIdx];
+    Math::vec3 b3 = Singleton->verticies[Singleton->halfEdgeArray[Singleton->faces[face] + 1].vertIdx];
+    Math::vec3 c3 = Singleton->verticies[Singleton->halfEdgeArray[Singleton->faces[face] + 2].vertIdx];
+
+    Math::vec2 a = Math::vec2(a3.x, a3.z);
+    Math::vec2 b = Math::vec2(b3.x, b3.z);
+    Math::vec2 c = Math::vec2(c3.x, c3.z);
+
+    float d1, d2, d3;
+    bool has_neg, has_pos;
+
+    d1 = sign(p, a, b);
+    d2 = sign(p, b, c);
+    d3 = sign(p, c, a);
+
+    has_neg = (d1 < 0) || (d2 < 0) || (d3 < 0);
+    has_pos = (d1 > 0) || (d2 > 0) || (d3 > 0);
+
+    return !(has_neg && has_pos);
+
+}
+
+bool NavMesh::isInFace(Math::vec2 p, int face)
+{
+    Math::vec3 a3 = Singleton->verticies[Singleton->halfEdgeArray[face].vertIdx];
+    Math::vec3 b3 = Singleton->verticies[Singleton->halfEdgeArray[face + 1].vertIdx];
+    Math::vec3 c3 = Singleton->verticies[Singleton->halfEdgeArray[face + 2].vertIdx];
+
+    Math::vec2 a = Math::vec2(a3.x, a3.z);
+    Math::vec2 b = Math::vec2(b3.x, b3.z);
+    Math::vec2 c = Math::vec2(c3.x, c3.z);
+
+    float d1, d2, d3;
+    bool has_neg, has_pos;
+
+    d1 = sign(p, a, b);
+    d2 = sign(p, b, c);
+    d3 = sign(p, c, a);
+
+    has_neg = (d1 < 0) || (d2 < 0) || (d3 < 0);
+    has_pos = (d1 > 0) || (d2 > 0) || (d3 > 0);
+
+    return !(has_neg && has_pos);
+
+}
+
+//endsource
+
+bool NavMesh::isOnNavMesh(Math::vec2 p)
+{
+    for (int i = 0; i < Singleton->getNumFace(); i++)
+    {
+        if (NavMesh::isInTriangle(p, i)) return true;
+    }
+
+    return false;
+}
+
+int NavMesh::findInNavMesh(Math::vec2 p)
+{
+    for (int i = 0; i < Singleton->getNumFace(); i++)
+    {
+        if (NavMesh::isInTriangle(p, i)) 
+            return Singleton->faces[i];
+    }
+
+    return -1;
 }
 
 void NavMesh::DbgDraw()

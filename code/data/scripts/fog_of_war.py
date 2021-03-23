@@ -1,4 +1,5 @@
-import demo, nmath
+import demo
+import nmath
 
 class GroupFogOfWar:
     def init(self, w: int, h: int):

@@ -6,6 +6,7 @@
 #include "pythonbindings.h"
 #include "pybind11/pybind11.h"
 #include "pybind11/operators.h"
+#include "pybind11/functional.h"
 #include "pybind11/cast.h"
 #include "pybind11/pytypes.h"
 #include "io/console.h"
@@ -20,11 +21,16 @@
 #include "properties/agent.h"
 #include "properties/health.h"
 #include "properties/team.h"
+#include "properties/building.h"
+#include "properties/tree.h"
+#include "properties/iron.h"
 #include "imgui.h"
 #include "dynui/im3d/im3dcontext.h"
 #include "input/keyboard.h"
 #include "managers/playermanager.h"
 #include "graphicsfeature/graphicsfeatureunit.h"
+#include "graphics/graphicsentity.h"
+#include "models/modelcontext.h"
 #include "ids/idgenerationpool.h"
 #include "navmesh.h"
 
@@ -56,15 +62,19 @@ namespace py = pybind11;
 PYBIND11_EMBEDDED_MODULE(demo, m)
 {
     py::class_<Game::Entity>(m, "Entity")
-        .defPropertyAccessor(Math::mat4,            WorldTransform)
-        .defPropertyAccessor(Demo::PlayerInput,     PlayerInput)
-        .defPropertyAccessor(Demo::TopdownCamera,   TopdownCamera)
-        .defPropertyAccessor(Demo::Movement,        Movement)
-        .defPropertyAccessor(Demo::Marker,          Marker)
-        .defPropertyAccessor(Demo::Agent,           Agent)
-        .defPropertyAccessor(Demo::Health,           Health)
-        .defPropertyAccessor(Demo::Team,           Team)
-        .defPropertyAccessor(GraphicsFeature::Camera, Camera);
+        .defPropertyAccessor(Math::mat4,              WorldTransform)
+        .defPropertyAccessor(Demo::PlayerInput,       PlayerInput)
+        .defPropertyAccessor(Demo::TopdownCamera,     TopdownCamera)
+        .defPropertyAccessor(Demo::Movement,          Movement)
+        .defPropertyAccessor(Demo::Marker,            Marker)
+        .defPropertyAccessor(Demo::Agent,             Agent)
+        .defPropertyAccessor(Demo::Health,            Health)
+        .defPropertyAccessor(Demo::Team,              Team)
+        .defPropertyAccessor(Demo::Building,          Building)
+        .defPropertyAccessor(Demo::Tree,              Tree)
+        .defPropertyAccessor(Demo::Iron,              Iron)
+        .defPropertyAccessor(GraphicsFeature::Camera, Camera)
+        .def(py::self == py::self);
 
     m.def("Delete", [](Game::Entity& e)
             {
@@ -113,6 +123,12 @@ PYBIND11_EMBEDDED_MODULE(demo, m)
         .defReadWriteVec3(Demo::Agent, targetPosition)
         .defReadWrite(Demo::Agent, type);
 
+    py::class_<Demo::Tree>(m, "Tree")
+        .defReadWriteVec3(Demo::Tree, position);
+
+    py::class_<Demo::Iron>(m, "Iron")
+        .defReadWriteVec3(Demo::Iron, position);
+
     py::enum_<Demo::agentType>(m, "agentType")
         .value("WORKER", Demo::WORKER)
         .value("SCOUT", Demo::SCOUT)
@@ -121,6 +137,19 @@ PYBIND11_EMBEDDED_MODULE(demo, m)
         .value("SMITH", Demo::SMITH)
         .value("SMELTER", Demo::SMELTER)
         .value("BUILDER", Demo::BUILDER)
+        .export_values();
+
+    py::class_<Demo::Building>(m, "Building")
+        .defReadWriteVec3(Demo::Building, position)
+        .defReadWrite(Demo::Building, hasWorker)
+        .defReadWrite(Demo::Building, type);
+
+    py::enum_<Demo::buildingType>(m, "buildingType")
+        .value("KILN", Demo::KILN)
+        .value("SMELTERY", Demo::SMELTERY)
+        .value("BLACKSMITH", Demo::BLACKSMITH)
+        .value("TRAININGCAMP", Demo::TRAININGCAMP)
+        .value("CASTLE", Demo::CASTLE)
         .export_values();
 
     py::class_<Demo::Health>(m, "Health")
@@ -133,6 +162,133 @@ PYBIND11_EMBEDDED_MODULE(demo, m)
         .value("GRUPP_1", Demo::GRUPP_1)
         .value("GRUPP_2", Demo::GRUPP_2)
         .export_values();
+
+    m.def("ForHealthTeam",[](std::function<void(Demo::Health&, Demo::Team&)> &callback)
+    {
+        Game::FilterCreateInfo info;
+        info.inclusive[0] = Game::GetPropertyId("Health");
+        info.access[0]    = Game::AccessMode::READ;
+        info.inclusive[1] = Game::GetPropertyId("Team");
+        info.access[1]    = Game::AccessMode::READ;
+        info.numInclusive = 2;
+
+        Game::Filter ht_filter = Game::CreateFilter(info);
+
+        Game::Dataset ht_data = Game::Query(ht_filter);
+        for (int v = 0; v < ht_data.numViews; v++)
+        {
+            Game::Dataset::CategoryTableView const& view = ht_data.views[v];
+            Demo::Health* const healths = (Demo::Health*)view.buffers[0];
+            Demo::Team* const teams = (Demo::Team*)view.buffers[1];
+
+            for (IndexT i = 0; i < view.numInstances; ++i)
+            {
+                callback(healths[i], teams[i]);
+            }
+        }
+    });
+    m.def("ForAgentTeam",[](std::function<void(Demo::Agent&, Demo::Team&)> &callback)
+    {
+        Game::FilterCreateInfo info;
+        info.inclusive[0] = Game::GetPropertyId("Agent");
+        info.access[0]    = Game::AccessMode::READ;
+        info.inclusive[1] = Game::GetPropertyId("Team");
+        info.access[1]    = Game::AccessMode::READ;
+        info.numInclusive = 2;
+
+        Game::Filter filter = Game::CreateFilter(info);
+
+        Game::Dataset data = Game::Query(filter);
+        for (int v = 0; v < data.numViews; v++)
+        {
+            Game::Dataset::CategoryTableView const& view = data.views[v];
+            Demo::Agent* const agents = (Demo::Agent*)view.buffers[0];
+            Demo::Team* const teams = (Demo::Team*)view.buffers[1];
+
+            for (IndexT i = 0; i < view.numInstances; ++i)
+            {
+                callback(agents[i], teams[i]);
+            }
+        }
+    });
+    m.def("ForBuildingTeam",[](std::function<void(Demo::Building&, Demo::Team&)> &callback)
+    {
+        Game::FilterCreateInfo info;
+        info.inclusive[0] = Game::GetPropertyId("Building");
+        info.access[0]    = Game::AccessMode::READ;
+        info.inclusive[1] = Game::GetPropertyId("Team");
+        info.access[1]    = Game::AccessMode::READ;
+        info.numInclusive = 2;
+
+        Game::Filter filter = Game::CreateFilter(info);
+
+        Game::Dataset data = Game::Query(filter);
+        for (int v = 0; v < data.numViews; v++)
+        {
+            Game::Dataset::CategoryTableView const& view = data.views[v];
+            Demo::Building* const buildings = (Demo::Building*)view.buffers[0];
+            Demo::Team* const teams = (Demo::Team*)view.buffers[1];
+
+            for (IndexT i = 0; i < view.numInstances; ++i)
+            {
+                callback(buildings[i], teams[i]);
+            }
+        }
+    });
+    m.def("ForAgentHealthTeam",[](std::function<void(Demo::Agent&, Demo::Health&, Demo::Team&)> &callback)
+    {
+        Game::FilterCreateInfo info;
+        info.inclusive[0] = Game::GetPropertyId("Agent");
+        info.access[0]    = Game::AccessMode::READ;
+        info.inclusive[1] = Game::GetPropertyId("Health");
+        info.access[1]    = Game::AccessMode::READ;
+        info.inclusive[2] = Game::GetPropertyId("Team");
+        info.access[2]    = Game::AccessMode::READ;
+        info.numInclusive = 3;
+
+        Game::Filter filter = Game::CreateFilter(info);
+
+        Game::Dataset data = Game::Query(filter);
+        for (int v = 0; v < data.numViews; v++)
+        {
+            Game::Dataset::CategoryTableView const& view = data.views[v];
+            Demo::Agent* const agents = (Demo::Agent*)view.buffers[0];
+            Demo::Health* const healths = (Demo::Health*)view.buffers[1];
+            Demo::Team* const teams = (Demo::Team*)view.buffers[2];
+
+            for (IndexT i = 0; i < view.numInstances; ++i)
+            {
+                callback(agents[i], healths[i], teams[i]);
+            }
+        }
+    });
+    m.def("ForBuildingHealthTeam",[](std::function<void(Demo::Building&, Demo::Health&, Demo::Team&)> &callback)
+    {
+        Game::FilterCreateInfo info;
+        info.inclusive[0] = Game::GetPropertyId("Building");
+        info.access[0]    = Game::AccessMode::READ;
+        info.inclusive[1] = Game::GetPropertyId("Health");
+        info.access[1]    = Game::AccessMode::READ;
+        info.inclusive[2] = Game::GetPropertyId("Team");
+        info.access[2]    = Game::AccessMode::READ;
+        info.numInclusive = 3;
+
+        Game::Filter filter = Game::CreateFilter(info);
+
+        Game::Dataset data = Game::Query(filter);
+        for (int v = 0; v < data.numViews; v++)
+        {
+            Game::Dataset::CategoryTableView const& view = data.views[v];
+            Demo::Building* const buildings = (Demo::Building*)view.buffers[0];
+            Demo::Health* const healths = (Demo::Health*)view.buffers[1];
+            Demo::Team* const teams = (Demo::Team*)view.buffers[2];
+
+            for (IndexT i = 0; i < view.numInstances; ++i)
+            {
+                callback(buildings[i], healths[i], teams[i]);
+            }
+        }
+    });
 
     m.def("HelloSayer", [](){IO::Console::Instance()->Print("I am saying HELLO!!!");}, "Says hello.");
     m.def("SpawnCube", [](Math::point& p){
@@ -212,6 +368,14 @@ PYBIND11_EMBEDDED_MODULE(demo, m)
                 else
                     return false;
             });
+    m.def("IsYDown", []()
+            {
+                auto& io = ImGui::GetIO();
+                if (!io.WantCaptureMouse)
+                    return io.KeysDown[Input::Key::Y];
+                else
+                    return false;
+            });
 
     m.def("DrawDot", [](Math::point& p, float size, Math::vec4& color)
             {
@@ -262,10 +426,14 @@ PYBIND11_EMBEDDED_MODULE(navMesh, m)
             auto vertex = Demo::NavMesh::getCenter(num);
             return Math::point(vertex);
         });
+    m.def("getCenterOfFace", [](int num)
+        {
+            auto vertex = Demo::NavMesh::getCenterOfFace(num);
+            return Math::point(vertex);
+        });
+    m.def("isInTriangle", &Demo::NavMesh::isInTriangle);
+    m.def("isInFace", &Demo::NavMesh::isInFace);
+    m.def("isOnNavMesh", &Demo::NavMesh::isOnNavMesh);
+    m.def("findInNavMesh", &Demo::NavMesh::findInNavMesh);
 }
-
-PYBIND11_EMBEDDED_MODULE(buildings, m) {
-
-}
-
 }

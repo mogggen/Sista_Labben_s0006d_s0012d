@@ -7,7 +7,11 @@ files:
     - bootstrap.py
     - main.py
     - button_input.py
-    - Grupp1/main.py
-    - Grupp2/main.py
     - statParser.py
     - fog_of_war.py
+    - buildings.py
+    - resourcemanger.py
+    - Grupp1/main.py
+    - Grupp1/pathFinder.py
+    - Grupp1/path_manager.py
+    - Grupp2/main.py

@@ -1,0 +1,15 @@
+{
+  "blueprint": "RedBuildingEntity",
+  "properties": {
+    "ModelResource": "mdl:team_buildings/red_Upgrade_Siege.n3",
+    "Building": {
+      "type": "SMELTERY"
+    },
+    "Health": {
+      "hp": 0
+    },
+    "Team": {
+      "team": "GRUPP_1"
+    }
+  }
+}
