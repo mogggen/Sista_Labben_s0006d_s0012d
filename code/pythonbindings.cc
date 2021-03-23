@@ -70,7 +70,7 @@ PYBIND11_EMBEDDED_MODULE(demo, m)
         .defPropertyAccessor(Demo::Agent,             Agent)
         .defPropertyAccessor(Demo::Health,            Health)
         .defPropertyAccessor(Demo::Team,              Team)
-        .defPropertyAccessor(Demo::Building,          Building
+        .defPropertyAccessor(Demo::Building,          Building)
         .defPropertyAccessor(Demo::Tree,              Tree)
         .defPropertyAccessor(Demo::Iron,              Iron)
         .defPropertyAccessor(GraphicsFeature::Camera, Camera)
