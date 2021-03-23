@@ -62,16 +62,17 @@ namespace py = pybind11;
 PYBIND11_EMBEDDED_MODULE(demo, m)
 {
     py::class_<Game::Entity>(m, "Entity")
-        .defPropertyAccessor(Math::mat4,            WorldTransform)
-        .defPropertyAccessor(Demo::PlayerInput,     PlayerInput)
-        .defPropertyAccessor(Demo::TopdownCamera,   TopdownCamera)
-        .defPropertyAccessor(Demo::Movement,        Movement)
-        .defPropertyAccessor(Demo::Marker,          Marker)
-        .defPropertyAccessor(Demo::Agent,           Agent)
-        .defPropertyAccessor(Demo::Health,           Health)
-        .defPropertyAccessor(Demo::Team,           Team)
-        .defPropertyAccessor(Demo::Tree,           Tree)
-        .defPropertyAccessor(Demo::Iron,            Iron)
+        .defPropertyAccessor(Math::mat4,              WorldTransform)
+        .defPropertyAccessor(Demo::PlayerInput,       PlayerInput)
+        .defPropertyAccessor(Demo::TopdownCamera,     TopdownCamera)
+        .defPropertyAccessor(Demo::Movement,          Movement)
+        .defPropertyAccessor(Demo::Marker,            Marker)
+        .defPropertyAccessor(Demo::Agent,             Agent)
+        .defPropertyAccessor(Demo::Health,            Health)
+        .defPropertyAccessor(Demo::Team,              Team)
+        .defPropertyAccessor(Demo::Building,          Building
+        .defPropertyAccessor(Demo::Tree,              Tree)
+        .defPropertyAccessor(Demo::Iron,              Iron)
         .defPropertyAccessor(GraphicsFeature::Camera, Camera)
         .def(py::self == py::self);
 
@@ -136,6 +137,19 @@ PYBIND11_EMBEDDED_MODULE(demo, m)
         .value("SMITH", Demo::SMITH)
         .value("SMELTER", Demo::SMELTER)
         .value("BUILDER", Demo::BUILDER)
+        .export_values();
+
+    py::class_<Demo::Building>(m, "Building")
+        .defReadWriteVec3(Demo::Building, position)
+        .defReadWrite(Demo::Building, hasWorker)
+        .defReadWrite(Demo::Building, type);
+
+    py::enum_<Demo::buildingType>(m, "buildingType")
+        .value("KILN", Demo::KILN)
+        .value("SMELTERY", Demo::SMELTERY)
+        .value("BLACKSMITH", Demo::BLACKSMITH)
+        .value("TRAININGCAMP", Demo::TRAININGCAMP)
+        .value("CASTLE", Demo::CASTLE)
         .export_values();
 
     py::class_<Demo::Health>(m, "Health")
@@ -407,9 +421,4 @@ PYBIND11_EMBEDDED_MODULE(navMesh, m)
     m.def("isInTriangle", &Demo::NavMesh::isInTriangle);
     m.def("isOnNavMesh", &Demo::NavMesh::isOnNavMesh);
 }
-
-PYBIND11_EMBEDDED_MODULE(buildings, m) {
-
-}
-
 }
