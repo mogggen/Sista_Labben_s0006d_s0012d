@@ -1,5 +1,3 @@
-from Grupp1 import main as Grupp1main
-from Grupp2 import main as Grupp2main
 import button_input
 import statParser
 import fog_of_war
@@ -21,6 +19,9 @@ paused = False
 
 statParser.loadStats()
 fog_of_war.init(350,350)
+
+from Grupp1 import main as Grupp1main
+from Grupp2 import main as Grupp2main
 
 # Runs once every frame
 def NebulaUpdate():
@@ -64,8 +65,8 @@ def NebulaUpdate():
     if paused:
         return
 
-    #Grupp1main.NebulaUpdate()
-    #Grupp2main.NebulaUpdate()
+    Grupp1main.NebulaUpdate()
+    Grupp2main.NebulaUpdate()
 
     fog_of_war.visual.apply_cloud_changes()
     

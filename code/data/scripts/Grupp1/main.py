@@ -1,3 +1,7 @@
+import buildings
+
+buildings.initBlueCastle()
+
 def NebulaUpdate():
     print("grupp1")
 
