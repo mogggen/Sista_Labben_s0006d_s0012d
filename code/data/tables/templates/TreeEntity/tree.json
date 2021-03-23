@@ -1,0 +1,6 @@
+{
+    "blueprint": "TreeEntity",
+  "properties": {
+    "ModelResource": "mdl:dev/tree.n3"
+  }
+}

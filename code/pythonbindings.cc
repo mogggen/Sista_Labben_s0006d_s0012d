@@ -22,6 +22,8 @@
 #include "properties/health.h"
 #include "properties/team.h"
 #include "properties/building.h"
+#include "properties/tree.h"
+#include "properties/iron.h"
 #include "imgui.h"
 #include "dynui/im3d/im3dcontext.h"
 #include "input/keyboard.h"
@@ -68,6 +70,8 @@ PYBIND11_EMBEDDED_MODULE(demo, m)
         .defPropertyAccessor(Demo::Agent,           Agent)
         .defPropertyAccessor(Demo::Health,           Health)
         .defPropertyAccessor(Demo::Team,           Team)
+        .defPropertyAccessor(Demo::Tree,           Tree)
+        .defPropertyAccessor(Demo::Iron,            Iron)
         .defPropertyAccessor(GraphicsFeature::Camera, Camera)
         .def(py::self == py::self);
 
@@ -117,6 +121,12 @@ PYBIND11_EMBEDDED_MODULE(demo, m)
         .defReadWriteVec3(Demo::Agent, position)
         .defReadWriteVec3(Demo::Agent, targetPosition)
         .defReadWrite(Demo::Agent, type);
+
+    py::class_<Demo::Tree>(m, "Tree")
+        .defReadWriteVec3(Demo::Tree, position);
+
+    py::class_<Demo::Iron>(m, "Iron")
+        .defReadWriteVec3(Demo::Iron, position);
 
     py::enum_<Demo::agentType>(m, "agentType")
         .value("WORKER", Demo::WORKER)

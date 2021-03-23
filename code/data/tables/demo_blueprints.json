@@ -59,6 +59,22 @@
                 "Health",
                 "Team"
             ]
+        },
+        "TreeEntity": {
+            "desc": "A Tree",
+            "properties": [
+                "WorldTransform",
+                "ModelResource",
+                "Tree"
+            ]
+        },
+        "IronEntity": {
+            "desc": "A Tree",
+            "properties": [
+                "WorldTransform",
+                "ModelResource",
+                "Iron"
+            ]
         }
     }
 }
