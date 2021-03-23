@@ -9,6 +9,7 @@ files:
     - button_input.py
     - statParser.py
     - fog_of_war.py
+    - buildings.py
     - resourcemanger.py
     - Grupp1/main.py
     - Grupp1/pathFinder.py

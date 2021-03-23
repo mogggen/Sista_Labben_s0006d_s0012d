@@ -22,6 +22,8 @@
 #include "properties/health.h"
 #include "properties/team.h"
 #include "properties/building.h"
+#include "properties/tree.h"
+#include "properties/iron.h"
 #include "imgui.h"
 #include "dynui/im3d/im3dcontext.h"
 #include "input/keyboard.h"
@@ -60,14 +62,17 @@ namespace py = pybind11;
 PYBIND11_EMBEDDED_MODULE(demo, m)
 {
     py::class_<Game::Entity>(m, "Entity")
-        .defPropertyAccessor(Math::mat4,            WorldTransform)
-        .defPropertyAccessor(Demo::PlayerInput,     PlayerInput)
-        .defPropertyAccessor(Demo::TopdownCamera,   TopdownCamera)
-        .defPropertyAccessor(Demo::Movement,        Movement)
-        .defPropertyAccessor(Demo::Marker,          Marker)
-        .defPropertyAccessor(Demo::Agent,           Agent)
-        .defPropertyAccessor(Demo::Health,           Health)
-        .defPropertyAccessor(Demo::Team,           Team)
+        .defPropertyAccessor(Math::mat4,              WorldTransform)
+        .defPropertyAccessor(Demo::PlayerInput,       PlayerInput)
+        .defPropertyAccessor(Demo::TopdownCamera,     TopdownCamera)
+        .defPropertyAccessor(Demo::Movement,          Movement)
+        .defPropertyAccessor(Demo::Marker,            Marker)
+        .defPropertyAccessor(Demo::Agent,             Agent)
+        .defPropertyAccessor(Demo::Health,            Health)
+        .defPropertyAccessor(Demo::Team,              Team)
+        .defPropertyAccessor(Demo::Building,          Building)
+        .defPropertyAccessor(Demo::Tree,              Tree)
+        .defPropertyAccessor(Demo::Iron,              Iron)
         .defPropertyAccessor(GraphicsFeature::Camera, Camera)
         .def(py::self == py::self);
 
@@ -118,6 +123,12 @@ PYBIND11_EMBEDDED_MODULE(demo, m)
         .defReadWriteVec3(Demo::Agent, targetPosition)
         .defReadWrite(Demo::Agent, type);
 
+    py::class_<Demo::Tree>(m, "Tree")
+        .defReadWriteVec3(Demo::Tree, position);
+
+    py::class_<Demo::Iron>(m, "Iron")
+        .defReadWriteVec3(Demo::Iron, position);
+
     py::enum_<Demo::agentType>(m, "agentType")
         .value("WORKER", Demo::WORKER)
         .value("SCOUT", Demo::SCOUT)
@@ -126,6 +137,19 @@ PYBIND11_EMBEDDED_MODULE(demo, m)
         .value("SMITH", Demo::SMITH)
         .value("SMELTER", Demo::SMELTER)
         .value("BUILDER", Demo::BUILDER)
+        .export_values();
+
+    py::class_<Demo::Building>(m, "Building")
+        .defReadWriteVec3(Demo::Building, position)
+        .defReadWrite(Demo::Building, hasWorker)
+        .defReadWrite(Demo::Building, type);
+
+    py::enum_<Demo::buildingType>(m, "buildingType")
+        .value("KILN", Demo::KILN)
+        .value("SMELTERY", Demo::SMELTERY)
+        .value("BLACKSMITH", Demo::BLACKSMITH)
+        .value("TRAININGCAMP", Demo::TRAININGCAMP)
+        .value("CASTLE", Demo::CASTLE)
         .export_values();
 
     py::class_<Demo::Health>(m, "Health")
@@ -412,9 +436,4 @@ PYBIND11_EMBEDDED_MODULE(navMesh, m)
     m.def("isOnNavMesh", &Demo::NavMesh::isOnNavMesh);
     m.def("findInNavMesh", &Demo::NavMesh::findInNavMesh);
 }
-
-PYBIND11_EMBEDDED_MODULE(buildings, m) {
-
-}
-
 }

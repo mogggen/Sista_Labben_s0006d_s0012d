@@ -1,0 +1,6 @@
+{
+    "blueprint": "IronEntity",
+  "properties": {
+    "ModelResource": "mdl:dev/knob_metallic.n3"
+  }
+}

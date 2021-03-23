@@ -1,3 +1,7 @@
+import buildings
+
+buildings.initRedCastle()
+
 def NebulaUpdate():
     print("grupp2")
 

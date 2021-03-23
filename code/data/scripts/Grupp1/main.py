@@ -6,6 +6,9 @@ import button_input
 y_button = button_input.ButtonInput(demo.IsYDown)
 
 path = path_manager.instance.create_path(nmath.Float2(0,0), nmath.Float2(10,100), lambda : print("Done"))
+import buildings
+
+buildings.initBlueCastle()
 
 def NebulaUpdate():
     if not path.is_done:
