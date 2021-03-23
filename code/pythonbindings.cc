@@ -344,6 +344,14 @@ PYBIND11_EMBEDDED_MODULE(demo, m)
                 else
                     return false;
             });
+    m.def("IsYDown", []()
+            {
+                auto& io = ImGui::GetIO();
+                if (!io.WantCaptureMouse)
+                    return io.KeysDown[Input::Key::Y];
+                else
+                    return false;
+            });
 
     m.def("DrawDot", [](Math::point& p, float size, Math::vec4& color)
             {
@@ -394,8 +402,15 @@ PYBIND11_EMBEDDED_MODULE(navMesh, m)
             auto vertex = Demo::NavMesh::getCenter(num);
             return Math::point(vertex);
         });
+    m.def("getCenterOfFace", [](int num)
+        {
+            auto vertex = Demo::NavMesh::getCenterOfFace(num);
+            return Math::point(vertex);
+        });
     m.def("isInTriangle", &Demo::NavMesh::isInTriangle);
+    m.def("isInFace", &Demo::NavMesh::isInFace);
     m.def("isOnNavMesh", &Demo::NavMesh::isOnNavMesh);
+    m.def("findInNavMesh", &Demo::NavMesh::findInNavMesh);
 }
 
 PYBIND11_EMBEDDED_MODULE(buildings, m) {
