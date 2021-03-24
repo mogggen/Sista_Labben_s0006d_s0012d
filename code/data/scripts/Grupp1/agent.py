@@ -8,12 +8,15 @@ class Agent:
         a.position = nmath.Point(pos.x, 0, pos.y)
         a.targetPosition = nmath.Point(pos.x, 0, pos.y)
         self.entity.Agent = a
+        
+        self.inventory = 0
 
         h = self.entity.Health
         h.hp = int(statParser.getStat("workerHealth"))
         self.entity.Health = h
 
         self.goals = []
+
 
 
     def update(self):
@@ -41,6 +44,10 @@ class Agent:
             self.goals[-1].pause(self)
         self.goals += goals
         self.goals[-1].enter(self)
+
+
+    def popGoal(self):
+        self.goals.pop()
 
 
     def getPos(self):

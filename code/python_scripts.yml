@@ -11,10 +11,18 @@ files:
     - fog_of_war.py
     - buildings.py
     - resourcedistributor.py
+    - msgManager.py
     - Grupp1/main.py
     - Grupp1/pathFinder.py
     - Grupp1/path_manager.py
     - Grupp1/entity_manager.py
+    - Grupp1/item_manager.py
     - Grupp1/agent.py
     - Grupp1/goals.py
     - Grupp2/main.py
+    - Grupp2/agent.py
+    - Grupp2/buildings.py
+    - Grupp2/fsm.py
+    - Grupp2/hud.py
+    - Grupp2/overlord.py
+    - Grupp2/pathfinder.py

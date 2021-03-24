@@ -1,12 +1,15 @@
-import buildings, pathfinder, nmath, overlord
+import nmath
+import buildings as cbuildings
+from Grupp2 import buildings, pathfinder, overlord
+cbuildings.initRedCastle()
+#pathfinder.pf.AStar(nmath.Point(0,0,0), nmath.Point(0,0,-40))
 
-buildings.initRedCastle()
-pathfinder.pf.AStar(nmath.Point(0,0,0), nmath.Point(50,0,0))
 def NebulaUpdate():
     pass
 
 def NebulaDraw(p):
-    pathfinder.pf.DrawAStar()
+    #pathfinder.pf.DrawAStar()
+    pass
 
 def HandleMessage(msg):
     for n in overlord.agents:

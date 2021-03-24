@@ -1,5 +1,6 @@
 import Grupp1.path_manager as path_manager
 import Grupp1.entity_manager as entity_manager
+import Grupp1.item_manager as item_manager
 import Grupp1.agent as agent
 import Grupp1.goals as goals
 
@@ -11,11 +12,12 @@ left_mouse   = button_input.ButtonInput(demo.IsLeftMouseDown)
 right_mouse = button_input.ButtonInput(demo.IsRightMouseDown)
 
 castle = buildings.initBlueCastle()
+entity_manager.instance.castle = castle
 
-p = castle.Building.position
-a = agent.Agent(nmath.Float2(p.x,p.z));
-
-entity_manager.instance.workers[a.entity] = a
+p = entity_manager.instance.getCastlePos()
+for _ in range(10):
+    a = agent.Agent(p);
+    entity_manager.instance.workers[a.entity] = a
 
 def NebulaUpdate():
 
@@ -35,6 +37,7 @@ def NebulaDraw(p):
             a.addGoal(goals.WalkToGoal(p.x,p.z))
 
     entity_manager.instance.dbgDraw()
+    item_manager.instance.drawGui()
 
 
 def HandleMessage(msg):

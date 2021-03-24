@@ -1,5 +1,5 @@
-import overlord, buildings
-import demo, statParser
+import demo, statParser, buildings
+from Grupp2 import overlord
 
 class Building:
     def __init__(self, type, builder ):
