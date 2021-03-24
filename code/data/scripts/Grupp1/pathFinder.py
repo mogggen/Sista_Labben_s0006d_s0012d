@@ -50,12 +50,13 @@ class AStar:
 
             print("start face idx", current_node.face)
 
-            while current_node.parent_idx > 0:
-                print(current_node)
+            print(current_node)
+            while current_node.parent_idx >= 0:
                 face = current_node.face
                 print("adding: ", face)
                 path.reverse_points.append(face)
                 current_node = self.nodes.get(current_node.parent_idx, None)
+                print(current_node)
 
             return True
 

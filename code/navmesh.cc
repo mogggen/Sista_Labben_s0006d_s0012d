@@ -27,6 +27,7 @@
 #include "coregraphics/legacy/nvx2streamreader.h"
 #include "coregraphics/gpubuffertypes.h"
 #include "core/debug.h"
+#include "math/vec2.h"
 
 namespace Demo
 {
@@ -156,13 +157,13 @@ Math::vec3 NavMesh::getCenterOfFace(int face)
     return (pointA + pointB + pointC) * .3333333433F;
 }
 
+
 //source:https://stackoverflow.com/questions/2049582/how-to-determine-if-a-point-is-in-a-2d-triangle
 
 // a and b make up the line and p is the point to check
 float sign(Math::vec2 p, Math::vec2 a, Math::vec2 b)
 {
-    //return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
-    return (b.x - a.x)*(p.y - a.y) - (b.y - a.y)*(p.x - a.x);
+    return (p.x - b.x) * (a.y - b.y) - (a.x - b.x) * (p.y - b.y);
 }
 
 bool NavMesh::isInTriangle(Math::vec2 p, int face)
@@ -273,8 +274,6 @@ void NavMesh::DbgDraw()
         Math::vec3 vector = getCenter(i);
         Im3d::Im3dContext::DrawPoint(Math::vec3(vector), 10, Math::vec4(0, 0, 0, 1));
     }
-    
-
     
 
     /*for (int i = 0; i < nvx2Reader->GetNumIndices(); i += 3) {

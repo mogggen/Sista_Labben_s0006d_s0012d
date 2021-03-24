@@ -48,7 +48,7 @@ def NebulaUpdate():
     if left_mouse.pressed():
         p = demo.RayCastMousePos()
         
-        print(navMesh.findInNavMesh(nmath.Float2(p.x,p.y)))
+        print(navMesh.isOnNavMesh(nmath.Float2(p.x,p.z)))
 
 
         p.x = round(p.x)
@@ -81,14 +81,15 @@ def NebulaDraw():
     #Grupp2main.NebulaDraw()
 
     p = demo.RayCastMousePos()
-    p.x = round(p.x)
-    p.y += 0.5
-    p.z = round(p.z)
-    demo.DrawBox(p, 1, nmath.Vec4(0,1,1,1))
-
+    
     imgui.Begin("Cursor", None, 0)
     imgui.Text("X: " + str(p.x))
     imgui.Text("Z: " + str(p.z))
     imgui.End()
+
+    p.x = round(p.x)
+    p.y += 0.5
+    p.z = round(p.z)
+    demo.DrawBox(p, 1, nmath.Vec4(0,1,1,1))
 
 
