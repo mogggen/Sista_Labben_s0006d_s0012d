@@ -5,5 +5,8 @@ buildings.initRedCastle()
 def NebulaUpdate():
     pass
 
-def NebulaDraw():
+def NebulaUiUpdate():
+    pass
+
+def NebulaDraw(p):
     pass

@@ -17,13 +17,14 @@ a = agent.Agent(nmath.Float2(0,0));
 def NebulaUpdate():
     global path
 
-    if left_mouse.pressed():
-        p = demo.RayCastMousePos()
-        a.addGoal(goals.WalkToGoal(p.x,p.z))
-
     path_manager.instance.calc_paths(10)
 
     a.update()
 
-def NebulaDraw():
+def NebulaDraw(p):
+
+    if left_mouse.pressed():
+        p = demo.RayCastMousePos()
+        a.addGoal(goals.WalkToGoal(p.x,p.z))
+
     a.dbgDraw()
