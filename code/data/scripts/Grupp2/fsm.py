@@ -4,54 +4,45 @@ from Grupp2 import pathfinder, buildings, overlord
 class IdleState:
     def Execute(self, agent):
         agent.FindTask()
-        return
 
-#DANGER, BROKEN
 class MoveState:
-    currentGoal = 0
-    dirX = 0
-    dirY = 0
     def Execute(self, agent):
-        if(self.currentGoal == 0):
-            self.currentGoal = agent.path.pop()
-            agent.pathBack.append(self.currentGoal)
-            self.dirX = self.currentGoal.id % 100 - agent.GetTouchingBlock().id % 100
-            self.dirY = int(self.currentGoal.id / 100) - int(agent.GetTouchingBlock().id / 100)
-        if((self.currentGoal.id%100) * 10 + 5 == int(agent.posX) and int(self.currentGoal.id/100) * 10 + 5 == int(agent.posY)):
-            if agent.path != []:
-                self.currentGoal = agent.path.pop()
-                agent.pathBack.append(self.currentGoal)
-            else:
-                if(agent.goal == enums.GoalEnum.WOOD_GOAL):
-                    if agent.holding == enums.ItemEnum.NONE:
-                        agent.ChangeState(WoodChoppingState())
-                        return
-                    else:
-                        agent.DropItem()
-                        agent.FindWood()
-                        return
-                agent.ChangeState(IdleState())
-                return
-            self.dirX = self.currentGoal.id%100 - agent.GetTouchingBlock().id%100
-            self.dirY = int(self.currentGoal.id/100) - int(agent.GetTouchingBlock().id/100)
-        agent.Move(self.currentGoal.ms, self.dirX, self.dirY)
+        #neighbourCenter = navMesh.getCenter(agent.face)
+
+        #get this
+        current_face = agent.current_face # pos
+        pathToGoal = Agent.goalPath
+        pathToCastle = agent.CasltePath # go to Castle with Resouce
+
+        overlord.resource += 1
+        resource_pos = x, z
+
+        #set this
+        whatResource = "iron"
+        whatResource = "tree"
+        hasResource = True # if have res: go home
+        overlord.RemoveTree(1);
+        #remove_from_avalible_resources ??
+        
+        if not agent.Holding: Agent.carrying = whatResource
+            pathToGoal = agent.pathToGoal
+            if not resource.Found
+                #find new resource
+            #move toward resource
+            #get resource
+            #carry resource
+            #get path back to Castle
 
 class WoodChoppingState:
     def Execute(self, agent):
         if agent.GetTouchingBlock().hasTrees:
             if agent.workTimer <= 0:
-                #print("chopped tree")
                 agent.workTimer = 30 * demo.GetFrameTime()
                 agent.GetTouchingBlock().RemoveTree()
                 agent.PickUpItem()
                 agent.SetReturnPath()
-            else:
                 agent.workTimer -= 1 * demo.GetFrameTime()
-                # if agent.woodChopTimer%5 == 0:
-                #     print(agent.woodChopTimer)
-        else:
-            #print("This tile has no trees!!!")
-            if(agent.goal == enums.GoalEnum.WOOD_GOAL):
+            if agent.goal == enums.GoalEnum.WOOD_GOAL:
                 agent.FindWood()
                 agent.ChangeState(MoveState())
 
