@@ -74,7 +74,7 @@ def NebulaUpdate():
 # Runs one every frame when it's time to draw
 def NebulaDraw():
     Grupp1main.NebulaDraw()
-    #Grupp2main.NebulaDraw()
+    Grupp2main.NebulaDraw()
 
     p = demo.RayCastMousePos()
     p.x = round(p.x)

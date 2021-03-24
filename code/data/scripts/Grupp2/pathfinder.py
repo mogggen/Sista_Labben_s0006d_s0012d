@@ -1,117 +1,106 @@
 import hud as gui
-import time, math, random, navmesh
+import time, math, random, navmesh, demo, nmath
 
 
 class PathFinder:
-    goalFound = False
-    visited = []
-    path = []
-    backtrack = {}
 
-    # Resets all values so the next run wont be affected by the previous one
-    def Reset(self):
-        self.visited = []
-        self.path = []
-        self.backtrack = {}
-        self.goalFound = False
+    def AStar(self, agentPosition, goalPosition):
+        print("hello")
+        goalFound = False
+        visited = []
+        global path
+        path = []
+        backtrack = {}
+        ghfValues = {}  # key = face, value = (g, h, f)
 
-    def bfs(self, startBlock):
-        self.backtrack[startBlock.id] = 0
-        self.visited.append(startBlock)
-        bfsQ = []
-        bfsQ.append(startBlock)
-        while bfsQ:
-            s = bfsQ.pop(0)
-            for neighbour in s.adjacents:
-                neighbourBlock = paths.GetBlockByID(neighbour)
-                if neighbourBlock not in self.visited and neighbourBlock.isFogged is False:
-                    self.visited.append(neighbourBlock)
-                    bfsQ.append(neighbourBlock)
-                    self.backtrack[neighbourBlock.id] = s.id
-                    # neighbourBlock.prevBlockID = s.id
-                    if (neighbourBlock.hasTrees):
-                        self.path.append(neighbourBlock)
-                        prevID = self.backtrack.get(neighbourBlock.id)
-                        #prevID = neighbourBlock.prevBlockID
-                        while (prevID != 0):
-                            prevBlock = paths.GetBlockByID(prevID)
-                            self.path.append(prevBlock)
-                            prevID = self.backtrack.get(prevBlock.id)
-                            #prevID = prevBlock.prevBlockID
-                        return self.path
-            # gui.Clear()
-            # gui.DrawVisited(self.visited)
-            # gui.Update()
-            # time.sleep(0.01)
+        startFace = navmesh.findInNavMesh((agentPosition.x, agentPosition.z))
+        ghfValues[startFace] = (0, 0, 0)
+        goalFace = navmesh.findInNavMesh((goalPosition.x, goalPosition.z))
 
-    def AStar(self, startBlock, goalBlock):
-        self.backtrack[startBlock.id] = 0
+        backtrack[startFace] = 0
         openList = []
         closedList = []
-        openList.append(startBlock)
+        openList.append(startFace)
 
         while openList:
             q = openList[0]
             # find best block by f value
             for i in range(len(openList)):
-                if (q.f > openList[i].f):
+                if ghfValues.get(q)[2] > ghfValues.get(openList[i])[2]:
                     q = openList[i]
             openList.remove(q)
-            # go through all successors
-            for neighbourID in q.adjacents:
-                skip = False
-                neighbourBlock = paths.GetBlockByID(neighbourID)
 
-                if (neighbourBlock == goalBlock):
-                    self.path.append(neighbourBlock)
-                    prevID = self.backtrack.get(q.id)
-                    #prevID = q.prevBlockID
-                    while (prevID != 0):
-                        prevBlock = paths.GetBlockByID(prevID)
-                        self.path.append(prevBlock)
-                        prevID = self.backtrack.get(prevBlock.id)
-                        #prevID = prevBlock.prevBlockID
-                    return self.path
-                if (neighbourBlock.id % 100 != q.id % 100 and neighbourBlock.id / 100 != q.id / 100):
-                    #neighbourBlock.g = 1.4
-                    # Byt till denna undre rad för fullständig A*
-                    neighbourBlock.g = q.g + 1.4
-                    # add support for different ms on tiles
-                else:
-                    #neighbourBlock.g = 1
-                    # Byt till denna undre rad för fullständig A*
-                    neighbourBlock.g = q.g + 1
-                neighbourBlock.h = self.Euclidean(neighbourID, goalBlock)
-                neighbourBlock.f = neighbourBlock.g + neighbourBlock.h
+            # go through all successors
+            neighbouringFaces = self.GetNeighbouringFaces(q)
+            for neighbourFace in neighbouringFaces:
+                skip = False
+                #neighbourBlock = paths.GetBlockByID(neighbourID)
+
+                if (neighbourFace == goalFace):
+                    path.append(navmesh.getCenterOfFace(neighbourFace))
+                    prevFace = backtrack.get(q)
+                    while (prevFace != 0):
+                        #prevBlock = paths.GetBlockByID(prevID)
+                        path.append(navmesh.getCenterOfFace(prevFace))
+                        prevFace = backtrack.get(prevFace)
+                    return path
+
+                g = ghfValues.get(q) + 1 # g value addition should not be one but instead distance from this and previous center
+                h = self.Euclidean(neighbourFace, goalFace)
+                f = g + h
+                ghf = [(g, h, f)]
+                ghfValues[neighbourFace] = ghf
+
                 for i in openList:
-                    if (i.id == neighbourBlock.id and neighbourBlock.f >= i.f):
+                    if (i == neighbourFace and ghfValues.get(neighbourFace)[2] >= ghfValues.get(i)[2]):
                         skip = True
                 for i in closedList:
-                    if (i.id == neighbourBlock.id and neighbourBlock.f >= i.f):
+                    if (i == neighbourFace and ghfValues.get(neighbourFace)[2] >= ghfValues.get(i)[2]):
                         skip = True
-                if neighbourBlock.isFogged:
-                    skip = True
                 if skip is False:
                     # set q as parent to all neighbour blocks
-                    self.backtrack[neighbourBlock.id] = q.id
-                    #neighbourBlock.prevBlockID = q.id
-                    openList.append(neighbourBlock)
+                    backtrack[neighbourFace] = q
+                    openList.append(neighbourFace)
             closedList.append(q)
             # gui.Clear()
             # gui.DrawAStar(openList, closedList)
             # gui.Update()
             # time.sleep(0.01)
 
-    def Euclidean(self, currentID, goal):
-        xCur = currentID % 100
-        yCur = currentID / 100
-        # Converting ID to coordinates
-        xGoal = goal.id % 100
-        yGoal = goal.id / 100
+    def Euclidean(self, currentFace, goalFace):
+        # Getting Vector 3
+        cPos = navmesh.getCenterOfFace(currentFace)
+        gPos = navmesh.getCenterOfFace(goalFace)
+        # Extracting just x and z
+        xCur = cPos.x
+        zCur = cPos.z
+        xGoal = gPos.x
+        zGoal = gPos.z
 
-        h = math.sqrt((xCur - xGoal) ** 2 + (yCur - yGoal) ** 2)
+        h = math.sqrt((xCur - xGoal) ** 2 + (zCur - zGoal) ** 2)
         return h
 
+    def GetNeighbouringFaces(self, face):
+        neighbouringFaces = []
+        h1 = navmesh.getHalfEdge(face)
+        h2 = navmesh.getHalfEdge(h1.nextEdge)
+        h3 = navmesh.getHalfEdge(h2.nextEdge)
+        n1 = navmesh.getHalfEdge(h1.neighbourEdge)
+        n2 = navmesh.getHalfEdge(h2.neighbourEdge)
+        n3 = navmesh.getHalfEdge(h3.neighbourEdge)
+        f1 = navmesh.getFace(n1.face)
+        f2 = navmesh.getFace(n2.face)
+        f3 = navmesh.getFace(n3.face)
+        neighbouringFaces.append(f1)
+        neighbouringFaces.append(f2)
+        neighbouringFaces.append(f3)
+        return neighbouringFaces
+
+    def DrawAStar(self):
+        for i in range(len(path)-1):
+            startPoint = nmath.Point(path[i].x, 2, path[i].z)
+            endPoint = nmath.Point(path[i+1].x, 2, path[i+1].z)
+            demo.DrawLine(startPoint, endPoint, 1, nmath.Vec4(1, 0, 0, 1))
 
 class PathBlock:
     prevBlockID = 0
