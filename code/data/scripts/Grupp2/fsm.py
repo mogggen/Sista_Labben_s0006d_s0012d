@@ -24,9 +24,9 @@ class MoveState:
         overlord.RemoveTree(1);
         #remove_from_avalible_resources ??
         
-        if not agent.Holding: Agent.carrying = whatResource
-            pathToGoal = agent.pathToGoal
-            if not resource.Found
+        #if not agent.Holding: Agent.carrying = whatResource
+            #pathToGoal = agent.pathToGoal
+            #if not resource.Found
                 #find new resource
             #move toward resource
             #get resource
