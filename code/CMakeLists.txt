@@ -51,6 +51,8 @@ fips_dir(.)
 	    health.nidl
 	    team.nidl
 	    building.nidl
+	    iron.nidl
+	    tree.nidl
         )
 
 fips_deps(foundation application render resource dynui scripting editor)

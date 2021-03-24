@@ -59,6 +59,42 @@
                 "Health",
                 "Team"
             ]
+        },
+        "RedBuildingEntity": {
+            "desc": "A red building controlled by python AI",
+            "properties": [
+              "WorldTransform",
+              "ModelResource",
+              "Building",
+              "Health",
+              "Team"
+            ]
+        },
+      "BlueBuildingEntity": {
+            "desc": "A blue building controlled by python AI",
+            "properties": [
+              "WorldTransform",
+              "ModelResource",
+              "Building",
+              "Health",
+              "Team"
+            ]
+        },
+        "TreeEntity": {
+            "desc": "A Tree",
+            "properties": [
+                "WorldTransform",
+                "ModelResource",
+                "Tree"
+            ]
+        },
+        "IronEntity": {
+            "desc": "A Tree",
+            "properties": [
+                "WorldTransform",
+                "ModelResource",
+                "Iron"
+            ]
         }
     }
 }

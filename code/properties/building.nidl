@@ -10,6 +10,7 @@
             "SMELTERY":  1,
             "BLACKSMITH": 2,
             "TRAININGCAMP": 3,
+            "CASTLE": 4
         }
     },
     "properties": {

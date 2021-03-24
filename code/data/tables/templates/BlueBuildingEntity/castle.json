@@ -1,0 +1,15 @@
+{
+  "blueprint": "BlueBuildingEntity",
+  "properties": {
+    "ModelResource": "mdl:team_buildings/blue_castle_keep.n3",
+    "Building": {
+      "type": "CASTLE"
+    },
+    "Health": {
+      "hp": 0
+    },
+    "Team": {
+      "team": "GRUPP_1"
+    }
+  }
+}

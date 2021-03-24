@@ -1,0 +1,12 @@
+{
+	"namespace": "Demo",
+	"includes": [
+        "math/vec3.h",
+        "game/entity.h"
+    ],
+    "properties": {
+        "Tree":{
+            "position"      : "vec3"
+        }
+    }
+}

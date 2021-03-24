@@ -1,0 +1,15 @@
+{
+  "blueprint": "BlueBuildingEntity",
+  "properties": {
+    "ModelResource": "mdl:team_buildings/blue_Upgrade_Melee.n3",
+    "Building": {
+      "type": "BLACKSMITH"
+    },
+    "Health": {
+      "hp": 0
+    },
+    "Team": {
+      "team": "GRUPP_1"
+    }
+  }
+}

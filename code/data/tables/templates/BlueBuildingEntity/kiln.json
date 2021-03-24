@@ -1,0 +1,15 @@
+{
+  "blueprint": "BlueBuildingEntity",
+  "properties": {
+    "ModelResource": "mdl:team_buildings/blue_Upgrade_Income.n3",
+    "Building": {
+      "type": "KILN"
+    },
+    "Health": {
+      "hp": 0
+    },
+    "Team": {
+      "team": "GRUPP_1"
+    }
+  }
+}

@@ -27,6 +27,7 @@
 #include "coregraphics/legacy/nvx2streamreader.h"
 #include "coregraphics/gpubuffertypes.h"
 #include "core/debug.h"
+#include "math/vec2.h"
 
 namespace Demo
 {
@@ -91,8 +92,14 @@ void NavMesh::Load(const char* filename)
             int l2p1 = halfEdgeArray[j].vertIdx;
             int l1p2 = halfEdgeArray[halfEdgeArray[i].nextEdge].vertIdx;
             int l2p2 = halfEdgeArray[halfEdgeArray[j].nextEdge].vertIdx;
-            if ((l1p1 == l2p1 && l1p2 == l2p2) ||
-                (l1p1 == l2p2 && l1p2 == l2p1)) {
+            
+            Math::vec3 l1v1 = verticies[l1p1];
+            Math::vec3 l2v1 = verticies[l2p1];
+            Math::vec3 l1v2 = verticies[l1p2];
+            Math::vec3 l2v2 = verticies[l2p2];
+
+            if ((Math::length(l1v1-l2v1) < 0.0001f && Math::length(l1v2-l2v2) < 0.0001f) ||
+                (Math::length(l1v1-l2v2) < 0.0001f && Math::length(l1v2-l2v1) < 0.0001f)){
                 halfEdgeArray[i].neighbourEdge = j;
                 halfEdgeArray[j].neighbourEdge = i;
                 break;
@@ -141,19 +148,28 @@ int NavMesh::getNumHalfEdge()
 {
     return (int)Singleton->halfEdgeArray.size();
 }
-Math::vec3 NavMesh::getCenter(int face)
+Math::vec3 NavMesh::getCenter(int face_idx)
 {
-    Math::vec3 pointA = Singleton->verticies[Singleton->halfEdgeArray[Singleton->faces[face]].vertIdx];
-    Math::vec3 pointB = Singleton->verticies[Singleton->halfEdgeArray[Singleton->faces[face]+1].vertIdx];
-    Math::vec3 pointC = Singleton->verticies[Singleton->halfEdgeArray[Singleton->faces[face]+2].vertIdx];
+    Math::vec3 pointA = Singleton->verticies[Singleton->halfEdgeArray[Singleton->faces[face_idx]].vertIdx];
+    Math::vec3 pointB = Singleton->verticies[Singleton->halfEdgeArray[Singleton->faces[face_idx]+1].vertIdx];
+    Math::vec3 pointC = Singleton->verticies[Singleton->halfEdgeArray[Singleton->faces[face_idx]+2].vertIdx];
+    return (pointA + pointB + pointC) * .3333333433F;
+}
+Math::vec3 NavMesh::getCenterOfFace(int face)
+{
+    Math::vec3 pointA = Singleton->verticies[Singleton->halfEdgeArray[face].vertIdx];
+    Math::vec3 pointB = Singleton->verticies[Singleton->halfEdgeArray[face+1].vertIdx];
+    Math::vec3 pointC = Singleton->verticies[Singleton->halfEdgeArray[face+2].vertIdx];
     return (pointA + pointB + pointC) * .3333333433F;
 }
 
+
 //source:https://stackoverflow.com/questions/2049582/how-to-determine-if-a-point-is-in-a-2d-triangle
 
-float sign(Math::vec2 p1, Math::vec2 p2, Math::vec2 p3)
+// a and b make up the line and p is the point to check
+float sign(Math::vec2 p, Math::vec2 a, Math::vec2 b)
 {
-    return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
+    return (p.x - b.x) * (a.y - b.y) - (a.x - b.x) * (p.y - b.y);
 }
 
 bool NavMesh::isInTriangle(Math::vec2 p, int face)
@@ -161,6 +177,30 @@ bool NavMesh::isInTriangle(Math::vec2 p, int face)
     Math::vec3 a3 = Singleton->verticies[Singleton->halfEdgeArray[Singleton->faces[face]].vertIdx];
     Math::vec3 b3 = Singleton->verticies[Singleton->halfEdgeArray[Singleton->faces[face] + 1].vertIdx];
     Math::vec3 c3 = Singleton->verticies[Singleton->halfEdgeArray[Singleton->faces[face] + 2].vertIdx];
+
+    Math::vec2 a = Math::vec2(a3.x, a3.z);
+    Math::vec2 b = Math::vec2(b3.x, b3.z);
+    Math::vec2 c = Math::vec2(c3.x, c3.z);
+
+    float d1, d2, d3;
+    bool has_neg, has_pos;
+
+    d1 = sign(p, a, b);
+    d2 = sign(p, b, c);
+    d3 = sign(p, c, a);
+
+    has_neg = (d1 < 0) || (d2 < 0) || (d3 < 0);
+    has_pos = (d1 > 0) || (d2 > 0) || (d3 > 0);
+
+    return !(has_neg && has_pos);
+
+}
+
+bool NavMesh::isInFace(Math::vec2 p, int face)
+{
+    Math::vec3 a3 = Singleton->verticies[Singleton->halfEdgeArray[face].vertIdx];
+    Math::vec3 b3 = Singleton->verticies[Singleton->halfEdgeArray[face + 1].vertIdx];
+    Math::vec3 c3 = Singleton->verticies[Singleton->halfEdgeArray[face + 2].vertIdx];
 
     Math::vec2 a = Math::vec2(a3.x, a3.z);
     Math::vec2 b = Math::vec2(b3.x, b3.z);
@@ -192,14 +232,43 @@ bool NavMesh::isOnNavMesh(Math::vec2 p)
     return false;
 }
 
+int NavMesh::findInNavMesh(Math::vec2 p)
+{
+    for (int i = 0; i < Singleton->getNumFace(); i++)
+    {
+        if (NavMesh::isInTriangle(p, i)) 
+        {
+            n_printf("Found face idx: %d", i);
+            return Singleton->faces[i];
+        }
+    }
+
+    return -1;
+}
+
+int NavMesh::findInNavMeshIndex(Math::vec2 p)
+{
+    for (int i = 0; i < Singleton->getNumFace(); i++)
+    {
+        if (NavMesh::isInTriangle(p, i)) 
+        {
+            n_printf("Found face idx: %d", i);
+            return i;
+        }
+    }
+
+    return -1;
+}
 void NavMesh::DbgDraw()
 {
 
     //recDraw(0, 15);
 
+    Math::vec4 colors[3] = {Math::vec4(1,0,0,1), Math::vec4(0,1,0,1), Math::vec4(0,0,1,1)};
 
 
     for (int i = 0; i < faces.size(); i++) {
+        auto center = getCenter(i);
         int edgeIndex = faces[i];
         for (int j = 0; j < 3; j++) {
             int vertexA = halfEdgeArray[edgeIndex].vertIdx;
@@ -207,14 +276,23 @@ void NavMesh::DbgDraw()
             int vertexB = halfEdgeArray[edgeIndex].vertIdx;
             auto pA = verticies[vertexA] + Math::vec3(0,2,0);
             auto pB = verticies[vertexB] + Math::vec3(0,2,0);
-            Im3d::Im3dContext::DrawLine(Math::line(pA, pB), 10, Math::vec4(0.7, 0, 1, 1));
+    
+            auto diffA = pA - center;
+            auto lenA = Math::length(diffA);
+            diffA = Math::normalize(diffA) * lenA * 0.97f;
+            pA = center + diffA;
+            
+            auto diffB = pB - center;
+            auto lenB = Math::length(diffB);
+            diffB = Math::normalize(diffB) * lenB * 0.97f;
+            pB = center + diffB;
+
+            Im3d::Im3dContext::DrawLine(Math::line(pA, pB), 1, colors[j]);
 
         }
         Math::vec3 vector = getCenter(i);
-        Im3d::Im3dContext::DrawPoint(Math::vec3(vector), 10, Math::vec4(0, 0, 0, 1));
+        Im3d::Im3dContext::DrawPoint(Math::vec3(vector), 1, Math::vec4(0, 0, 0, 1));
     }
-    
-
     
 
     /*for (int i = 0; i < nvx2Reader->GetNumIndices(); i += 3) {
