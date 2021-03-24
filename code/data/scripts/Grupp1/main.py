@@ -3,3 +3,6 @@ def NebulaUpdate():
 
 def NebulaDraw():
     print("grupp1 draw")
+
+def HandleMessage(msg):
+    pass

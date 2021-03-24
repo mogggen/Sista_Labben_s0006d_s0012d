@@ -22,6 +22,7 @@ paused = False
 statParser.loadStats()
 fog_of_war.init(350,350)
 
+    
 # Runs once every frame
 def NebulaUpdate():
     global selected_time
