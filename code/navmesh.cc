@@ -92,8 +92,14 @@ void NavMesh::Load(const char* filename)
             int l2p1 = halfEdgeArray[j].vertIdx;
             int l1p2 = halfEdgeArray[halfEdgeArray[i].nextEdge].vertIdx;
             int l2p2 = halfEdgeArray[halfEdgeArray[j].nextEdge].vertIdx;
-            if ((l1p1 == l2p1 && l1p2 == l2p2) ||
-                (l1p1 == l2p2 && l1p2 == l2p1)) {
+            
+            Math::vec3 l1v1 = verticies[l1p1];
+            Math::vec3 l2v1 = verticies[l2p1];
+            Math::vec3 l1v2 = verticies[l1p2];
+            Math::vec3 l2v2 = verticies[l2p2];
+
+            if ((Math::length(l1v1-l2v1) < 0.0001f && Math::length(l1v2-l2v2) < 0.0001f) ||
+                (Math::length(l1v1-l2v2) < 0.0001f && Math::length(l1v2-l2v1) < 0.0001f)){
                 halfEdgeArray[i].neighbourEdge = j;
                 halfEdgeArray[j].neighbourEdge = i;
                 break;
@@ -240,6 +246,19 @@ int NavMesh::findInNavMesh(Math::vec2 p)
     return -1;
 }
 
+int NavMesh::findInNavMeshIndex(Math::vec2 p)
+{
+    for (int i = 0; i < Singleton->getNumFace(); i++)
+    {
+        if (NavMesh::isInTriangle(p, i)) 
+        {
+            n_printf("Found face idx: %d", i);
+            return i;
+        }
+    }
+
+    return -1;
+}
 void NavMesh::DbgDraw()
 {
 
@@ -260,19 +279,19 @@ void NavMesh::DbgDraw()
     
             auto diffA = pA - center;
             auto lenA = Math::length(diffA);
-            diffA = Math::normalize(diffA) * lenA * 0.8f;
+            diffA = Math::normalize(diffA) * lenA * 0.97f;
             pA = center + diffA;
             
             auto diffB = pB - center;
             auto lenB = Math::length(diffB);
-            diffB = Math::normalize(diffB) * lenB * 0.8f;
+            diffB = Math::normalize(diffB) * lenB * 0.97f;
             pB = center + diffB;
 
-            Im3d::Im3dContext::DrawLine(Math::line(pA, pB), 10, colors[j]);
+            Im3d::Im3dContext::DrawLine(Math::line(pA, pB), 1, colors[j]);
 
         }
         Math::vec3 vector = getCenter(i);
-        Im3d::Im3dContext::DrawPoint(Math::vec3(vector), 10, Math::vec4(0, 0, 0, 1));
+        Im3d::Im3dContext::DrawPoint(Math::vec3(vector), 1, Math::vec4(0, 0, 0, 1));
     }
     
 

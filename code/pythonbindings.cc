@@ -443,5 +443,6 @@ PYBIND11_EMBEDDED_MODULE(navMesh, m)
     m.def("isInFace", &Demo::NavMesh::isInFace);
     m.def("isOnNavMesh", &Demo::NavMesh::isOnNavMesh);
     m.def("findInNavMesh", &Demo::NavMesh::findInNavMesh);
+    m.def("findInNavMeshIndex", &Demo::NavMesh::findInNavMeshIndex);
 }
 }

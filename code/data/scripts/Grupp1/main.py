@@ -11,8 +11,8 @@ left_mouse = button_input.ButtonInput(demo.IsRightMouseDown)
 
 castle = buildings.initBlueCastle()
 
-
-a = agent.Agent(nmath.Float2(0,0));
+p = castle.Building.position
+a = agent.Agent(nmath.Float2(p.x,p.z));
 
 def NebulaUpdate():
     global path

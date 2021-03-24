@@ -1,5 +1,5 @@
 import demo, nmath
-import statParser
+import statParser, fog_of_war
 
 class Agent:
     def __init__(self, pos):
@@ -19,6 +19,14 @@ class Agent:
     def update(self):
         if len(self.goals) > 0:
             self.goals[-1].execute(self)
+
+        p = self.entity.Agent.position
+
+        radius = 4 
+        for x in range(-radius, radius+1):
+            for y in range(-radius, radius+1):
+                if (x**2 + y**2) < radius**2:
+                    fog_of_war.grupp1.uncloud(round(p.x-x),round(p.z-y))
 
 
     def addGoal(self, goal):

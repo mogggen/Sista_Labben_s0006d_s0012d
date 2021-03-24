@@ -1,5 +1,4 @@
 import Grupp1.pathFinder as pathFinder
-import numpy
 import nmath, imgui
 import time
 

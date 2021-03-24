@@ -71,11 +71,29 @@ def NebulaUpdate():
                     if (x**2 + y**2) < radius**2:
                         fog_of_war.grupp1.uncloud(round(p.x-x),round(p.z-y))
     
-        #if right_mouse.pressed():
-        #    p = demo.RayCastMousePos()
-        #    p.x = round(p.x)
-        #    p.y += 0.5
-        #    p.z = round(p.z)
+        if right_mouse.pressed():
+            p = demo.RayCastMousePos()
+            
+            face_idx = navMesh.findInNavMeshIndex(nmath.Float2(p.x, p.z))
+            face = navMesh.getFace(face_idx)
+
+            print("--- Face: ", face_idx)
+
+            print("edge: ", face)
+            he = navMesh.getHalfEdge(face)
+            print("neighbour: ", he.neighbourEdge)
+            print("vertex: ", he.vertIdx)
+            face = he.nextEdge
+            print("edge: ", face)
+            he = navMesh.getHalfEdge(face)
+            print("neighbour: ", he.neighbourEdge)
+            print("vertex: ", he.vertIdx)
+            face = he.nextEdge
+            print("edge: ", face)
+            he = navMesh.getHalfEdge(face)
+            print("neighbour: ", he.neighbourEdge)
+            print("vertex: ", he.vertIdx)
+            face = he.nextEdge
 
     if paused:
         return

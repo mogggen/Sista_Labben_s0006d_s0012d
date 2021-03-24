@@ -43,20 +43,15 @@ class AStar:
     def step(self, path):
         current_node = self.open.pop(0)
 
-        print("1")
 
         if navMesh.isInFace(path.goal_pos, current_node.face):
             path.reverve_points = []
 
-            print("start face idx", current_node.face)
 
-            print(current_node)
             while current_node.parent_idx >= 0:
                 face = current_node.face
-                print("adding: ", face)
                 path.reverse_points.append(face)
                 current_node = self.nodes.get(current_node.parent_idx, None)
-                print(current_node)
 
             return True
 
@@ -64,68 +59,48 @@ class AStar:
         current_g_value = current_node.g
         #neighbours = game_map.get_neighbours(int(current_pos.x), int(current_pos.y))
 
-        print("2")
 
         current_pos = Point2Vec4(navMesh.getCenterOfFace(current_node.face))
 
-        print("3")
         curr_halfedge_idx = current_node.face;
         for _ in range(3):
-            print("4")
             curr_halfedge = navMesh.getHalfEdge(curr_halfedge_idx)
-            print("halfedge idx ", curr_halfedge_idx)
             curr_halfedge_idx = curr_halfedge.nextEdge;
             if curr_halfedge.neighbourEdge < 0:
                 continue
 
-            print("5")
             neighbour = navMesh.getHalfEdge(curr_halfedge.neighbourEdge)
             neighbour_face = navMesh.getFace(neighbour.face)
             
-            print("6")
             neighbour_pos = Point2Vec4(navMesh.getCenterOfFace(neighbour_face))
-            print("7")
 
             neighbour_node = self.nodes.get(neighbour_face, None)
-            print("neighbour face: ", neighbour_face) 
 
-            print("8")
             if neighbour_node == None:
                 neighbour_node = Node(neighbour_face, current_node.face)
                 self.nodes[neighbour_face] = neighbour_node
-            print("9")
             
             prev_f_value = neighbour_node.f
-            print("prev_f ", neighbour_node.f)
 
             g_value = abs(nmath.Vec4.length3(neighbour_pos - current_pos))
 
             g_value += current_g_value
 
-            print("10")
 
 
             #h_value = AStar.euclidean_dist(path.goal_pos, nmath.Float2(neighbour_pos.x, neighbour_pos.z))
             h_value = abs(nmath.Vec4.length3(nmath.Vec4(path.goal_pos.x, 0, path.goal_pos.y, 0) - neighbour_pos))
             f_value = g_value + h_value
-            print("11")
 
             if prev_f_value < 0 or prev_f_value > f_value:
-                print("12")
                 neighbour_node.f = f_value
                 neighbour_node.g = g_value
                 if prev_f_value < 0:
                     self.open.append(neighbour_node)
-                    print("13")
 
-        print("14")
         self.closed.append(current_node)
-        print("15")
 
         self.open.sort(key= lambda e : e.f)
-        print("16")
-
-        print(self.open)
 
         return False
 
