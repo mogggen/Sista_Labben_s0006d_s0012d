@@ -23,8 +23,9 @@ soldierUpgradeTime:60
 artisanUpgradeTime:120
 
 #Fighting
-soldierRange:10
+soldierAttackRange:10
 soldierAttackSpeed:1
+hitChance:0.75
 
 ##Buildings##
 #Kiln
