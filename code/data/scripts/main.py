@@ -22,9 +22,6 @@ paused = False
 statParser.loadStats()
 fog_of_war.init(350,350)
 
-<<<<<<< HEAD
-    
-=======
 class SelectedGroup(enum.Enum):
     Grupp1 = 0
     Grupp2 = 1
@@ -35,7 +32,6 @@ from Grupp2 import main as Grupp2main
 
 selected_group = SelectedGroup.Ingen
 
->>>>>>> origin/main
 # Runs once every frame
 def NebulaUpdate():
     global selected_time, selected_group
