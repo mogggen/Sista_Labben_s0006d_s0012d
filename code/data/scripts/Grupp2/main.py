@@ -1,18 +1,13 @@
-import buildings
+import buildings, pathfinder, nmath
 
 buildings.initRedCastle()
-
+pathfinder.pf.AStar(nmath.Point(0,0,0), nmath.Point(50,0,0))
 def NebulaUpdate():
     pass
 
-def NebulaUiUpdate():
-    pass
-
-def NebulaDraw():
-    print("grupp2 draw")
+def NebulaDraw(p):
+    pathfinder.pf.DrawAStar()
 
 def HandleMessage(msg):
     pass
-    
-def NebulaDraw(p):
-    pass
+

@@ -107,6 +107,7 @@ def NebulaUpdate():
 
 # Runs one every frame when it's time to draw
 def NebulaDraw():
+
     p = demo.RayCastMousePos()
 
     if selected_group == SelectedGroup.Grupp1:

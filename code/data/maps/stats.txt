@@ -18,13 +18,17 @@ artisanHealth:2
 soldierHealth:4
 
 #UpgradeTime
-explorerUpgradeTime:60
+scoutUpgradeTime:60
 soldierUpgradeTime:60
-artisanUpgradeTime:120
+builderUpgradeTime:120
+kilnerUpgradeTime:120
+smelterUpgradeTime:120
+smithUpgradeTime:120
 
 #Fighting
-soldierRange:10
+soldierAttackRange:10
 soldierAttackSpeed:1
+hitChance:0.75
 
 ##Buildings##
 #Kiln
@@ -60,6 +64,7 @@ coalReturn:1
 #IronCreation
 ironOreCost:2
 ironCoalcost:3
+ironTimeCost:30
 ironReturn:1
 
 #SwordCreation

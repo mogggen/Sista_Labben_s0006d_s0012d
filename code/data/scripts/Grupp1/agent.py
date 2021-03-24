@@ -7,6 +7,7 @@ class Agent:
         a = self.entity.Agent
         a.position = nmath.Point(pos.x, 0, pos.y)
         a.targetPosition = nmath.Point(pos.x, 0, pos.y)
+        a.inventory = 0
         self.entity.Agent = a
 
         h = self.entity.Health
@@ -42,6 +43,10 @@ class Agent:
             self.goals[-1].pause(self)
         self.goals += goals
         self.goals[-1].enter(self)
+
+
+    def popGoal(self):
+        self.goals.pop()
 
 
     def getPos(self):

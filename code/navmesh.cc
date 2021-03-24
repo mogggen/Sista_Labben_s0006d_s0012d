@@ -172,11 +172,11 @@ float sign(Math::vec2 p, Math::vec2 a, Math::vec2 b)
     return (p.x - b.x) * (a.y - b.y) - (a.x - b.x) * (p.y - b.y);
 }
 
-bool NavMesh::isInTriangle(Math::vec2 p, int face)
+bool NavMesh::isInTriangle(Math::vec2 p, int faceIndex)
 {
-    Math::vec3 a3 = Singleton->verticies[Singleton->halfEdgeArray[Singleton->faces[face]].vertIdx];
-    Math::vec3 b3 = Singleton->verticies[Singleton->halfEdgeArray[Singleton->faces[face] + 1].vertIdx];
-    Math::vec3 c3 = Singleton->verticies[Singleton->halfEdgeArray[Singleton->faces[face] + 2].vertIdx];
+    Math::vec3 a3 = Singleton->verticies[Singleton->halfEdgeArray[Singleton->faces[faceIndex]].vertIdx];
+    Math::vec3 b3 = Singleton->verticies[Singleton->halfEdgeArray[Singleton->faces[faceIndex] + 1].vertIdx];
+    Math::vec3 c3 = Singleton->verticies[Singleton->halfEdgeArray[Singleton->faces[faceIndex] + 2].vertIdx];
 
     Math::vec2 a = Math::vec2(a3.x, a3.z);
     Math::vec2 b = Math::vec2(b3.x, b3.z);

@@ -2,11 +2,18 @@ import agent, fsm, pathfinder, enums, random
 
 class Overlord:
     agents = []
+    #resorses
     charcoal = 0
+    ironbar = 0
+    ironore = 0
+    sword = 0
+    tree = 0
+    #agents
     nrDisc = 0
     nrKiln = 0
     nrBuild = 0
     nrIdleKilners = 0
+    soilders = 0
 
     kilns = []
 
@@ -65,14 +72,47 @@ class Overlord:
                     self.agents[i].AddWorkPlace(self.kilns.pop())
                     print("Added workplace to agent")
                     return
+    #add resorses
+    def AddCharcoal(self, n):
+        for x in range(n):    
+            self.charcoal += 1
+    def Addironbar(self, n):
+        for x in range(n):
+            self.ironbar += 1
+    def Addironore(self, n):
+        for x in range(n):
+            self.ironore += 1
+    def Addsword(self, n):
+        for x in range(n):
+            self.sword += 1
+    def Addtree(self):
+        for x in range(n):
+            self.tree += 1
+    #take resorses
+    def Takecharcoal(self, n):
+        for x in range(n):
+            self.charcoal = self.charcoal - 1
+    def Takeironbar(self, n):
+        for x in range(n):
+            self.ironbar = self.ironbar - 1
+    def Takeironore(self,n):
+        for x in range(n):
+            self.ironore = self.ironore - 1
+    def Takeswords(self, n):
+        for x in range(n):
+            self.sword = self.sword - 1
+    def Taketree(self, n):
+        for x in range(n):
+            self.tree = self.tree - 1
 
-    def AddCharcoal(self):
-        self.charcoal += 1
-        print(self.charcoal)
+
+    def Addsoilders(self):
+        self.soilders += 1
 
     def AddKiln(self, kiln):
         self.kilns.append(kiln)
         print("Added kiln to overlord")
         self.SetKilnerToWorkplace(kiln)
+    
 
 overlord = Overlord()

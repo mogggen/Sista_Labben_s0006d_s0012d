@@ -27,12 +27,6 @@ class Agent:
     def SetHubBlock(self, hubBlock):
         self.hubBlock = hubBlock
 
-    def AddWorkPlace(self, workPlace):
-        if self.workPlace == 0:
-            self.workPlace = workPlace
-        else:
-            print(self.ID, "already has a workplace at", self.workPlace)
-
     def Upgrade(self, newType):
         if(newType == enums.AgentType.DISCOVERER):
             self.upgradeTimer = 60 * demo.GetFrameTime()
