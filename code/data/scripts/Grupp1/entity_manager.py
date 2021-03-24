@@ -37,6 +37,8 @@ class EntityManager:
 
         self.selectedEntity = None
 
+        self.castle = None
+
     def forAllManaged(self, func):
         for i in self.upgrading.keys():
             func(i)
@@ -134,7 +136,7 @@ class EntityManager:
 
 
     def getSelectedAgent(self):
-        self.findAgent(self.selectedEntity)
+        return self.findAgent(self.selectedEntity)
 
 
     def selectAgent(self, p):
@@ -158,6 +160,10 @@ class EntityManager:
 
         self.selectedEntity = best_entity
 
+
+    def getCastlePos(self):
+        p = self.castle.Building.position
+        return nmath.Float2(p.x, p.z)
 
     def dbgDraw(self):
         if self.selectedEntity:

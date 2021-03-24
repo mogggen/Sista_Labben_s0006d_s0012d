@@ -16,6 +16,7 @@ class Agent:
         self.goals = []
 
 
+
     def update(self):
         if len(self.goals) > 0:
             self.goals[-1].execute(self)
