@@ -1,4 +1,4 @@
-import demo, nmath
+import demo, nmath, imgui
 import statParser, fog_of_war
 
 class Agent:
@@ -69,3 +69,15 @@ class Agent:
     def dbgDraw(self):
         if len(self.goals) > 0:
             self.goals[-1].dbgDraw()
+
+        imgui.Begin("Agent", None, 0)
+        try:
+            members = [(attr, getattr(self,attr)) for attr in dir(self) if not callable(getattr(self,attr)) and not attr.startswith("__") and not attr == "item_map"]
+            for member, value in members:
+                imgui.Text(member + ": " + str(value))
+            
+            imgui.End()
+
+        except Exception as e:
+            imgui.End()
+            raise e

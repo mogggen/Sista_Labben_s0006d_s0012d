@@ -51,8 +51,7 @@ class WalkToGoal(Goal):
 
         if len(self.path.reverse_points) <= 0:
             if agent.getPos() == agent.getTarget():
-                #print("Framme")
-                pass
+                agent.popGoal()
             return
 
         face = self.path.reverse_points[-1]
@@ -94,8 +93,6 @@ class Follow(Goal):
             agent.setTarget(self.lead.Agent.position)
 
 
-    def dbgDraw(self):
-        self.path.algorithm.visualize(self.path)
 
 
 #--------------------------------------------------------------------#
@@ -120,14 +117,12 @@ class CutTree(Goal):
             # tree.delete()
             return
 
-        elif demo.getTime() - self.timer >= statParser.getStat("wcSpeed"):
+        elif demo.GetTime() - self.timer >= statParser.getStat("woodCuttingSpeed"):
             agent.inventory = item.wood
             agent.popGoal()
             # tree.delete()
 
 
-    def dbgDraw(self):
-        self.path.algorithm.visualize(self.path)
 
 #--------------------------------------------------------------------#
 
@@ -155,39 +150,6 @@ class PickupOre(Goal):
         # ore.delete()
 
 
-    def dbgDraw(self):
-        self.path.algorithm.visualize(self.path)
-
-#--------------------------------------------------------------------#
-
-
-class EmptyInventory(Goal):
-    def __init__(self):
-        pass
-
-
-    def enter(self, agent):
-        self.active = True
-
-
-    def paused(self):
-        self.active = False
-
-
-    def execute(self, agent):
-        if agent.inventory == item.wood:
-            item_manager.instance.logs += 1
-        elif agent.inventory == item.ore:
-            item_manager.instance.ironOre += 1
-        else:
-            print("why tho...")
-
-        agent.inventory = item.none
-        agent.popGoal()
-
-
-    def dbgDraw(self):
-        self.path.algorithm.visualize(self.path)
 
 #--------------------------------------------------------------------#
 
@@ -230,8 +192,6 @@ class Attack(Goal):
                 onCooldown = True
 
 
-    def dbgDraw(self):
-        self.path.algorithm.visualize(self.path)
 
 #--------------------------------------------------------------------#
 
@@ -304,7 +264,7 @@ class Upgrade(Goal):
         a = agent.Entity.Agent
         a.type = self.type
         agent.Entity.Agent = a
-        self.timer = demo.getTime()
+        self.timer = demo.GetTime()
         self.active = True
 
 
@@ -318,5 +278,3 @@ class Upgrade(Goal):
             agent.popGoal()
 
 
-    def dbgDraw(self):
-        self.path.algorithm.visualize(self.path)
