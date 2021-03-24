@@ -238,7 +238,7 @@ int NavMesh::findInNavMesh(Math::vec2 p)
     {
         if (NavMesh::isInTriangle(p, i)) 
         {
-            n_printf("Found face idx: %d", i);
+            //n_printf("Found face idx: %d", i);
             return Singleton->faces[i];
         }
     }
@@ -252,7 +252,7 @@ int NavMesh::findInNavMeshIndex(Math::vec2 p)
     {
         if (NavMesh::isInTriangle(p, i)) 
         {
-            n_printf("Found face idx: %d", i);
+            //n_printf("Found face idx: %d", i);
             return i;
         }
     }

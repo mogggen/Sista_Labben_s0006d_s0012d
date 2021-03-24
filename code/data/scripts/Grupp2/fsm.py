@@ -1,4 +1,5 @@
-import navMesh, enums, pathfinder, random, buildings, overlord, nmath, demo
+import random, demo
+from Grupp2 import pathfinder, buildings, overlord
 
 class IdleState:
     def Execute(self, agent):

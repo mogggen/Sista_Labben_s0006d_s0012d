@@ -20,3 +20,9 @@ files:
     - Grupp1/agent.py
     - Grupp1/goals.py
     - Grupp2/main.py
+    - Grupp2/agent.py
+    - Grupp2/buildings.py
+    - Grupp2/fsm.py
+    - Grupp2/hud.py
+    - Grupp2/overlord.py
+    - Grupp2/pathfinder.py
