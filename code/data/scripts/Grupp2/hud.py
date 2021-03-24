@@ -1,3 +1,4 @@
+
 # import pygame, pygame.freetype, sys, mapreader, overlord, pathfinder, random, enums
 # from pygame.locals import *
 #
@@ -117,3 +118,26 @@
 #         if event.type == QUIT:
 #             pygame.quit()
 #             sys.exit()
+
+#def Nebula Draw:
+    #imgui.Begin("")
+    #imgui.Text("Worker: " + worker)
+    #imgui.Text("Scout: " + Scout)
+    #imgui.Text("Soldier: "+ Soldier)
+    #imgui.Text("Builder: " + Builder)
+    #imgui.Text("Kiln: " + Kiln)
+    #imgui.Text("Smith: " + Smith)
+    #imgui.Text("Smelter: " + Smelter)
+    #imgui.Text("Resurser: " + reurser)
+    #imgui.End()
+
+
+
+
+
+
+
+
+
+
+
