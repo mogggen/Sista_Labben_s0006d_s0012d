@@ -1,13 +1,13 @@
 import Grupp1.pathFinder as pathFinder
-import numpy
 import nmath, imgui
 import time
 
 class Path:
-    def __init__(self, start_pos, goal_pos):
-        self.points = []
+    def __init__(self, start_pos, goal_pos, callback):
+        self.reverse_points = []
         self.start_pos = start_pos
         self.goal_pos  = goal_pos
+        self.callback = callback
         self.is_done = False
 
 
@@ -16,17 +16,18 @@ class PathManager:
         self.current_paths = []
 
         
-    def create_path(self, start_pos: nmath.Float2, goal_pos: nmath.Float2, done_callback):
-        path = Path(start_pos, goal_pos)
+    def create_path(self, start_pos: nmath.Float2, goal_pos: nmath.Float2, callback):
+        path = Path(start_pos, goal_pos, callback)
         path.algorithm = pathFinder.AStar()
         path.algorithm.start(path)
-        path.done_callback = done_callback
         self.current_paths.append(path)
         return path
 
 
     def step_path(self, path):
-        return path.algorithm.step(path)
+        path.is_done = path.algorithm.step(path)
+        return path.is_done
+        
 
 
     def find_path(self, path):
@@ -49,13 +50,13 @@ class PathManager:
 
         for path in self.current_paths:
             for _ in range(n_steps_per_path):
-                path.is_done = path.algorithm.step(path, self.map)
+                path.is_done = path.algorithm.step(path)
                 if path.is_done:
                     to_be_removed.append(path)
                     break
 
         for path in to_be_removed:
+            path.callback()
             self.current_paths.remove(path)
-            path.done_callback()
 
 instance = PathManager()

@@ -352,6 +352,14 @@ PYBIND11_EMBEDDED_MODULE(demo, m)
                 else
                     return false;
             });
+    m.def("IsQdown", []()
+            {
+                auto& io = ImGui::GetIO();
+                if (!io.WantCaptureMouse)
+                    return io.KeysDown[Input::Key::Q];
+                else
+                    return false;
+            });
     m.def("IsUpdown", []()
             {
                 auto& io = ImGui::GetIO();
@@ -435,5 +443,6 @@ PYBIND11_EMBEDDED_MODULE(navMesh, m)
     m.def("isInFace", &Demo::NavMesh::isInFace);
     m.def("isOnNavMesh", &Demo::NavMesh::isOnNavMesh);
     m.def("findInNavMesh", &Demo::NavMesh::findInNavMesh);
+    m.def("findInNavMeshIndex", &Demo::NavMesh::findInNavMeshIndex);
 }
 }

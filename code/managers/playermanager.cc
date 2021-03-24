@@ -85,8 +85,9 @@ PlayerManager::OnActivate()
     {
         ImGui::Begin("Camera config");
         ImGui::SliderFloat("Camera height", &Singleton->tdc.height, 0.0001f, 150.0f);
+        ImGui::SliderFloat("Camera yaw", &Singleton->tdc.yaw, 0.0f, 2 * N_PI_DOUBLE);
         ImGui::SliderFloat("Camera pitch", &Singleton->tdc.pitch, 0.0001f, N_PI_HALF);
-        ImGui::SliderFloat("Camera yaw", &Singleton->tdc.yaw, 0.0f, 2*N_PI_DOUBLE);
+
         ImGui::End();
     });
 
@@ -100,7 +101,7 @@ PlayerManager::OnActivate()
 void
 PlayerManager::OnBeginFrame()
 {
-     auto input = Game::GetProperty<Demo::PlayerInput>(Singleton->playerEntity, Game::GetPropertyId("PlayerInput"_atm));
+    auto input = Game::GetProperty<Demo::PlayerInput>(Singleton->playerEntity, Game::GetPropertyId("PlayerInput"_atm));
     // Move
 
     float move_speed = 0.2f;
@@ -124,7 +125,7 @@ PlayerManager::OnBeginFrame()
     {
         direction = Math::normalize(direction) * (length*0.1);
         pos += direction;
-
+         
         Game::SetProperty<Math::mat4>(Singleton->playerEntity, Game::GetPropertyId("WorldTransform"_atm), Math::translation({pos.x, pos.y, pos.z}));
     }
 

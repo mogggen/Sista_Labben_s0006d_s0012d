@@ -32,6 +32,8 @@ fips_dir(.)
             inputmanager.cc
             movementmanager.h
             movementmanager.cc
+            messagesystem.h
+            messagesystem.cc
             agentmanager.h
             agentmanager.cc
         )

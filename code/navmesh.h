@@ -34,6 +34,7 @@ public:
     static bool isInFace(Math::vec2 p, int face);
     static bool isOnNavMesh(Math::vec2 p);
     static int findInNavMesh(Math::vec2 p);
+    static int findInNavMeshIndex(Math::vec2 p);
      
 private:
     Util::Array<Math::vec3> verticies;
