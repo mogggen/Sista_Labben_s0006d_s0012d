@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import Grupp1.path_manager as path_manager
 import Grupp1.entity_manager as entity_manager
 import Grupp1.agent as agent
@@ -31,7 +30,9 @@ def NebulaDraw(p):
 
     if right_mouse.pressed():
         p = demo.RayCastMousePos()
-        a.addGoal(goals.WalkToGoal(p.x,p.z))
+        a = entity_manager.instance.getSelectedAgent()
+        if a:
+            a.addGoal(goals.WalkToGoal(p.x,p.z))
 
     entity_manager.instance.dbgDraw()
 

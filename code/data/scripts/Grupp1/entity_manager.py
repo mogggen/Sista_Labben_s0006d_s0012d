@@ -117,17 +117,25 @@ class EntityManager:
     def foundTree(self, entity):
         self.trees.add(entity)
 
+
     def foundIronore(self, entity):
         self.ironore.add(entity)
+
 
     def foundEnemyAgent(self, entity):
         if entity.Agent.type == demo.agentType.SOLDIER:
             self.enemy_soldiers.add(entity)
         else:
             self.enemy_workers.add(entity)
+
     
     def foundEnemyBuilding(self, entity):
         self.enemy_buildings.add(entity)
+
+
+    def getSelectedAgent(self):
+        self.findAgent(self.selectedEntity)
+
 
     def selectAgent(self, p):
 
@@ -149,6 +157,7 @@ class EntityManager:
         self.forAllManaged(func)
 
         self.selectedEntity = best_entity
+
 
     def dbgDraw(self):
         if self.selectedEntity:
