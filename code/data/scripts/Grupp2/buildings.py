@@ -1,4 +1,4 @@
-import enums, overlord
+from Grupp2 import overlord
 
 class Building:
     def __init__(self, type, block):

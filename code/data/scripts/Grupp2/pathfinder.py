@@ -1,6 +1,6 @@
-import hud as gui
-import time, math, random, navmesh, demo, nmath
-
+import time, math, random, navMesh, demo, nmath
+from Grupp2 import hud
+path = []
 
 class PathFinder:
 
@@ -13,9 +13,11 @@ class PathFinder:
         backtrack = {}
         ghfValues = {}  # key = face, value = (g, h, f)
 
-        startFace = navmesh.findInNavMesh((agentPosition.x, agentPosition.z))
+        startFace = navMesh.findInNavMesh(nmath.Float2(agentPosition.x, agentPosition.z))
         ghfValues[startFace] = (0, 0, 0)
-        goalFace = navmesh.findInNavMesh((goalPosition.x, goalPosition.z))
+        goalFace = navMesh.findInNavMesh(nmath.Float2(goalPosition.x, goalPosition.z))
+        if goalFace == -1:
+            print("goalFace is -1")
 
         backtrack[startFace] = 0
         openList = []
@@ -26,6 +28,7 @@ class PathFinder:
             q = openList[0]
             # find best block by f value
             for i in range(len(openList)):
+                print()
                 if ghfValues.get(q)[2] > ghfValues.get(openList[i])[2]:
                     q = openList[i]
             openList.remove(q)
@@ -37,40 +40,36 @@ class PathFinder:
                 #neighbourBlock = paths.GetBlockByID(neighbourID)
 
                 if (neighbourFace == goalFace):
-                    path.append(navmesh.getCenterOfFace(neighbourFace))
+                    path.append(navMesh.getCenterOfFace(neighbourFace))
                     prevFace = backtrack.get(q)
                     while (prevFace != 0):
                         #prevBlock = paths.GetBlockByID(prevID)
-                        path.append(navmesh.getCenterOfFace(prevFace))
+                        path.append(navMesh.getCenterOfFace(prevFace))
                         prevFace = backtrack.get(prevFace)
                     return path
 
-                g = ghfValues.get(q) + 1 # g value addition should not be one but instead distance from this and previous center
+                g = ghfValues.get(q)[0] + 1 # g value addition should not be one but instead distance from this and previous center
                 h = self.Euclidean(neighbourFace, goalFace)
                 f = g + h
                 ghf = [(g, h, f)]
                 ghfValues[neighbourFace] = ghf
 
                 for i in openList:
-                    if (i == neighbourFace and ghfValues.get(neighbourFace)[2] >= ghfValues.get(i)[2]):
+                    if i == neighbourFace and ghfValues.get(neighbourFace)[2] >= ghfValues.get(i)[2]:
                         skip = True
                 for i in closedList:
-                    if (i == neighbourFace and ghfValues.get(neighbourFace)[2] >= ghfValues.get(i)[2]):
+                    if i == neighbourFace and ghfValues.get(neighbourFace)[2] >= ghfValues.get(i)[2]:
                         skip = True
                 if skip is False:
                     # set q as parent to all neighbour blocks
                     backtrack[neighbourFace] = q
                     openList.append(neighbourFace)
             closedList.append(q)
-            # gui.Clear()
-            # gui.DrawAStar(openList, closedList)
-            # gui.Update()
-            # time.sleep(0.01)
 
     def Euclidean(self, currentFace, goalFace):
         # Getting Vector 3
-        cPos = navmesh.getCenterOfFace(currentFace)
-        gPos = navmesh.getCenterOfFace(goalFace)
+        cPos = navMesh.getCenterOfFace(currentFace)
+        gPos = navMesh.getCenterOfFace(goalFace)
         # Extracting just x and z
         xCur = cPos.x
         zCur = cPos.z
@@ -82,24 +81,33 @@ class PathFinder:
 
     def GetNeighbouringFaces(self, face):
         neighbouringFaces = []
-        h1 = navmesh.getHalfEdge(face)
-        h2 = navmesh.getHalfEdge(h1.nextEdge)
-        h3 = navmesh.getHalfEdge(h2.nextEdge)
-        n1 = navmesh.getHalfEdge(h1.neighbourEdge)
-        n2 = navmesh.getHalfEdge(h2.neighbourEdge)
-        n3 = navmesh.getHalfEdge(h3.neighbourEdge)
-        f1 = navmesh.getFace(n1.face)
-        f2 = navmesh.getFace(n2.face)
-        f3 = navmesh.getFace(n3.face)
-        neighbouringFaces.append(f1)
-        neighbouringFaces.append(f2)
-        neighbouringFaces.append(f3)
+        h1 = navMesh.getHalfEdge(face)
+        h2 = navMesh.getHalfEdge(h1.nextEdge)
+        h3 = navMesh.getHalfEdge(h2.nextEdge)
+        if h1.neighbourEdge != -1:
+            n1 = navMesh.getHalfEdge(h1.neighbourEdge)
+            f1 = navMesh.getFace(n1.face)
+            neighbouringFaces.append(f1)
+
+        if h2.neighbourEdge != -1:
+            n2 = navMesh.getHalfEdge(h2.neighbourEdge)
+            f2 = navMesh.getFace(n2.face)
+            neighbouringFaces.append(f2)
+
+        if h3.neighbourEdge != -1:
+            n3 = navMesh.getHalfEdge(h3.neighbourEdge)
+            f3 = navMesh.getFace(n3.face)
+            neighbouringFaces.append(f3)
+
         return neighbouringFaces
 
     def DrawAStar(self):
+        print(len(path))
         for i in range(len(path)-1):
-            startPoint = nmath.Point(path[i].x, 2, path[i].z)
-            endPoint = nmath.Point(path[i+1].x, 2, path[i+1].z)
+            startPoint = nmath.Point(path[i].x, 3, path[i].z)
+            endPoint = nmath.Point(path[i+1].x, 3, path[i+1].z)
+            demo.DrawDot(startPoint, 400, nmath.Vec4(0, 1, 0, 1))
+            demo.DrawDot(endPoint, 400, nmath.Vec4(0, 0, 1, 1))
             demo.DrawLine(startPoint, endPoint, 1, nmath.Vec4(1, 0, 0, 1))
 
 class PathBlock:

@@ -1,4 +1,5 @@
-import agent, fsm, pathfinder, enums, random
+import random
+from Grupp2 import agent, fsm, pathfinder
 
 class Overlord:
     agents = []

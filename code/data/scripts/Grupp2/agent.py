@@ -1,4 +1,5 @@
-import fsm, pathfinder, enums, demo
+import demo
+from Grupp2 import fsm, pathfinder
 
 class Agent:
 
