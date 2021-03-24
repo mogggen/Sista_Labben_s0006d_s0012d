@@ -5,16 +5,16 @@ class Building:
     def __init__(self, type, builder ):
         self.type = type
         self.timer = 0 * demo.GetFrameTime()
-        hasWorker = False
 
         demo.spawnBuilding(self.type,builder.posX,builder.posY,0,demo.teamEnum.GRUPP_2)
 
     def Run(self):
-        if self.timer <= 0:
-            self.Produce(self)
-            self.Start()
-        else:
-            self.timer -= 1 * frameTime
+        if demo.hasWorker:
+            if self.timer <= 0:
+                self.Produce(self)
+                self.Start()
+            else:
+                self.timer -= 1 * frameTime
 
     def Produce(self):
         if self.type == demo.buildingType.KILN:
