@@ -32,15 +32,10 @@ fips_dir(.)
             inputmanager.cc
             movementmanager.h
             movementmanager.cc
-<<<<<<< HEAD
-            agnetmanager.h
-            agnetmanager.cc
-	    messagesystem.h
-	    messagesystem.cc
-=======
+            messagesystem.h
+            messagesystem.cc
             agentmanager.h
             agentmanager.cc
->>>>>>> origin/main
         )
 
     fips_dir(properties)
