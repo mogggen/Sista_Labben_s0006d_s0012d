@@ -1,5 +1,5 @@
 import fsm, pathfinder, demo
-from Grupp2 import fsm, pathfinder
+from Grupp2 import fsm, pathfinder, overlord
 
 agentType = (
 	"WORKER",
@@ -25,15 +25,27 @@ class Agent:
 		self.timeBusy = 0
 		self.hp = statParser.getStat("workerHealth")
 	
-	#lämna
+	#lämna, orders frome overlord
 	def ChangeState(self, newState):
 		self.state = newState
 	
 	# Take Damage - Method
-
+	def TakeDamege(self):
+		if hp > 1:
+			self.hp -= 1;
+		else:
+			#change state to dead
+			pass
 	# pick up item
-
+	def PickupItem(self, item):
+		holding = item
 	# drop item
+	def DropItem(self):
+		if self.holding == "tree":
+			overlord.Addtree(1)
+		elif self.holding == "ironOre":
+			overlord.AddironOre(1)
+		self.holding = none;
 
 
 
