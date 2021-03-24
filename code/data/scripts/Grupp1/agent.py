@@ -7,8 +7,9 @@ class Agent:
         a = self.entity.Agent
         a.position = nmath.Point(pos.x, 0, pos.y)
         a.targetPosition = nmath.Point(pos.x, 0, pos.y)
-        a.inventory = 0
         self.entity.Agent = a
+        
+        self.inventory = 0
 
         h = self.entity.Health
         h.hp = int(statParser.getStat("workerHealth"))
