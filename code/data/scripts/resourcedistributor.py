@@ -22,7 +22,7 @@ def placeTemps(CastleA=(0, 170), CastleB=(0, -170), temp="tree"):
         index = steps
     while index >= stop:
         while True:
-            theta = R.uniform(-math.pi, math.pi) # theta only works for positive ratios eller nåt
+            theta = R.uniform(-math.pi, math.pi)
 
             pA = CastleA[0] + r * index / steps * math.cos(theta), CastleA[1] + r * index / steps * math.sin(theta)
             pA = nmath.Float2(pA[0], pA[1])

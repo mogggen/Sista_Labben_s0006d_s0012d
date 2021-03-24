@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import Grupp1.path_manager as path_manager
 import Grupp1.entity_manager as entity_manager
 import Grupp1.agent as agent
@@ -33,3 +34,7 @@ def NebulaDraw(p):
         a.addGoal(goals.WalkToGoal(p.x,p.z))
 
     entity_manager.instance.dbgDraw()
+
+
+def HandleMessage(msg):
+    pass

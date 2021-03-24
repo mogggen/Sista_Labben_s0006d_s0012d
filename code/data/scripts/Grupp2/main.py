@@ -8,5 +8,11 @@ def NebulaUpdate():
 def NebulaUiUpdate():
     pass
 
+def NebulaDraw():
+    print("grupp2 draw")
+
+def HandleMessage(msg):
+    pass
+    
 def NebulaDraw(p):
     pass

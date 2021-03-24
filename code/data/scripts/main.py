@@ -1,7 +1,7 @@
 import button_input
 import statParser
 import fog_of_war
-import resourcemanger
+import resourcedistributor
 import math
 import nmath
 import enum
