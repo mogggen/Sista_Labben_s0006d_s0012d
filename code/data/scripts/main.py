@@ -58,6 +58,7 @@ def NebulaUpdate():
 
     if switch_ui.pressed():
         selected_group = SelectedGroup((selected_group.value+1)%3)
+        print("Selected GUI: ", selected_group)
     
     if selected_group == SelectedGroup.Ingen:
         if left_mouse.pressed():

@@ -42,7 +42,8 @@ class WalkToGoal(Goal):
 
         if len(self.path.reverse_points) <= 0:
             if agent.getPos() == agent.getTarget():
-                print("Framme")
+                #print("Framme")
+                pass
             return
 
         face = self.path.reverse_points[-1]

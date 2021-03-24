@@ -47,6 +47,7 @@ class Agent:
         pos = self.entity.Agent.position
         return nmath.Float2(pos.x, pos.z)
     
+
     def getTarget(self):
         pos = self.entity.Agent.targetPosition
         return nmath.Float2(pos.x, pos.z)
@@ -56,6 +57,7 @@ class Agent:
         a = self.entity.Agent
         a.targetPosition = pos
         self.entity.Agent = a
+
 
     def dbgDraw(self):
         if len(self.goals) > 0:
