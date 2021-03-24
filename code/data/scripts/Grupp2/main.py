@@ -3,7 +3,7 @@ import buildings
 buildings.initRedCastle()
 
 def NebulaUpdate():
-    print("grupp2")
+    pass
 
 def NebulaDraw():
-    print("grupp2 draw")
+    pass

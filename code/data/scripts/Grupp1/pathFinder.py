@@ -2,6 +2,9 @@ import navMesh
 import demo, nmath
 import math
 
+def Point2Vec4(p):
+    return nmath.Vec4(p.x, p.y, p.z, 0)
+
 class Node:
     face = -1
     parent_idx = -1
@@ -43,16 +46,17 @@ class AStar:
         print("1")
 
         if navMesh.isInFace(path.goal_pos, current_node.face):
-            #TODO(mange)
-            reverse_path = []
-            pos = list((int(current_pos.x),int(current_pos.y)))
+            path.reverve_points = []
 
-            while pos[0] > 0:
-                reverse_path.append(nmath.Float2(pos[0], pos[1]))
-                pos = self.parents[pos[0]][pos[1]]
+            print("start face idx", current_node.face)
 
-            path.points = reverse_path
-            path.points.reverse()
+            while current_node.parent_idx > 0:
+                print(current_node)
+                face = current_node.face
+                print("adding: ", face)
+                path.reverse_points.append(face)
+                current_node = self.nodes.get(current_node.parent_idx, None)
+
             return True
 
 
@@ -60,7 +64,8 @@ class AStar:
         #neighbours = game_map.get_neighbours(int(current_pos.x), int(current_pos.y))
 
         print("2")
-        current_pos = nmath.Vec4(navMesh.getCenterOfFace(current_node.face))
+
+        current_pos = Point2Vec4(navMesh.getCenterOfFace(current_node.face))
 
         print("3")
         curr_halfedge_idx = current_node.face;
@@ -77,7 +82,7 @@ class AStar:
             neighbour_face = navMesh.getFace(neighbour.face)
             
             print("6")
-            neighbour_pos = nmath.Vec4(navMesh.getCenterOfFace(neighbour_face))
+            neighbour_pos = Point2Vec4(navMesh.getCenterOfFace(neighbour_face))
             print("7")
 
             neighbour_node = self.nodes.get(neighbour_face, None)
@@ -134,15 +139,15 @@ class AStar:
         for o in self.closed:
             if o.parent_idx < 0:
                 continue
-            parent_pos = navMesh.getCenterOfFace(self.nodes[o.parent_idx].face)
-            pos = navMesh.getCenterOfFace(o.face)
+            parent_pos = navMesh.getCenterOfFace(self.nodes[o.parent_idx].face) + nmath.Vector(0,1,0)
+            pos = navMesh.getCenterOfFace(o.face) + nmath.Vector(0,1,0)
             demo.DrawLine(pos, parent_pos, 4.0, nmath.Vec4(1,1,0,1))
         
         for o in self.open:
             if o.parent_idx < 0:
                 continue
-            parent_pos = navMesh.getCenterOfFace(self.nodes[o.parent_idx].face)
-            pos = navMesh.getCenterOfFace(o.face)
+            parent_pos = navMesh.getCenterOfFace(self.nodes[o.parent_idx].face) + nmath.Vector(0,1,0)
+            pos = navMesh.getCenterOfFace(o.face) + nmath.Vector(0,1,0)
             demo.DrawLine(pos, parent_pos, 4.0, nmath.Vec4(1,1,0,1))
 
 
@@ -153,7 +158,8 @@ class AStar:
             demo.DrawDot(navMesh.getCenterOfFace(o.face), 20, nmath.Vec4(0,1,0,1))
         
 
-        #prev_p = path.start_pos
-        #for p in path.points:
-        #    demo.DrawLine(nmath.Point(p.x, 0.1, p.y), nmath.Point(prev_p.x, 0.1, prev_p.y), 4.0, nmath.Vec4(1,0,0,1))
-        #    prev_p = p
+        prev_p = nmath.Point(path.start_pos.x, 0.0, path.start_pos.y) + nmath.Vector(0,1,0)
+        for f in path.reverse_points[::-1]:
+            p = navMesh.getCenterOfFace(f) + nmath.Vector(0,1,0)
+            demo.DrawLine(p, prev_p, 4.0, nmath.Vec4(1,0,0,1))
+            prev_p = p

@@ -1,5 +1,4 @@
 {
-<<<<<<< Updated upstream
     "blueprints": {
         "Player": {
             "desc": "First person player",
@@ -61,6 +60,26 @@
                 "Team"
             ]
         },
+        "RedBuildingEntity": {
+            "desc": "A red building controlled by python AI",
+            "properties": [
+              "WorldTransform",
+              "ModelResource",
+              "Building",
+              "Health",
+              "Team"
+            ]
+        },
+      "BlueBuildingEntity": {
+            "desc": "A blue building controlled by python AI",
+            "properties": [
+              "WorldTransform",
+              "ModelResource",
+              "Building",
+              "Health",
+              "Team"
+            ]
+        },
         "TreeEntity": {
             "desc": "A Tree",
             "properties": [
@@ -77,88 +96,5 @@
                 "Iron"
             ]
         }
-=======
-  "blueprints": {
-    "Player": {
-      "desc": "First person player",
-      "properties": [
-        "WorldTransform",
-        "Camera",
-        "PlayerInput",
-        "TopdownCamera"
-      ]
-    },
-    "StaticEnvironment": {
-      "desc": "Static environment object",
-      "properties": [
-        "Static",
-        "WorldTransform",
-        "ModelResource"
-      ]
-    },
-    "StaticGroundPlane": {
-      "desc": "Static ground plane",
-      "properties": [
-        "Static",
-        "WorldTransform",
-        "ModelResource",
-        "PhysicsResource"
-      ]
-    },
-    "PhysicsEntity": {
-      "desc": "Rigidbody object",
-      "properties": [
-        "WorldTransform",
-        "ModelResource",
-        "PhysicsResource"
-      ]
-    },
-    "MovingEntity": {
-      "desc": "An entity that wanders follows a marker",
-      "properties": [
-        "WorldTransform",
-        "ModelResource",
-        "Movement"
-      ]
-    },
-    "MarkerEntity": {
-      "desc": "A marker which the moving entities will follow",
-      "properties": [
-        "WorldTransform",
-        "ModelResource",
-        "Marker"
-      ]
-    },
-    "AgentEntity": {
-      "desc": "An agent controlled by python AI",
-      "properties": [
-        "WorldTransform",
-        "ModelResource",
-        "Agent",
-        "Health",
-        "Team"
-      ]
-    },
-    "RedBuildingEntity": {
-      "desc": "A red building controlled by python AI",
-      "properties": [
-        "WorldTransform",
-        "ModelResource",
-        "Building",
-        "Health",
-        "Team"
-      ]
-    },
-    "BlueBuildingEntity": {
-      "desc": "A blue building controlled by python AI",
-      "properties": [
-        "WorldTransform",
-        "ModelResource",
-        "Building",
-        "Health",
-        "Team"
-      ]
->>>>>>> Stashed changes
     }
   }
-}

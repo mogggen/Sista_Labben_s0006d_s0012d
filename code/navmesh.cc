@@ -158,9 +158,11 @@ Math::vec3 NavMesh::getCenterOfFace(int face)
 
 //source:https://stackoverflow.com/questions/2049582/how-to-determine-if-a-point-is-in-a-2d-triangle
 
-float sign(Math::vec2 p1, Math::vec2 p2, Math::vec2 p3)
+// a and b make up the line and p is the point to check
+float sign(Math::vec2 p, Math::vec2 a, Math::vec2 b)
 {
-    return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
+    //return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
+    return (b.x - a.x)*(p.y - a.y) - (b.y - a.y)*(p.x - a.x);
 }
 
 bool NavMesh::isInTriangle(Math::vec2 p, int face)
@@ -228,7 +230,10 @@ int NavMesh::findInNavMesh(Math::vec2 p)
     for (int i = 0; i < Singleton->getNumFace(); i++)
     {
         if (NavMesh::isInTriangle(p, i)) 
+        {
+            n_printf("Found face idx: %d", i);
             return Singleton->faces[i];
+        }
     }
 
     return -1;
@@ -239,9 +244,11 @@ void NavMesh::DbgDraw()
 
     //recDraw(0, 15);
 
+    Math::vec4 colors[3] = {Math::vec4(1,0,0,1), Math::vec4(0,1,0,1), Math::vec4(0,0,1,1)};
 
 
     for (int i = 0; i < faces.size(); i++) {
+        auto center = getCenter(i);
         int edgeIndex = faces[i];
         for (int j = 0; j < 3; j++) {
             int vertexA = halfEdgeArray[edgeIndex].vertIdx;
@@ -249,7 +256,18 @@ void NavMesh::DbgDraw()
             int vertexB = halfEdgeArray[edgeIndex].vertIdx;
             auto pA = verticies[vertexA] + Math::vec3(0,2,0);
             auto pB = verticies[vertexB] + Math::vec3(0,2,0);
-            Im3d::Im3dContext::DrawLine(Math::line(pA, pB), 10, Math::vec4(0.7, 0, 1, 1));
+    
+            auto diffA = pA - center;
+            auto lenA = Math::length(diffA);
+            diffA = Math::normalize(diffA) * lenA * 0.8f;
+            pA = center + diffA;
+            
+            auto diffB = pB - center;
+            auto lenB = Math::length(diffB);
+            diffB = Math::normalize(diffB) * lenB * 0.8f;
+            pB = center + diffB;
+
+            Im3d::Im3dContext::DrawLine(Math::line(pA, pB), 10, colors[j]);
 
         }
         Math::vec3 vector = getCenter(i);

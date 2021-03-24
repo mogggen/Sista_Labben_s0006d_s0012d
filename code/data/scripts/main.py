@@ -47,20 +47,24 @@ def NebulaUpdate():
     
     if left_mouse.pressed():
         p = demo.RayCastMousePos()
+        
+        print(navMesh.findInNavMesh(nmath.Float2(p.x,p.y)))
+
+
         p.x = round(p.x)
         p.y += 0.5
         p.z = round(p.z)
-        radius = 12
-        for x in range(-radius, radius+1):
-            for y in range(-radius, radius+1):
-                if (x**2 + y**2) < radius**2:
-                    fog_of_war.grupp1.uncloud(round(p.x-x),round(p.z-y))
+        #radius = 12
+        #for x in range(-radius, radius+1):
+        #    for y in range(-radius, radius+1):
+        #        if (x**2 + y**2) < radius**2:
+        #            fog_of_war.grupp1.uncloud(round(p.x-x),round(p.z-y))
     
-    if right_mouse.pressed():
-        p = demo.RayCastMousePos()
-        p.x = round(p.x)
-        p.y += 0.5
-        p.z = round(p.z)
+    #if right_mouse.pressed():
+    #    p = demo.RayCastMousePos()
+    #    p.x = round(p.x)
+    #    p.y += 0.5
+    #    p.z = round(p.z)
 
     if paused:
         return

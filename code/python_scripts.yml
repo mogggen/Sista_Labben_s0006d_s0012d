@@ -14,4 +14,6 @@ files:
     - Grupp1/main.py
     - Grupp1/pathFinder.py
     - Grupp1/path_manager.py
+    - Grupp1/agent.py
+    - Grupp1/goals.py
     - Grupp2/main.py
