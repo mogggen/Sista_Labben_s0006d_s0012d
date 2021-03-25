@@ -41,4 +41,32 @@ def NebulaDraw(p):
 
 
 def HandleMessage(msg):
-    pass
+    if entity_manager.instance.findAgent(msg[2]):
+        agentHealth = msg[2].Health
+        agentHealth.hp -= 1
+        msg[2].Health = agentHealth
+
+        if agentHealth.hp <= 0:
+            entity_manager.instance.removeEntity(entity_manager.instance.findAgent(msg[2]))
+
+
+    elif entity_manager.instance.findBuilding(msg[2]):
+        buildingHealth = msg[2].Health
+        buildingHealth.hp -= 1
+        msg[2].Health = buildingHealth
+
+        if buildingHealth.hp <= 0:
+            entity_manager.instance.removeEntity(entity_manager.instance.findBuilding(msg[2]))
+
+    elif entity_manager.instamce.castle == msg[2]:
+        castleHealth = msg[2].Health
+        castleHealth.hp -= 1
+        msg[2].Health = castleHealth
+
+        if castleHealth.hp <= 0:
+            demo.SetTimeFactor(0)
+            print("Defeat")
+
+
+
+
