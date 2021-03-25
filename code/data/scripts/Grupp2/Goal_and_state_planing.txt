@@ -1,0 +1,46 @@
+Wood goal:
+1. fråga overlord om träd posetion
+2. gå till trädet <--
+3. hugga ner trädet
+4. plocka upp trädet
+5.gå till vårat slott
+6. drop trädet
+
+irongoal:
+1. fråg overlord var iron fins
+2. gå till iron <--
+3. plocka upp iron
+4. gå till backa till slottet
+5. dropa iron.
+
+Kiln goal:
+(1. kolla typ av arbetare
+2. om worker prosed)
+3. utbilda sig till kiln worker<--
+4 fråga overlord var kiln fins
+5. gå till kiln
+6 få kiln att starta produktion
+
+smith goal:
+(1. kolla typ av arbetare
+2. om worker prosed)
+3. utbilda sig till smith worker<--
+4 fråga overlord var smith fins
+5. gå till smith
+6. starta produktion i smith
+
+smelt goal:
+(1. kolla typ av arbetare
+2. om worker prosed)
+3. utbilda sig till smelt worker<--
+4 fråga overlord var smelter fins
+5. gå till smelter
+6. starta produktion i smelter
+
+Buildgoals:
+
+1. kolla om builder
+2 om inte gör till builder
+3. fråga overlord var bygga/ bestäm vars du ska bygga
+4  gå till där du ska bygga
+5. starta bygget
