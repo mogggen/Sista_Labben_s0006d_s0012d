@@ -115,8 +115,19 @@ class ExploreState(BaseState):
 class BuildState(BaseState):
 	startTime = 0
 	buildingtype = None
-	def Enter(agent, buildingtypeIn):
-		buildingtype = buildingtypeIn;
+	
+	def Enter(agent):
+		#Goalenum till buildingtype
+		if agent.goal == enum.BUILD_TRAINING_CAMP_GOAL:
+			buildingtype = demo.buildType.TRAININGCAMP
+		elif agent.goal == enum.Goalenum.BUILD_KILNS_GOAL:
+			buildingtype = demo.buildType.KILN
+		elif agent.goal == enum.BUILD_SMELTER_GOAL:
+			buildingtype = demo.buildType.SMELTERY
+		elif agent.goal == enum.BUILD_SMITH_GOAL:
+			buildingtype = demo.buildType.BLACKSMITH
+
+
 		if agent.entityHandle.agentType[6]:#builder
 			if buildingtype == demo.buildingType[0]:#kiln
 				if overlord.overlord.tree >= statParser.getStat("kilnWoodCost"):
@@ -183,3 +194,5 @@ class AttackState(BaseState):
 		else:
 			print("Wrong type of agent")
 		return
+
+
