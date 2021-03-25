@@ -36,7 +36,8 @@ class Agent:
 		self.state.Exit(this)
 		self.state =newState
 		self.state.Enter(self)
-	
+	def Update(self):
+		self.state.Execute();
 	# Take Damage - Method
 	def TakeDamege(self):
 		if hp > 1:
