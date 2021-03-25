@@ -14,15 +14,14 @@ agentType = (
 
 
 class Agent:
-	def __init__(self, ID, pos):
+	def __init__(self, ID):
 		self.ID = ID
-		self.pos = pos
 		self.holding = None
 		self.type = agentType.WORKER
+		self.finalGoal = None
 		self.pathToGoal = []
 		self.pathToCastle = []
 		self.state = None
-		self.goalPos = None
 		self.timeBusy = 0
 		
 		self.entityHandle = demo.SpawnEntity("AgentEntity/agent")
@@ -57,7 +56,5 @@ class Agent:
 			self.holding = none;
 		else:
 			print("Agent not in casle keep walking")
-
-
 
 #demo.GetFrameTime()
