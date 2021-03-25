@@ -5,7 +5,6 @@ import resourcedistributor
 import math
 import nmath
 import enum
-import msgManager
 
 time = 0
 time_speeds = [0.1, 0.25, 0.5, 1, 2, 4, 7, 10, 25, 50, 100, 150, 200]
@@ -21,6 +20,7 @@ switch_ui    = button_input.ButtonInput(demo.IsQdown)
 paused = False
 
 statParser.loadStats()
+
 fog_of_war.init(350,350)
 
 resourcedistributor.placeTemps()
@@ -38,6 +38,8 @@ selected_group = SelectedGroup.Ingen
 
 from Grupp1 import main as Grupp1main
 from Grupp2 import main as Grupp2main
+import msgManager
+
 
 
 

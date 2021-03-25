@@ -4,7 +4,6 @@ import statParser
 import math
 
 
-
 def spawnBuilding(type:demo.buildingType, x, y, rot, team:demo.teamEnum):
     if team == demo.teamEnum.GRUPP_2:
         entityHandle = demo.SpawnEntity("RedBuildingEntity/" + str(type).split(".")[1].lower())
