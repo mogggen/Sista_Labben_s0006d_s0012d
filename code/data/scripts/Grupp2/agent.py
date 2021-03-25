@@ -65,35 +65,35 @@ class Agent:
 		
 			
 		elif self.goal == enums.KILN_GOAL:
-			if agent.entityHandle.agentType == demo.agentType.WORKER:
-				self.ChangeState(UpgradeState(demo.agentType.WORKER))
+			if self.entityHandle.agentType == demo.agentType.WORKER:
+				self.ChangeState(fsm.UpgradeState(demo.agentType.WORKER))
 		
 		elif self.goal == enums.SMITH_GOAL:
-			if agent.entityHandler.agentType == demo.agentType.WORKER:
-				self.ChangeState(UpgradeState)
+			if self.entityHandler.agentType == demo.agentType.WORKER:
+				self.ChangeState(fsm.UpgradeState())
 		
 
 		elif self.goal == enum.SMELT_GOAL:
-			if agent.entityHandler.agentType == demo.agentType.WORKER:
-				self.ChangeState(UpgradeState)
+			if self.entityHandler.agentType == demo.agentType.WORKER:
+				self.ChangeState(fsm.UpgradeState)
 		
 		elif self.goal == enum.BUILD_KILNS_GOAL:
-			if agent.entityHandler.agentType == demo.agentType.WORKER:
+			if self.entityHandler.agentType == demo.agentType.WORKER:
 				self.finalGoal = overlord.overlord.getbuildposition() #check method name
 				self.ChangeState(MoveState)
 		
 		elif self.goal == enum.BUILD_SMITH_GOAL:
-			if agent.entityHandler.agentType == demo.agentType.WORKER:
+			if self.entityHandler.agentType == demo.agentType.WORKER:
 				self.finalGoal = overlord.overlord.getbuildposition() #check method name
 				self.ChangeState(MoveState)
 
 		elif self.goal == enum.BUILD_SMELTER_GOAL:
-			if agent.entityHandler.agentType == demo.agentType.WORKER:
+			if self.entityHandler.agentType == demo.agentType.WORKER:
 				self.finalGoal = overlord.overlord.getbuildposition() #check method name
 				self.ChangeState(MoveState)
 		
 		elif self.goal == enum.BUILD_TRAINING_CAMP_GOAL:
-			if agent.entityHandler.agentType == demo.agentType.WORKER:
+			if self.entityHandler.agentType == demo.agentType.WORKER:
 				self.finalGoal = overlord.overlord.getbuildposition() #check method name
 				self.ChangeState(MoveState)
 		
