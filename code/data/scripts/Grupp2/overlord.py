@@ -1,8 +1,10 @@
-import random
+import random, statParser
 from Grupp2 import agent, fsm, pathfinder
 
 class Overlord:
     agents = []
+    buildings = []
+    castleEntity = 0
     #resorses
     charcoal = 0
     ironbar = 0
@@ -14,7 +16,7 @@ class Overlord:
     nrKiln = 0
     nrBuild = 0
     nrIdleKilners = 0
-    soilders = 0
+    soldiers = 0
 
     kilns = []
 
@@ -76,44 +78,43 @@ class Overlord:
     #add resorses
     def AddCharcoal(self, n):
         for x in range(n):    
-            self.charcoal += 1
+            self.charcoal += n
     def Addironbar(self, n):
         for x in range(n):
-            self.ironbar += 1
+            self.ironbar += n
     def Addironore(self, n):
         for x in range(n):
-            self.ironore += 1
+            self.ironore += n
     def Addsword(self, n):
         for x in range(n):
-            self.sword += 1
-    def Addtree(self):
+            self.sword += n
+    def Addtree(self, n):
         for x in range(n):
-            self.tree += 1
+            self.tree += n
     #take resorses
     def Takecharcoal(self, n):
         for x in range(n):
-            self.charcoal = self.charcoal - 1
+            self.charcoal = self.charcoal - n
     def Takeironbar(self, n):
         for x in range(n):
-            self.ironbar = self.ironbar - 1
+            self.ironbar = self.ironbar - n
     def Takeironore(self,n):
         for x in range(n):
-            self.ironore = self.ironore - 1
+            self.ironore = self.ironore - n
     def Takeswords(self, n):
         for x in range(n):
-            self.sword = self.sword - 1
+            self.sword = self.sword - n
     def Taketree(self, n):
         for x in range(n):
-            self.tree = self.tree - 1
+            self.tree = self.tree - n
 
 
-    def Addsoilders(self):
-        self.soilders += 1
+    def Addsoldiers(self):
+        self.soldiers += 1
 
     def AddKiln(self, kiln):
         self.kilns.append(kiln)
-        print("Added kiln to overlord")
         self.SetKilnerToWorkplace(kiln)
-    
+   
 
 overlord = Overlord()

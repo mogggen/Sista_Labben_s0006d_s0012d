@@ -5,7 +5,6 @@ path = []
 class PathFinder:
 
     def AStar(self, agentPosition, goalPosition):
-        print("hello")
         goalFound = False
         visited = []
         global path
@@ -19,7 +18,7 @@ class PathFinder:
         if goalFace == -1:
             print("goalFace is -1")
 
-        backtrack[startFace] = 0
+        backtrack[startFace] = -1
         openList = []
         closedList = []
         openList.append(startFace)
@@ -28,7 +27,6 @@ class PathFinder:
             q = openList[0]
             # find best block by f value
             for i in range(len(openList)):
-                print()
                 if ghfValues.get(q)[2] > ghfValues.get(openList[i])[2]:
                     q = openList[i]
             openList.remove(q)
@@ -37,21 +35,20 @@ class PathFinder:
             neighbouringFaces = self.GetNeighbouringFaces(q)
             for neighbourFace in neighbouringFaces:
                 skip = False
-                #neighbourBlock = paths.GetBlockByID(neighbourID)
 
                 if (neighbourFace == goalFace):
-                    path.append(navMesh.getCenterOfFace(neighbourFace))
+                    path.append(neighbourFace)
+                    path.append(q)
                     prevFace = backtrack.get(q)
-                    while (prevFace != 0):
-                        #prevBlock = paths.GetBlockByID(prevID)
-                        path.append(navMesh.getCenterOfFace(prevFace))
-                        prevFace = backtrack.get(prevFace)
+                    while (prevFace != -1):
+                        path.append(prevFace)
+                        prevFace = backtrack.get(prevFace, -1)
                     return path
 
                 g = ghfValues.get(q)[0] + 1 # g value addition should not be one but instead distance from this and previous center
                 h = self.Euclidean(neighbourFace, goalFace)
                 f = g + h
-                ghf = [(g, h, f)]
+                ghf = (g, h, f)
                 ghfValues[neighbourFace] = ghf
 
                 for i in openList:
@@ -102,93 +99,13 @@ class PathFinder:
         return neighbouringFaces
 
     def DrawAStar(self):
-        print(len(path))
         for i in range(len(path)-1):
-            startPoint = nmath.Point(path[i].x, 3, path[i].z)
-            endPoint = nmath.Point(path[i+1].x, 3, path[i+1].z)
-            demo.DrawDot(startPoint, 400, nmath.Vec4(0, 1, 0, 1))
-            demo.DrawDot(endPoint, 400, nmath.Vec4(0, 0, 1, 1))
+            point = navMesh.getCenterOfFace(path[i])
+            startPoint = point + nmath.Vector(0,3,0)
+            point2 = navMesh.getCenterOfFace(path[i+1])
+            endPoint = point2 + nmath.Vector(0,3,0)
+            demo.DrawDot(startPoint, 8, nmath.Vec4(0, 1, 0, 1))
+            demo.DrawDot(endPoint, 8, nmath.Vec4(0, 0, 1, 1))
             demo.DrawLine(startPoint, endPoint, 1, nmath.Vec4(1, 0, 0, 1))
 
-class PathBlock:
-    prevBlockID = 0
-    # A* values
-    g = 0.0
-    h = 0.0
-    f = 0.0
-
-    woodPile = 0
-    hasWood = False
-    isFogged = True
-    def __init__(self, ID, adjacents, ms, hasTrees, walkable):
-        self.id = ID
-        self.adjacents = adjacents
-        self.ms = ms  # 1 for mark and 0.5 for trees and sumpmark
-        self.hasTrees = hasTrees
-        if(self.hasTrees):
-            self.trees = 5
-        self.walkable = walkable
-        self.kilns = []
-
-    def IdToCoordinates(self):
-        x = int(self.id % 100)
-        y = int(self.id / 100)
-        return (x,y)
-
-    def GetPrevBlock(self):
-        return paths.GetBlockByID(self.prevBlockID)
-
-    def Discover(self):
-        if self.isFogged:
-            self.isFogged = False
-
-    def RemoveTree(self):
-        if(self.hasTrees):
-            self.trees -= 1
-            if(self.trees <= 0):
-                self.hasTrees = False
-
-    def DropWood(self):
-        if self.hasWood == False:
-            self.hasWood = True
-        self.woodPile += 1
-        #print(self.id, "GOT WOOD")
-
-    def TakeWood(self):
-        if self.hasWood:
-            self.woodPile -= 1
-            if self.woodPile == 0:
-                self.hasWood = False
-        else:
-            print("This tile has no wood!!!")
-
-class Paths:
-    pathBlocks = {}
-    unwalkables = {}
-
-    def GetStart(self):
-        return self.pathBlocks.get("start")
-
-    def GetGoal(self):
-        return self.pathBlocks.get("goal")
-
-    def GetBlockByID(self, ID):
-        return self.pathBlocks.get(ID)
-
-    def GetUnwalkableByID(self, ID):
-        return self.unwalkables.get(ID)
-
-    def GetRandomBlock(self):
-        r = random.choice(list(self.pathBlocks.values()))
-        return r
-
-    def GetNthBlock(self, n):
-        if n < 0:
-            n += len(self.pathBlocks)
-        for i, block in enumerate(self.pathBlocks.values()):
-            if i == n:
-                return block
-        raise IndexError("dictionary index out of range")
-
-paths = Paths()
 pf = PathFinder()

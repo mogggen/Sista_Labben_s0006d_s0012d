@@ -17,9 +17,10 @@ explorerHealth:2
 artisanHealth:2
 soldierHealth:4
 
-#UpgradeTime
+#UpgradeCosts
 scoutUpgradeTime:60
 soldierUpgradeTime:60
+soldierSwordCost:1
 builderUpgradeTime:120
 kilnerUpgradeTime:120
 smelterUpgradeTime:120
@@ -63,7 +64,7 @@ coalReturn:1
 
 #IronCreation
 ironOreCost:2
-ironCoalcost:3
+ironCoalCost:3
 ironTimeCost:30
 ironReturn:1
 
