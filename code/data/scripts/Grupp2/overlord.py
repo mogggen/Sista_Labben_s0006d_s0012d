@@ -1,5 +1,5 @@
 import random, statParser, demo
-from Grupp2 import agent, fsm, pathfinder
+from Grupp2 import agent, fsm, pathfinder, enums
 
 class Overlord:
     agents = []
@@ -28,16 +28,18 @@ class Overlord:
         a.entityHandle.Agent = agentProperty
         self.agents.append(a)
 
-    def SpawnAgents(self):
+    def SpawnAllAgents(self):
         maxAgents = 50
         for i in range(maxAgents):
             self.SpawnAgent()
 
-
-    def UpdateAgents(self):
+    def UpdateActors(self):
         for i in range(len(self.agents)):
             self.agents[i].Update()
+        for i in range(len(self.buildings)):
+            self.buildings[i].Run()
 
+    # LEGACY
     def GetWood(self):
         for i in range(len(self.agents)):
             if(type(self.agents[i].state) == type(fsm.IdleState())):
@@ -45,6 +47,7 @@ class Overlord:
                 self.agents[i].FindWood()
                 self.agents[i].ChangeState(fsm.MoveState())
 
+    # LEGACY
     def OperationCharcoal(self, nrDisc, nrKiln, nrBuild):
         self.nrDisc = nrDisc
         self.nrKiln = nrKiln
@@ -60,6 +63,7 @@ class Overlord:
             else:
                 return
 
+    # LEGACY
     def SetKilnerToWorkplace(self, building):
         if self.nrIdleKilners <= 0:
             print("Need more kilners")
@@ -75,7 +79,7 @@ class Overlord:
         demo.Delete(agent.enityHandle)
         del agent
 
-    #add resorses
+    #add resources
     def AddCharcoal(self, n):
         for x in range(n):    
             self.charcoal += n
@@ -91,7 +95,7 @@ class Overlord:
     def Addtree(self, n):
         for x in range(n):
             self.tree += n
-    #take resorses
+    #take resources
     def Takecharcoal(self, n):
         for x in range(n):
             self.charcoal = self.charcoal - n
@@ -112,9 +116,12 @@ class Overlord:
     def Addsoldiers(self):
         self.soldiers += 1
 
+    # LEGACY
     def AddKiln(self, kiln):
         self.kilns.append(kiln)
         self.SetKilnerToWorkplace(kiln)
-   
+
+    def HandleMsg(self, msg):
+        pass
 
 overlord = Overlord()

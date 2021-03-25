@@ -15,6 +15,4 @@ def NebulaDraw(p):
     pass
 
 def HandleMessage(msg):
-    for n in overlord.overlord.agents:
-        if n == msg.taker:
-           msg.TakeDamege()
+    overlord.overlord.HandleMsg(msg)
