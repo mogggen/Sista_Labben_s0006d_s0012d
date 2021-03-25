@@ -7,7 +7,7 @@ class Building:
         self.startTime = 0
         self.working = False
 
-        self.entityHandle = demo.spawnBuilding(self.type,builder.posX,builder.posY,0,demo.teamEnum.GRUPP_2)
+        self.entityHandle = buildings.spawnBuilding(self.type,builder.posX,builder.posY,0,demo.teamEnum.GRUPP_2)
 
     def Run(self):
         if self.entityHandle.Building.hasWorker:

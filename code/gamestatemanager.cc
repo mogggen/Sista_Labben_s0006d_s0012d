@@ -110,7 +110,8 @@ GameStateManager::OnActivate()
         Preload("mdl:dev/quagmire.n3");
         Preload("mdl:dev/guy.n3");
         Preload("mdl:dev/cloud.n3");
-
+        Preload("mdl:team_units/red_Unit_Footman.n3");
+        
     } // #################################
 
     //
