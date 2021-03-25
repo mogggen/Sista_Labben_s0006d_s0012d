@@ -1,4 +1,4 @@
-import random, statParser, demo
+import random, statParser, demo, msgManager
 from Grupp2 import agent, fsm, pathfinder, enums
 
 class Overlord:
@@ -19,6 +19,9 @@ class Overlord:
     soldiers = 0
 
     kilns = []
+
+    scoutedTrees = []
+    scoutedIron = []
 
     def UpdateActors(self):
         for i in range(len(self.agents)):
@@ -61,11 +64,21 @@ class Overlord:
         del agent
 
 # FSM requests or information
-    def GetCloseTreePos(self, agent):
-        pass
+    def AddScoutedTree(self, tree):
+        self.scoutedTrees.append(tree)
+    def AddScoutedIron(self, iron):
+        self.scoutedIron.append(iron)
 
-    def GetCloseIronPos(self, agent):
-        pass
+    # def RemoveScoutedTree(self, tree):
+    #     self.scoutedTrees.remove(tree)
+    # def RemoveScoutedIron(self, iron):
+    #     self.scoutedIron.remove(iron)
+
+    # A worker requests a tree or iron to gather
+    def GetCloseTree(self, agent):
+        return self.scoutedTrees.pop(0)
+    def GetCloseIron(self, agent):
+        return self.scoutedIron.pop(0)
 
     def GetPosForBuilding(self, agent):
         pass
@@ -80,6 +93,7 @@ class Overlord:
     def AddBuilding(self, building):
         self.buildings.append(building)
         # do stuff
+
 
     #add resources
     def AddCharcoal(self, n):
@@ -114,9 +128,15 @@ class Overlord:
         for x in range(n):
             self.tree = self.tree - n
 
+
     def HandleMsg(self, msg):
         for a in self.agents:
             if a.entityHandle == msg.taker:
                 a.TakeDamage(msg)
+        # Reaction
+
+    def SendMsg(self, agent, target:demo.Entity):
+        msg = msgManager.message(demo.teamEnum.GRUPP_1, agent.enityHandle, target, "attack")
+        msgManager.instance.sendMsg(msg)
 
 overlord = Overlord()
