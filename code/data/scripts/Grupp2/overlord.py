@@ -15,7 +15,7 @@ class Overlord:
     nrKiln = 0
     nrBuild = 0
     nrIdleKilners = 0
-    soilders = 0
+    soldiers = 0
 
     kilns = []
 
@@ -87,7 +87,7 @@ class Overlord:
     def Addsword(self, n):
         for x in range(n):
             self.sword += 1
-    def Addtree(self):
+    def Addtree(self, n):
         for x in range(n):
             self.tree += 1
     #take resorses
@@ -108,8 +108,8 @@ class Overlord:
             self.tree = self.tree - 1
 
 
-    def Addsoilders(self):
-        self.soilders += 1
+    def Addsoldiers(self):
+        self.soldiers += 1
 
     def AddKiln(self, kiln):
         self.kilns.append(kiln)

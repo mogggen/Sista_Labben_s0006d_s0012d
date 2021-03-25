@@ -18,23 +18,23 @@ class Building:
 
     def Produce(self):
         if self.type == demo.buildingType.KILN:
-            overlord.AddCharcoal(statParser.getStat("coalReturn"))
+            overlord.overlord.AddCharcoal(statParser.getStat("coalReturn"))
         elif self.type == demo.buildingType.BLACKSMITH:
-            overlord.Addsword(statParser.getStat("ironReturn"))
+            overlord.overlord.Addsword(statParser.getStat("ironReturn"))
         elif self.type == demo.buildingType.SMELTERY:
-            overlord.Addironbar(statParser.getStat("swordReturn"))
+            overlord.overlord.Addironbar(statParser.getStat("swordReturn"))
         elif self.type == demo.buildingType.TRAININGCAMP:
-            overlord.Addsoilders()
+            overlord.overlord.Addsoldiers()
 
     def Start(self):
         if self.type == demo.buildingType.KILN:
-            if overlord.tree >= statParser.getStat("coalWoodCost"):
-                overlord.Taketree(statParser.getStat("coalWoodCost"))
+            if overlord.overlord.tree >= statParser.getStat("coalWoodCost"):
+                overlord.overlord.Taketree(statParser.getStat("coalWoodCost"))
                 self.timer = statParser.getStat("coalTimeCost") * demo.GetFrameTime()
         elif self.type == demo.buildingType.BLACKSMITH:
-            if overlord.ironebar >= statParser.getStat("swordIronCost") and overlord.charcoal >= statParser.getStat("swordCoalCost"):
+            if overlord.overlord.ironbar >= statParser.getStat("swordIronCost") and overlord.charcoal >= statParser.getStat("swordCoalCost"):
                 self.timer = statParser.getStat("swordTimeCost") * demo.GetFrameTime()
         elif self.type == demo.buildingType.SMELTERY:
-            if overlord.ironOre >= statParser.getStat("ironOreCost") and overlord.charcoal >= statParser.getStat("ironCoalcost"):
+            if overlord.overlord.ironOre >= statParser.getStat("ironOreCost") and overlord.charcoal >= statParser.getStat("ironCoalcost"):
                 self.timer = statParser.getStat("ironTimeCost") * demo.GetFrameTime()
        #traingcamp dose not restart   

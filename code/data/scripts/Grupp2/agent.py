@@ -1,4 +1,4 @@
-import fsm, pathfinder, demo
+import fsm, pathfinder, demo, statParser
 from Grupp2 import fsm, pathfinder
 
 agentType = (
