@@ -52,6 +52,9 @@ class Agent:
         if len(self.goals) > 0:
             self.goals[-1].enter(self)
 
+    def isFree(self):
+        return len(self.goals) <= 0
+
 
     def getPos(self):
         pos = self.entity.Agent.position
