@@ -14,7 +14,7 @@ class BaseState:
 class MoveState(BaseState):
 	def Enter(agent):
 		agent.pathToGoal = pathfinder.Astar(agent.entityHandle.Agent.position,
-		agent.entityHandle.Agent.targetPosition)
+		agent.entityHandle.Agent.targetPosition)#goal position eller target position?
 		
 		
 		
@@ -105,25 +105,39 @@ class ExploreState(BaseState):
 		
 #artisan Agents
 class BuildState(BaseState):
-	def Enter(agent, buildingtype):
+	startTime = 0
+	buildingtype = None
+	def Enter(agent, buildingtypeIn):
 		#kolla om nog med resurser
 		#starta timer typ / ta start tid
-		pass
-	def Execute(agent):
-		if agent.type == agentType[6]:
-			if overlord.tree > statParser.getStat("kilnWoodCost"):
-				agent.timeBusy = statParser.getStat("kilnBuildTime")
-				return
-			if overlord.tree > statParser.getStat("smelteryWoodCost"):
-				agent.timeBusy = statParser.getStat("smelteryBuildTime")
-				return
-			if overlord.tree > statParser.getStat("blacksmithWoodCost") and overlord.ironbar > statParser.getStat("blacksmithIronCost"):
-				agent.timeBusy = statParser.getStat("kilnBuildTime")
-				return
+		buildingtype = buildingtypeIn;
+		if agent.entityHandle.agentType[6]:#builder
+			if buildingtype == demo.buildingType[0]:#kiln
+				if overlord.overlord.tree >= statParser.getStat("kilnWoodCost"):
+					startTimer = demo.GetTime()
+				else:
+					print("Not enogh resorses for a Kiln")
+			elif buildingtype == demo.buildingType[1]:#Smeltery
+				if overlord.overlord.tree >= statParser.getStat("smelteryWoodCost"):
+					startTimer = demo.GetTime()
+				else:
+					print("Not enogh resorses for a Smeltery")
+			elif buildingtype == demo.buildingType[2]:#Blacksmith
+				if overlord.overlord.tree >= statParser.getStat("blacksmithWoodCost") and overlord.overlord.ironore >= statParser.getStat("blacksmithOreCost"):
+					startTimer = demo.GetTime()
+				else:
+					print("Not enogh resorses for a blacksmith")
+			elif buildingtype == demo.buildingType[3]:#Trainingcamp
+				if overlord.overlord.tree >= statParser.getStat("trainingCampWoodCost"):
+					startTimer = demo.GetTime()
+				else:
+					print("Not enogh resorses for a Trainingcamp")
 		else:
-			print("Wrong type of agent")
-			return
-
+			print("Agent is not a builder")
+	def Execute(agent):
+		if buildingtype == demo.buildingType[0]:#kiln
+			if startTime - demo.GetTime >= statParser.getStat("kilnBuildTime"):
+				building(demo.buildingtype[0],agent)
 #Soldier Agents
 class AttackState(BaseState):
 	def Execute(agent, enemy):
