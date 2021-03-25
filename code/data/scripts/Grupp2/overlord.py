@@ -121,6 +121,9 @@ class Overlord:
         self.kilns.append(kiln)
         self.SetKilnerToWorkplace(kiln)
 
+    def AddBuilding(self, building):
+        self.buildings.append(building)
+
     def HandleMsg(self, msg):
         pass
 
