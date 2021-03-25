@@ -4,7 +4,6 @@ class ItemEnum(Enum):
     NONE = 0
     WOOD = 1
     IRON_ORE = 2
-    IRON_INGOT = 3
 
 class GoalEnum(Enum):
     WOOD_GOAL = 0
@@ -19,3 +18,4 @@ class BuildGoalEnum(Enum):
     BUILD_KILNS_GOAL = 0
     BUILD_SMITH_GOAL = 1
     BUILD_SMELTER_GOAL = 2
+    BUILD_TRAININGCAMP_GOAL = 3

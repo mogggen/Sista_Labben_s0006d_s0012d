@@ -94,9 +94,6 @@ class Follow(Goal):
         else:
             agent.setTarget(self.lead.Agent.position)
 
-
-
-
 #--------------------------------------------------------------------#
 
 
@@ -120,13 +117,13 @@ class CutTree(Goal):
 
     def execute(self, agent):
         if not demo.IsValid(self.tree):
-            # tree.delete()
+            entity_manager.instance.removeEntity(self.tree.entity)
             return
 
         elif demo.GetTime() - self.timer >= statParser.getStat("woodCuttingSpeed"):
             agent.inventory = item.wood
             agent.popGoal()
-            # tree.delete()
+            entity_manager.instance.removeEntity(self.tree.entity)
 
 
 
@@ -152,14 +149,12 @@ class PickupOre(Goal):
 
     def execute(self, agent):
         if not demo.IsValid(self.ore):
-            # ore.delete()
+            entity_manager.instance.removeEntity(self.ore.entity)
             return
 
         agent.inventory = item.ore
         agent.popGoal()
-        # ore.delete()
-
-
+        entity_manager.instance.removeEntity(self.ore.entity)
 
 #--------------------------------------------------------------------#
 
@@ -191,7 +186,6 @@ class EmptyInventory(Goal):
 
         agent.inventory = item.none
         agent.popGoal()
-
 
 #--------------------------------------------------------------------#
 
@@ -301,8 +295,6 @@ class Attack(Goal):
             imgui.End()
             raise e
 
-
-
 #--------------------------------------------------------------------#
 
 
@@ -394,17 +386,14 @@ class Build(Goal):
             if demo.GetTime() - self.timer >= statParser.getStat(str(self.type).split(".")[1].lower() + "BuildTime"):
                 if self.toBuild == demo.buildingType.KILN:
                     newBuilding = buildingManager.KILN(self.pos.x, self.pos.y)
-                elif self.toBuild == demo.buildingType.KILN:
+                elif self.toBuild == demo.buildingType.SMELTER:
                     newBuilding = buildingManager.SMELTER(self.pos.x, self.pos.y)
-                elif self.toBuild == demo.buildingType.KILN:
+                elif self.toBuild == demo.buildingType.BLACKSMITH:
                     newBuilding = buildingManager.BLACKSMITH(self.pos.x, self.pos.y)
-                elif self.toBuild == demo.buildingType.KILN:
+                elif self.toBuild == demo.buildingType.TRAININGCAMP:
                     newBuilding = buildingManager.TRAININGCAMP(self.pos.x, self.pos.y)
 
                 entity_manager.instance.buildings[newBuilding.buildingEntity] = newBuilding
-
-    def dbgDraw(self):
-        self.path.algorithm.visualize(self.path)
 
 #--------------------------------------------------------------------#
 
