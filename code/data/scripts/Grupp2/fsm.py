@@ -35,7 +35,7 @@ class MoveState(BaseState):
 
 			# om agent.goal är woodgoal ändra sate till chopping state
 			# om agenten.goal är irongoal plocka upp iron och gå  till slottet 
-			# om goal är kiln/smith/smelt changeState till start production
+			# om goal är kiln/smith/smelt changeState till start uppgrade
 			
 
 class FleeState(BaseState):
@@ -63,7 +63,8 @@ class UpgradeState(BaseState):
 		pass
 	def Execute(agent, newtype):
 		#kolla om timer är klar
-		#när tinmern är klar gå till ledigt bygnad av den sort som utbildad för
+		#när tinmern är klar change state to start production(kiln,smelt&smith)
+		#om timmern är clar soldat medela over lorde utbildad soldat.
 		if not agent.timeBusy:
 			if agent.type == agentType[0]:
 				if newtype == agentType[0]:
