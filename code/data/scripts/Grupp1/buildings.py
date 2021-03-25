@@ -8,7 +8,7 @@ class kiln:
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.buildingEntity = buildings.spawnBuilding(demo.buildingType.kiln, self.x, self.y, 0, demo.teamEnum.GRUPP_1)
+        self.buildingEntity = buildings.spawnBuilding(demo.buildingType.KILN, self.x, self.y, 0, demo.teamEnum.GRUPP_1)
 
 
     def consumeAgent(self, agent):
@@ -20,7 +20,7 @@ class kiln:
 
 
     def update(self):
-        if self.buildingEntity.hasWorker:
+        if self.buildingEntity.Building.hasWorker:
             if not self.working:
                 self.timer = demo.GetTime()
                 self.removeProductCost()
@@ -41,7 +41,7 @@ class smelter:
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.buildingEntity = buildings.spawnBuilding(demo.buildingType.smelter, self.x, self.y, 0, demo.teamEnum.GRUPP_1)
+        self.buildingEntity = buildings.spawnBuilding(demo.buildingType.SMELTERY, self.x, self.y, 0, demo.teamEnum.GRUPP_1)
 
 
     def consumeAgent(self, agent):
@@ -52,7 +52,7 @@ class smelter:
         self.buildingEntity.Building = buildingProperty
 
     def update(self):
-        if self.buildingEntity.hasWorker:
+        if self.buildingEntity.Building.hasWorker:
             if not self.working:
                 self.timer = demo.GetTime()
                 self.removeProductCost()
@@ -73,7 +73,7 @@ class blacksmith:
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.buildingEntity = buildings.spawnBuilding(demo.buildingType.blacksmith, self.x, self.y, 0, demo.teamEnum.GRUPP_1)
+        self.buildingEntity = buildings.spawnBuilding(demo.buildingType.BLACKSMITH, self.x, self.y, 0, demo.teamEnum.GRUPP_1)
 
 
     def consumeAgent(self, agent):
@@ -84,7 +84,7 @@ class blacksmith:
         self.buildingEntity.Building = buildingProperty
 
     def update(self):
-        if self.buildingEntity.hasWorker:
+        if self.buildingEntity.Building.hasWorker:
             if not self.working:
                 self.timer = demo.GetTime()
                 self.removeProductCost()
@@ -105,7 +105,7 @@ class trainingCamp:
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.buildingEntity = buildings.spawnBuilding(demo.buildingType.traingincamp, self.x, self.y, 0, demo.teamEnum.GRUPP_1)
+        self.buildingEntity = buildings.spawnBuilding(demo.buildingType.TRAININGCAMP, self.x, self.y, 0, demo.teamEnum.GRUPP_1)
 
 
     def consumeAgent(self, agent):
@@ -128,7 +128,7 @@ class trainingCamp:
 
 
     def update(self):
-        if self.buildingEntity.hasWorker:
+        if self.buildingEntity.Building.hasWorker:
             if not self.working:
                 self.timer = demo.GetTime()
                 self.removeProductCost()
