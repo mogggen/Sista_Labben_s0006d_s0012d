@@ -13,7 +13,7 @@ class Goal:
         pass
     def execute(self, agent):
         pass
-    def pause(self, agent):
+    def pause(self):
         pass
     def dbgDraw(self):
         pass
@@ -22,8 +22,8 @@ class Goal:
 
 
 class WalkToGoal(Goal):
-    def __init__(self, x, y):
-        self.goal = nmath.Float2(x,y)
+    def __init__(self, goal):
+        self.goal = goal
         self.target = self.goal
 
 
@@ -33,7 +33,7 @@ class WalkToGoal(Goal):
         self.active = True
 
 
-    def paused(self):
+    def pause(self):
         self.active = False
 
 
@@ -77,7 +77,7 @@ class Follow(Goal):
         self.active = True
 
 
-    def paused(self):
+    def pause(self):
         self.active = False
 
 
@@ -90,7 +90,7 @@ class Follow(Goal):
         p = self.lead.Agent.position - nmath.Vector(ap.x, ap.y, ap.z)
         distance = nmath.Vec4.length3_sq(nmath.Vec4(p.x, p.y, p.z, 0))
         if distance >= 25:
-            agent.addGoal(WalkToGoal(self.lead.Agent.position.x, self.lead.Agent.position.z))
+            agent.addGoal(WalkToGoal(nmath.Float2(self.lead.Agent.position.x, self.lead.Agent.position.z)))
         else:
             agent.setTarget(self.lead.Agent.position)
 
@@ -104,27 +104,30 @@ class CutTree(Goal):
 
     def enter(self, agent):
         tp = self.tree.Tree.position
-        if not agent.getPos() == tp:
+        p = agent.entity.Agent.position - nmath.Vector(tp.x, tp.y, tp.z) 
+
+        if nmath.Vec4.length3(nmath.Vec4(p.x, p.y, p.z, 0)) > 0.001:
             agent.addGoal(WalkToGoal(nmath.Float2(tp.x, tp.z)))
         else:
             self.timer = demo.GetTime()
             self.active = True
 
 
-    def paused(self):
+    def pause(self):
+        print("pause")
         self.active = False
 
 
     def execute(self, agent):
         if not demo.IsValid(self.tree):
-            entity_manager.instance.removeEntity(self.tree.entity)
+            entity_manager.instance.removeEntity(self.tree)
+            agent.popGoal()
             return
 
         elif demo.GetTime() - self.timer >= statParser.getStat("woodCuttingSpeed"):
             agent.inventory = item.wood
+            entity_manager.instance.deleteEntity(self.tree)
             agent.popGoal()
-            entity_manager.instance.removeEntity(self.tree.entity)
-
 
 
 #--------------------------------------------------------------------#
@@ -143,36 +146,39 @@ class PickupOre(Goal):
             self.active = True
 
 
-    def paused(self):
+    def pause(self):
         self.active = False
 
 
     def execute(self, agent):
         if not demo.IsValid(self.ore):
-            entity_manager.instance.removeEntity(self.ore.entity)
-            return
+            entity_manager.instance.removeEntity(self.ore)
+        else:
+            agent.inventory = item.ore
+            entity_manager.instance.deleteEntity(self.ore)
 
-        agent.inventory = item.ore
         agent.popGoal()
-        entity_manager.instance.removeEntity(self.ore.entity)
 
 #--------------------------------------------------------------------#
 
 
 
 class EmptyInventory(Goal):
-    def __init__(self, castlePos):
-        self.castlePos = castlePos
+    def __init__(self):
+        pass
 
 
     def enter(self, agent):
-        if not agent.getPos() == self.castlePos:
-            agent.addGoal(WalkToGoal(nmath.Float2(self.castlePos.x, self.castlePos.z)))
+        tp = entity_manager.instance.getCastlePos()
+        p = agent.entity.Agent.position - nmath.Vector(tp.x, 0, tp.y) 
+
+        if nmath.Vec4.length3(nmath.Vec4(p.x, p.y, p.z, 0)) > 0.001:
+            agent.addGoal(WalkToGoal(entity_manager.instance.getCastlePos()))
         else:
             self.active = True
 
 
-    def paused(self):
+    def pause(self):
         self.active = False
 
 
@@ -211,7 +217,7 @@ class Attack(Goal):
                 agent.setTarget(p)
 
 
-    def paused(self):
+    def pause(self):
         self.active = False
 
 
@@ -315,7 +321,7 @@ class Flee(Goal):
             if self.active:
                 agent.setTarget(p)
 
-    def paused(self):
+    def pause(self):
         self.active = False
 
 
@@ -374,7 +380,7 @@ class Build(Goal):
         self.timer = demo.GetTime()
 
 
-    def paused(self):
+    def pause(self):
         self.active = False
 
 
@@ -393,7 +399,7 @@ class Build(Goal):
                 elif self.toBuild == demo.buildingType.TRAININGCAMP:
                     newBuilding = buildingManager.TRAININGCAMP(self.pos.x, self.pos.y)
 
-                entity_manager.instance.buildings[newBuilding.buildingEntity] = newBuilding
+                entity_manager.instance.addBuildings(newBuilding.buildingEntity, newBuilding)
 
 #--------------------------------------------------------------------#
 
@@ -411,7 +417,7 @@ class Upgrade(Goal):
         self.active = True
 
 
-    def paused(self):
+    def pause(self):
         self.active = False
 
 

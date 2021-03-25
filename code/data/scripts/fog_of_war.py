@@ -9,7 +9,7 @@ class GroupFogOfWar:
         self.offset_x = -w//2
         self.offset_y = -h//2
 
-    def uncloud(self, x, y):
+    def uncloud(self, x: int, y: int):
         if x < self.offset_x or self.offset_x + self.width  <= x or\
            y < self.offset_y or self.offset_y + self.height <= y:
             return False
@@ -23,7 +23,7 @@ class GroupFogOfWar:
         self.board[x][y] = True
         return ret
 
-    def is_discovered(self, x, y):
+    def is_discovered(self, x: int, y: int):
         if x < self.offset_x or self.offset_x + self.width <= x or\
            y < self.offset_y or self.offset_y + self.height <= y:
             return True
