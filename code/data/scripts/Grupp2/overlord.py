@@ -79,6 +79,18 @@ class Overlord:
         demo.Delete(agent.enityHandle)
         del agent
 
+    def GetCloseTreePos(self, agent):
+        pass
+
+    def GetCloseIronPos(self, agent):
+        pass
+
+    def GetPosForBuilding(self, agent):
+        pass
+
+    def RequestWorker(self, buildingPos, buildingType):
+        pass
+
     #add resources
     def AddCharcoal(self, n):
         for x in range(n):    
@@ -113,8 +125,9 @@ class Overlord:
             self.tree = self.tree - n
 
 
-    def Addsoldiers(self):
+    def AddSoldier(self, agent):
         self.soldiers += 1
+        # do stuff
 
     # LEGACY
     def AddKiln(self, kiln):
