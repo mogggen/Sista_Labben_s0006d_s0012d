@@ -1,4 +1,4 @@
-import nmath
+import nmath, hud
 import buildings as cbuildings
 from Grupp2 import buildings, pathfinder, overlord
 
@@ -10,6 +10,7 @@ def NebulaUpdate():
 
 def NebulaDraw(p):
     pathfinder.pf.DrawAStar()
+    hud.Nebula_Draw()
     pass
 
 def HandleMessage(msg):
