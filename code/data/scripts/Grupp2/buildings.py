@@ -12,7 +12,7 @@ class Building:
     def Run(self):
         if self.entityHandle.Building.hasWorker:
             if not self.working:
-                self.working = True
+                self.Start()
             else:
                 self.Execute()
 
@@ -43,16 +43,19 @@ class Building:
             if overlord.overlord.tree >= statParser.getStat("coalWoodCost"):
                 overlord.overlord.Taketree(statParser.getStat("coalWoodCost"))
                 self.startTime = demo.GetTime()
+                self.working = True
         elif self.type == demo.buildingType.BLACKSMITH:
             if overlord.overlord.ironbar >= statParser.getStat("swordIronCost") and overlord.charcoal >= statParser.getStat("swordCoalCost"):
                 overlord.overlord.Takeironbar(statParser.getStat("swordIronCost"))
                 overlord.overlord.Takecharcoal(statParser.getStat("swordCoalCost"))
                 self.startTime = demo.GetTime()
+                self.working = True
         elif self.type == demo.buildingType.SMELTERY:
             if overlord.overlord.ironOre >= statParser.getStat("ironOreCost") and overlord.charcoal >= statParser.getStat("ironCoalCost"):
                 overlord.overlord.Takeironore(statParser.getStat("ironOreCost"))
                 overlord.overlord.Takecharcoal(statParser.getStat("ironCoalCost"))
                 self.startTime = demo.GetTime()
+                self.working = True
 
     def AddWorker(self):
         buildingProperty = self.entityHandle.Building
