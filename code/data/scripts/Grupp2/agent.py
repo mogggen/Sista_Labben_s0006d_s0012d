@@ -33,7 +33,9 @@ class Agent:
 	
 	#lämna, orders frome overlord
 	def ChangeState(self, newState):
-		self.state = newState
+		self.state.Exit(this)
+		self.state =newState
+		self.state.Enter(self)
 	
 	# Take Damage - Method
 	def TakeDamege(self):
