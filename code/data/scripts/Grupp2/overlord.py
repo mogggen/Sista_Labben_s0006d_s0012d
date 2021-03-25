@@ -4,6 +4,7 @@ from Grupp2 import agent, fsm, pathfinder
 class Overlord:
     agents = []
     buildings = []
+    castleEntity = 0
     #resorses
     charcoal = 0
     ironbar = 0
@@ -113,7 +114,6 @@ class Overlord:
 
     def AddKiln(self, kiln):
         self.kilns.append(kiln)
-        print("Added kiln to overlord")
         self.SetKilnerToWorkplace(kiln)
    
 
