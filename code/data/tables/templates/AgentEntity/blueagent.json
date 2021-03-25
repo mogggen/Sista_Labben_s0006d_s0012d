@@ -1,7 +1,7 @@
 {
     "blueprint": "AgentEntity",
   "properties": {
-    "ModelResource": "mdl:dev/guy.n3",
+    "ModelResource": "mdl:team_units/blue_Unit_Footman.n3",
     "Agent": {
       "type": "WORKER"
     },

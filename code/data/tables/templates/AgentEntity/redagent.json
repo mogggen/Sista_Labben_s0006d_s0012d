@@ -1,0 +1,15 @@
+{
+    "blueprint": "AgentEntity",
+  "properties": {
+    "ModelResource": "mdl:team_units/red_Unit_Footman.n3",
+    "Agent": {
+      "type": "WORKER"
+    },
+    "Health": {
+      "hp": 5
+    },
+    "Team": {
+      "team": "GRUPP_2"
+    }
+  }
+}

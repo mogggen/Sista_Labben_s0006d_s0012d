@@ -1,4 +1,4 @@
-import random, statParser
+import random, statParser, demo
 from Grupp2 import agent, fsm, pathfinder
 
 class Overlord:
@@ -22,22 +22,20 @@ class Overlord:
 
     def SpawnAgents(self):
         maxAgents = 50
-        print(len(pathfinder.paths.pathBlocks))
-        startBlock = pathfinder.paths.GetNthBlock(random.randrange(9163))
-        startBlock.Discover()
+        #startBlock.Discover()
         i = 0
         while i < maxAgents:
-            self.agents.append(agent.Agent(i, startBlock.IdToCoordinates()))
-            self.agents[i].SetHubBlock(startBlock)
+            #self.agents.append(agent.Agent(i, startBlock.IdToCoordinates()))
+            #self.agents[i].SetHubBlock(startBlock)
             i += 1
-            for j in range(len(startBlock.adjacents)):
-                if i >= maxAgents:
-                    return
-                nBlock = pathfinder.paths.GetBlockByID(startBlock.adjacents[j])
-                nBlock.Discover()
-                self.agents.append(agent.Agent(i, nBlock.IdToCoordinates()))
-                self.agents[i].SetHubBlock(startBlock)
-                i += 1
+            # for j in range(len(startBlock.adjacents)):
+            #     if i >= maxAgents:
+            #         return
+            #     nBlock = pathfinder.paths.GetBlockByID(startBlock.adjacents[j])
+            #     nBlock.Discover()
+            #     self.agents.append(agent.Agent(i, nBlock.IdToCoordinates()))
+            #     self.agents[i].SetHubBlock(startBlock)
+            #     i += 1
 
 
     def UpdateAgents(self):
@@ -75,6 +73,12 @@ class Overlord:
                     self.agents[i].AddWorkPlace(self.kilns.pop())
                     print("Added workplace to agent")
                     return
+
+    def KillAgent(self, agent):
+        self.agents.remove(agent)
+        demo.Delete(agent.enityHandle)
+        del agent
+
     #add resorses
     def AddCharcoal(self, n):
         for x in range(n):    
