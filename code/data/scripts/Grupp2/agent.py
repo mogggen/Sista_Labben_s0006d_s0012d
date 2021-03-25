@@ -57,11 +57,11 @@ class Agent:
 	def goalHandler(self):
 		if self.goal == enums.WOOD_GOAL:
 			self.finalGoal = overlord.overlord.getwoodposition() #check method name
-			self.ChangeState(MoveState)
+			self.ChangeState(fsm.MoveState)
 
 		elif self.goal == enums.IRON_GOAL:
 			self.finalGoal = overlord.overlord.getironposition() #check method name
-			self.ChangeState(MoveState)
+			self.ChangeState(fsm.MoveState)
 		
 			
 		elif self.goal == enums.KILN_GOAL:
@@ -73,27 +73,27 @@ class Agent:
 				self.ChangeState(fsm.UpgradeState())
 		
 
-		elif self.goal == enum.SMELT_GOAL:
+		elif self.goal == enums.SMELT_GOAL:
 			if self.entityHandler.agentType == demo.agentType.WORKER:
 				self.ChangeState(fsm.UpgradeState)
 		
-		elif self.goal == enum.BUILD_KILNS_GOAL:
+		elif self.goal == enums.BUILD_KILNS_GOAL:
 			if self.entityHandler.agentType == demo.agentType.WORKER:
 				self.finalGoal = overlord.overlord.getbuildposition() #check method name
-				self.ChangeState(MoveState)
+				self.ChangeState(fsm.MoveState)
 		
-		elif self.goal == enum.BUILD_SMITH_GOAL:
+		elif self.goal == enums.BUILD_SMITH_GOAL:
 			if self.entityHandler.agentType == demo.agentType.WORKER:
 				self.finalGoal = overlord.overlord.getbuildposition() #check method name
-				self.ChangeState(MoveState)
+				self.ChangeState(fsm.MoveState)
 
-		elif self.goal == enum.BUILD_SMELTER_GOAL:
+		elif self.goal == enums.BUILD_SMELTER_GOAL:
 			if self.entityHandler.agentType == demo.agentType.WORKER:
 				self.finalGoal = overlord.overlord.getbuildposition() #check method name
-				self.ChangeState(MoveState)
+				self.ChangeState(fsm.MoveState)
 		
-		elif self.goal == enum.BUILD_TRAINING_CAMP_GOAL:
+		elif self.goal == enums.BUILD_TRAINING_CAMP_GOAL:
 			if self.entityHandler.agentType == demo.agentType.WORKER:
 				self.finalGoal = overlord.overlord.getbuildposition() #check method name
-				self.ChangeState(MoveState)
+				self.ChangeState(fsm.MoveState)
 		
