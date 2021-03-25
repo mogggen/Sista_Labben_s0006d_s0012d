@@ -1,6 +1,6 @@
-import nmath, hud
+import nmath
 import buildings as cbuildings
-from Grupp2 import buildings, pathfinder, overlord
+from Grupp2 import buildings, pathfinder, overlord, hud
 
 overlord.overlord.castleEntity = cbuildings.initRedCastle()
 pathfinder.pf.AStar(nmath.Point(0,0,0), nmath.Point(-20,0,-60))
