@@ -20,6 +20,12 @@ class Overlord:
 
     kilns = []
 
+    def UpdateActors(self):
+        for i in range(len(self.agents)):
+            self.agents[i].Update()
+        for i in range(len(self.buildings)):
+            self.buildings[i].Run()
+
     def SpawnAgent(self):
         a = agent.Agent(len(self.agents))
         agentProperty = a.entityHandle.Agent
@@ -32,20 +38,6 @@ class Overlord:
         maxAgents = 50
         for i in range(maxAgents):
             self.SpawnAgent()
-
-    def UpdateActors(self):
-        for i in range(len(self.agents)):
-            self.agents[i].Update()
-        for i in range(len(self.buildings)):
-            self.buildings[i].Run()
-
-    # LEGACY
-    def GetWood(self):
-        for i in range(len(self.agents)):
-            if(type(self.agents[i].state) == type(fsm.IdleState())):
-                self.agents[i].SetGoal(enums.GoalEnum.WOOD_GOAL)
-                self.agents[i].FindWood()
-                self.agents[i].ChangeState(fsm.MoveState())
 
     # LEGACY
     def OperationCharcoal(self, nrDisc, nrKiln, nrBuild):
@@ -63,22 +55,12 @@ class Overlord:
             else:
                 return
 
-    # LEGACY
-    def SetKilnerToWorkplace(self, building):
-        if self.nrIdleKilners <= 0:
-            print("Need more kilners")
-        else:
-            for i in range(self.nrDisc, self.nrDisc + self.nrKiln):
-                if self.agents[i].workPlace == 0:
-                    self.agents[i].AddWorkPlace(self.kilns.pop())
-                    print("Added workplace to agent")
-                    return
-
     def KillAgent(self, agent):
         self.agents.remove(agent)
         demo.Delete(agent.enityHandle)
         del agent
 
+# FSM requests or information
     def GetCloseTreePos(self, agent):
         pass
 
@@ -90,6 +72,14 @@ class Overlord:
 
     def RequestWorker(self, buildingPos, buildingType):
         pass
+
+    def AddSoldier(self, agent):
+        self.soldiers += 1
+        # do stuff
+
+    def AddBuilding(self, building):
+        self.buildings.append(building)
+        # do stuff
 
     #add resources
     def AddCharcoal(self, n):
@@ -124,20 +114,9 @@ class Overlord:
         for x in range(n):
             self.tree = self.tree - n
 
-
-    def AddSoldier(self, agent):
-        self.soldiers += 1
-        # do stuff
-
-    # LEGACY
-    def AddKiln(self, kiln):
-        self.kilns.append(kiln)
-        self.SetKilnerToWorkplace(kiln)
-
-    def AddBuilding(self, building):
-        self.buildings.append(building)
-
     def HandleMsg(self, msg):
-        pass
+        for a in self.agents:
+            if a.entityHandle == msg.taker:
+                a.TakeDamage(msg)
 
 overlord = Overlord()
