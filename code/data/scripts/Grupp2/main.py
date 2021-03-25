@@ -11,7 +11,7 @@ def NebulaUpdate():
 
 def NebulaDraw(p):
     pathfinder.pf.DrawAStar()
-    hud.Nebula_Draw()
+    hud.DrawHUD()
     pass
 
 def HandleMessage(msg):

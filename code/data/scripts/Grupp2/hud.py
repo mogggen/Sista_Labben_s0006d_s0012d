@@ -1,28 +1,25 @@
 from Grupp2 import overlord
+import imgui
 
-def Nebula_Draw():
+def DrawHUD():
 
-    imgui.Begin("HUD", None, 0)
-    imgui.Text("Agents: " + len(overlord.Overlord.agents))
-    imgui.Text("Buildings: " + len(overlord.Overlord.buildings))
+    imgui.Begin("Grupp2 (Red) Inventory", None, 0)
+    imgui.Text("Agents: " + str(len(overlord.overlord.agents)))
+    imgui.Text("Buildings: " + str(len(overlord.overlord.buildings)))
     imgui.Text("")
+    imgui.Text("Agents: ")
+    imgui.Text("Scout: " + str(overlord.overlord.nrDisc))
+    imgui.Text("Soldier: "+ str(overlord.overlord.soldiers))
+    imgui.Text("Builder: " + str(overlord.overlord.nrBuild))
+    imgui.Text("Kilners: " + str(overlord.overlord.nrKiln))
+    imgui.Text("Idle Kilners: " + str(overlord.overlord.nrIdleKilners))
     imgui.Text("")
-    imgui.Text("")
-    imgui.Text("Agents: " + overlord.Overlord.nrDisc)
-    imgui.Text("Scout: " + overlord.Overlord.nrDisc)
-    imgui.Text("Soldier: "+ overlord.Overlord.soldier)
-    imgui.Text("Builder: " + overlord.Overlord.nrBuild)
-    imgui.Text("Kilners: " + overlord.Overlord.nrKiln)
-    imgui.Text("Idle Kilners: " + overlord.Overlord.nrIdleKilners)
-    imgui.Text("")
-    imgui.Text("")
-    imgui.Text("")
-    imgui.Text("Resurser: " + reurser)
-    imgui.Text("Charcoal: " + overlord.Overlord.charcoal)
-    imgui.Text("Ironbar: " + overlord.Overlord.ironbar)
-    imgui.Text("Ironore: " + overlord.Overlord.ironore)
-    imgui.Text("Sword: " + overlord.Overlord.sword)
-    imgui.Text("Tree: " + overlord.Overlord.tree)
+    imgui.Text("Resurser: ")
+    imgui.Text("Charcoal: " + str(overlord.overlord.charcoal))
+    imgui.Text("Ironbar: " + str(overlord.overlord.ironbar))
+    imgui.Text("Ironore: " + str(overlord.overlord.ironore))
+    imgui.Text("Sword: " + str(overlord.overlord.sword))
+    imgui.Text("Tree: " + str(overlord.overlord.tree))
     imgui.End()
 
 
