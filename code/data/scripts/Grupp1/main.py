@@ -3,10 +3,13 @@ import Grupp1.entity_manager as entity_manager
 import Grupp1.item_manager as item_manager
 import Grupp1.agent as agent
 import Grupp1.goals as goals
+import Grupp1.worker_manager as worker_manager
 
 import nmath, demo
 import button_input
 import buildings
+
+import cProfile
 
 
 left_mouse  = button_input.ButtonInput(demo.IsLeftMouseDown)
@@ -33,8 +36,17 @@ tree_pos = None
 def NebulaUpdate():
 
     path_manager.instance.calc_paths(100)
+
+    ## update managers
+    worker_manager.instance.update()
+
+
     entity_manager.instance.updateAll()
-    entity_manager.instance.updateUnManagedEntities()
+
+    if entity_manager.instance.updateState == entity_manager.UpdateState.TREES:
+        cProfile.run("from Grupp1 import entity_manager; entity_manager.instance.updateUnManagedEntities()")
+    else:
+        entity_manager.instance.updateUnManagedEntities()
 
 
 def NebulaDraw(p):
@@ -60,21 +72,21 @@ def NebulaDraw(p):
 
     if y_button.pressed():
 
-        #a = entity_manager.instance.getSelectedAgent()
-        #entity_manager.instance.stageForUpgrade(a.entity)
-        #a.addGoal(goals.Upgrade(demo.agentType.SCOUT))
-
-        tree = demo.Entity.fromInt(list(entity_manager.instance.trees)[0])
-        tree_property = tree.Tree
-
         a = entity_manager.instance.getSelectedAgent()
+        entity_manager.instance.stageForUpgrade(a.entity)
+        a.addGoal(goals.Upgrade(demo.agentType.SCOUT))
 
-        tp = tree_property.position
-        cp = entity_manager.instance.getCastlePos()
-        a.addGoals([goals.EmptyInventory(),\
-                    goals.CutTree(tree)])
+        #tree = demo.Entity.fromInt(list(entity_manager.instance.trees)[0])
+        #tree_property = tree.Tree
 
-        tree_pos = tp
+        #a = entity_manager.instance.getSelectedAgent()
+
+        #tp = tree_property.position
+        #cp = entity_manager.instance.getCastlePos()
+        #a.addGoals([goals.EmptyInventory(),\
+        #            goals.CutTree(tree)])
+
+        #tree_pos = tp
 
 
     if tree_pos:

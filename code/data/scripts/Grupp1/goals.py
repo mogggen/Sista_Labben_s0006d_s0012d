@@ -114,7 +114,6 @@ class CutTree(Goal):
 
 
     def pause(self):
-        print("pause")
         self.active = False
 
 
