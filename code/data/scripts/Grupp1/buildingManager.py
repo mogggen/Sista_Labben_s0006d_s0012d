@@ -14,7 +14,9 @@ class kiln:
     def consumeAgent(self, agent):
         self.agent = agent.entity.Agent
         agent.entity.Agent.RemoveFromSystem()
-        self.buildingEntity.hasWorker = True
+        buildingProperty = self.buildingEntity.Building
+        buildingProperty.hasWorker = True
+        self.buildingEntity.Building = buildingProperty
 
 
     def update(self):
@@ -39,13 +41,15 @@ class smelter:
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.buildingEntity = spawnBuilding(demo.buildingType.kiln, self.x, self.y, 0, demo.teamEnum.GRUPP_1)
+        self.buildingEntity = spawnBuilding(demo.buildingType.smelter, self.x, self.y, 0, demo.teamEnum.GRUPP_1)
 
 
     def consumeAgent(self, agent):
         self.agent = agent.entity.Agent
         agent.entity.Agent.RemoveFromSystem()
-        self.buildingEntity.hasWorker = True
+        buildingProperty = self.buildingEntity.Building
+        buildingProperty.hasWorker = True
+        self.buildingEntity.Building = buildingProperty
 
     def update(self):
         if self.buildingEntity.hasWorker:
@@ -69,13 +73,15 @@ class blacksmith:
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.buildingEntity = spawnBuilding(demo.buildingType.kiln, self.x, self.y, 0, demo.teamEnum.GRUPP_1)
+        self.buildingEntity = spawnBuilding(demo.buildingType.blacksmith, self.x, self.y, 0, demo.teamEnum.GRUPP_1)
 
 
     def consumeAgent(self, agent):
         self.agent = agent.entity.Agent
         agent.entity.Agent.RemoveFromSystem()
-        self.buildingEntity.hasWorker = True
+        buildingProperty = self.buildingEntity.Building
+        buildingProperty.hasWorker = True
+        self.buildingEntity.Building = buildingProperty
 
     def update(self):
         if self.buildingEntity.hasWorker:
@@ -99,13 +105,16 @@ class trainingCamp:
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.buildingEntity = spawnBuilding(demo.buildingType.kiln, self.x, self.y, 0, demo.teamEnum.GRUPP_1)
+        self.buildingEntity = spawnBuilding(demo.buildingType.traingincamp, self.x, self.y, 0, demo.teamEnum.GRUPP_1)
 
 
     def consumeAgent(self, agent):
         self.agent = agent.entity.Agent
         agent.entity.Agent.RemoveFromSystem()
-        self.buildingEntity.hasWorker = True
+        buildingProperty = self.buildingEntity.Building
+        buildingProperty.hasWorker = True
+        self.buildingEntity.Building = buildingProperty
+
 
     def update(self):
         if self.buildingEntity.hasWorker:
@@ -120,4 +129,4 @@ class trainingCamp:
                     working = False
 
     def removeProductCost(self):
-        item_manager.instance.logs -= statParser.getStat("soldierSwordCost")
+        item_manager.instance.sword -= statParser.getStat("soldierSwordCost")

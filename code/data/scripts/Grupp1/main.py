@@ -34,7 +34,7 @@ def NebulaDraw(p):
         p = demo.RayCastMousePos()
         a = entity_manager.instance.getSelectedAgent()
         if a:
-            a.addGoal(goals.WalkToGoal(p.x,p.z))
+            a.addGoal(goals.WalkToGoal(p.x, p.z))
 
     entity_manager.instance.dbgDraw()
     item_manager.instance.drawGui()
