@@ -91,7 +91,14 @@ def HandleMessage(msg):
         msg[2].Health = agentHealth
 
         if agentHealth.hp <= 0:
-            entity_manager.instance.removeEntity(entity_manager.instance.findAgent(msg[2]))
+            if entity_manager.agent.AgentType == demo.agentType.WORKER:
+                for goal in agent.goals:
+                    if goal == goals.CutTree:
+                        entity_manager.addTree(goal.tree.entity)
+                    elif goal == goals.PickupOre:
+                        entity_manager.addOre(goal.ore.entity)
+
+            entity_manager.instance.deleteEntity(entity_manager.instance.findAgent(msg[2]))
 
 
     elif entity_manager.instance.findBuilding(msg[2]):
@@ -100,7 +107,7 @@ def HandleMessage(msg):
         msg[2].Health = buildingHealth
 
         if buildingHealth.hp <= 0:
-            entity_manager.instance.removeEntity(entity_manager.instance.findBuilding(msg[2]))
+            entity_manager.instance.deleteEntity(entity_manager.instance.findBuilding(msg[2]))
 
     elif entity_manager.instamce.castle == msg[2]:
         castleHealth = msg[2].Health
