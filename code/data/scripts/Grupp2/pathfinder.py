@@ -100,7 +100,7 @@ class PathFinder:
         return neighbouringFaces
 
     def DrawAStar(self):
-        for i in range(len(path)-1):
+        for i in range(1, len(path)-1):
             point = navMesh.getCenterOfFace(path[i])
             startPoint = point + nmath.Vector(0,3,0)
             point2 = navMesh.getCenterOfFace(path[i+1])

@@ -23,15 +23,15 @@ class MoveState(BaseState):
 		if pos != agent.finalGoal:
 			if navMesh.findinNavMesh(pos) != navMesh.findinNavMesh(agent.entityHandle.Agent.targetPosition):
 
-				current = agent.entityHandle
-				current.targetPosition = navMesh.getCenter(agent.pathToGoal.pop(0))
-				agent.entityHandle = current
+				current = agent.entityHandle.Agent.targetPosition
+				current = navMesh.getCenter(agent.pathToGoal.pop(0))
+				agent.entityHandle.Agent.targetPosition = current
 
 		elif agent.entityHandle.Agent.position == agent.finalGoal:
 
-			current = agent.entityHandle
-			current.targetPosition = agent.finalGoal
-			agent.entityHandle = current
+			current = agent.entityHandle.Agent.targetPosition
+			current = agent.finalGoal
+			agent.entityHandle.Agent.targetPosition = current
 			agent.ChangeState(ChoppingState) #kolla vilken resource vid finalGoal
 
 class FleeState(BaseState):
@@ -60,10 +60,10 @@ class UpgradeState(BaseState):
 					agent.type = newtype
 					agent.timeBusy == statParser.getStat("scoutUpgradeTime")
 				if newtype == agentType[2]:
-					if overlord.sword > statParser.getStat("soldierSwordCost"):
+					if overlord.overlord.sword > statParser.getStat("soldierSwordCost"):
 						agent.type = newtype
 						agent.timeBusy = statParser.getStat("soldierUpgradeTime")
-						overlord.sword -= statParser.getStat("soldierSwordCost")
+						overlord.overlord.sword -= statParser.getStat("soldierSwordCost")
 					else:
 						print("no spare swords in castle")
 						return
