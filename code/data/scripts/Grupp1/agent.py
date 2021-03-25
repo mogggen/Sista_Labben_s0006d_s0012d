@@ -45,6 +45,9 @@ class Agent:
         self.goals += goals
         self.goals[-1].enter(self)
 
+    def clearGoals(self):
+        self.goals.clear()
+
 
     def popGoal(self):
         self.goals.pop()
