@@ -1,5 +1,5 @@
 from Grupp1 import path_manager, entity_manager, item_manager
-import nmath, navMesh, demo
+import nmath, navMesh, demo, imgui
 import statParser, msgManager
 import enum, random
 
@@ -51,8 +51,7 @@ class WalkToGoal(Goal):
 
         if len(self.path.reverse_points) <= 0:
             if agent.getPos() == agent.getTarget():
-                #print("Framme")
-                pass
+                agent.popGoal()
             return
 
         face = self.path.reverse_points[-1]
@@ -83,19 +82,19 @@ class Follow(Goal):
 
 
     def execute(self, agent):
-        if demo.IsValid(self.lead):
+        if not demo.IsValid(self.lead):
             agent.popGoal()
             return
-        p = self.lead.Agent.position - agent.position
-        distance = nmath.Vec4.length3_sq(nmath.Vec4(p.x, p.y, p.z))
+
+        ap = agent.entity.Agent.position
+        p = self.lead.Agent.position - nmath.Vector(ap.x, ap.y, ap.z)
+        distance = nmath.Vec4.length3_sq(nmath.Vec4(p.x, p.y, p.z, 0))
         if distance >= 25:
             agent.addGoal(WalkToGoal(self.lead.Agent.position.x, self.lead.Agent.position.z))
         else:
             agent.setTarget(self.lead.Agent.position)
 
 
-    def dbgDraw(self):
-        self.path.algorithm.visualize(self.path)
 
 
 #--------------------------------------------------------------------#
@@ -107,8 +106,12 @@ class CutTree(Goal):
 
 
     def enter(self, agent):
-        self.timer = demo.GetTime()
-        self.active = True
+        tp = self.tree.Tree.position
+        if not agent.getPos() == tp:
+            agent.addGoal(WalkToGoal(nmath.Float2(tp.x, tp.z)))
+        else:
+            self.timer = demo.GetTime()
+            self.active = True
 
 
     def paused(self):
@@ -120,14 +123,12 @@ class CutTree(Goal):
             # tree.delete()
             return
 
-        elif demo.getTime() - self.timer >= statParser.getStat("wcSpeed"):
+        elif demo.GetTime() - self.timer >= statParser.getStat("woodCuttingSpeed"):
             agent.inventory = item.wood
             agent.popGoal()
             # tree.delete()
 
 
-    def dbgDraw(self):
-        self.path.algorithm.visualize(self.path)
 
 #--------------------------------------------------------------------#
 
@@ -138,7 +139,11 @@ class PickupOre(Goal):
 
 
     def enter(self, agent):
-        self.active = True
+        op = self.ore.Iron.position
+        if not agent.getPos() == op:
+            agent.addGoal(WalkToGoal(nmath.Float2(op.x, op.z)))
+        else:
+            self.active = True
 
 
     def paused(self):
@@ -155,19 +160,21 @@ class PickupOre(Goal):
         # ore.delete()
 
 
-    def dbgDraw(self):
-        self.path.algorithm.visualize(self.path)
 
 #--------------------------------------------------------------------#
 
 
+
 class EmptyInventory(Goal):
-    def __init__(self):
-        pass
+    def __init__(self, castlePos):
+        self.castlePos = castlePos
 
 
     def enter(self, agent):
-        self.active = True
+        if not agent.getPos() == self.castlePos:
+            agent.addGoal(WalkToGoal(nmath.Float2(self.castlePos.x, self.castlePos.z)))
+        else:
+            self.active = True
 
 
     def paused(self):
@@ -178,7 +185,7 @@ class EmptyInventory(Goal):
         if agent.inventory == item.wood:
             item_manager.instance.logs += 1
         elif agent.inventory == item.ore:
-            item_manager.instance.ironOre += 1
+            item_manager.instance.ironore += 1
         else:
             print("why tho...")
 
@@ -186,15 +193,14 @@ class EmptyInventory(Goal):
         agent.popGoal()
 
 
-    def dbgDraw(self):
-        self.path.algorithm.visualize(self.path)
-
 #--------------------------------------------------------------------#
 
 
 class Attack(Goal):
     def __init__(self, enemy):
         self.enemy = enemy
+        self.onCooldown = False
+        self.path = None
 
 
     def enter(self, agent):
@@ -202,54 +208,118 @@ class Attack(Goal):
         self.active = True
 
 
+    def path_is_done_callback(self, agent):
+        if not self.path:
+            return
+        if len(self.path.reverse_points) > 0:
+            p = navMesh.getCenterOfFace(self.path.reverse_points[-1])
+            if self.active:
+                agent.setTarget(p)
+
+
     def paused(self):
         self.active = False
 
 
     def execute(self, agent):
+        enemyTransform = self.enemy.WorldTransform
+        enemyPos = nmath.Vector(enemyTransform[3][0], enemyTransform[3][1], enemyTransform[3][2])
+        p = agent.entity.Agent.position - enemyPos
+        distance = nmath.Vec4.length3_sq(nmath.Vec4(p.x, p.y, p.z, 0))
+
+        if self.path:
+            self.followPath(agent, enemyPos, distance)
+        else:
+            self.fight(agent, enemyPos, distance)
+
+
+    def followPath(self, agent,  enemyPos, distance):
+        if not self.path.is_done:
+            return
+
+        if distance < 100:
+            self.path = None
+            return 
+
+        if len(self.path.reverse_points) <= 0:
+            if agent.getPos() == agent.getTarget():
+                self.path = None
+            return
+
+        face = self.path.reverse_points[-1]
+        if navMesh.isInFace(agent.getPos(), face):
+            self.path.reverse_points.pop()
+
+            if len(self.path.reverse_points) <= 0:
+                agent.setTarget(nmath.Point(self.path.goal_pos.x, 0, self.path.goal_pos.y))
+            else:
+                agent.setTarget(navMesh.getCenterOfFace(self.path.reverse_points[-1]))
+
+
+    def fight(self, agent, enemyPos, distance):
         if not demo.IsValid(self.enemy):
             agent.popGoal()
             return
 
-        enemyTransform = self.enemy.WorldTransform
-        enemyPos = nmath.Vec3(enemyTransform[0][3], enemyTransform[1][3], enemyTransform[2][3])
-        p = enemyPos - agent.position
-        distance = nmath.Vec4.length3_sq(nmath.Vec4(p.x, p.y, p.z))
 
-        if demo.GetTime - self.timer >= statParser.getState("soldierAttackSpeed"):
-            onCooldown = False
+        if demo.GetTime() - self.timer >= statParser.getStat("soldierAttackSpeed"):
+            self.onCooldown = False
 
-        if distance >= 25:
-            agent.addGoal(WalkToGoal(enemyPos[0], enemyPos[2]))
+        if distance >= 100:
+            target = nmath.Float2(enemyPos.x, enemyPos.z)
+            self.path = path_manager.instance.create_path(agent.getPos(), target, lambda: self.path_is_done_callback(agent))
+            agent.setTarget(nmath.Point(enemyPos.x, enemyPos.y, enemyPos.z))
+
+
         elif distance > pow(statParser.getStat("soldierAttackRange"), 2):
-            agent.setTarget(enemyPos)
-        elif not onCooldown:
+            agent.setTarget(nmath.Point(0,0,0) + enemyPos)
+        elif not self.onCooldown:
             if random.uniform(0, 1) <= statParser.getStat("hitChance"):
-                msgManager.messageManager.sendMsg(msgManager.message(demo.teamEnum.GRUPP_2, agent, self.enemy, "attacked"))
+                #msgManager.instance.sendMsg(msgManager.message(demo.teamEnum.GRUPP_2, agent, self.enemy, "attacked"))
+                print("Attacking")
                 self.timer = demo.GetTime()
-                onCooldown = True
+                self.onCooldown = True
 
 
     def dbgDraw(self):
-        self.path.algorithm.visualize(self.path)
+
+        if self.path:
+            self.path.algorithm.visualize(self.path)
+
+        enemyTransform = self.enemy.WorldTransform
+        enemyPos = nmath.Point(enemyTransform[0][3], enemyTransform[1][3], enemyTransform[2][3])
+        demo.DrawDot(enemyPos, 20, nmath.Vec4(0,1,0,1))
+        imgui.Begin("Attack goal", None, 0)
+        try:
+            members = [(attr, getattr(self,attr)) for attr in dir(self) if not callable(getattr(self,attr)) and not attr.startswith("__") ]
+            for member, value in members:
+                imgui.Text(member + ": " + str(value))
+            
+            imgui.End()
+
+        except Exception as e:
+            imgui.End()
+            raise e
+
+
 
 #--------------------------------------------------------------------#
 
 
 class Flee(Goal):
-    def __init__(self):
-        pass
+    def __init__(self, enemy):
+        self.enemy = enemy
 
 
     def enter(self, agent):
         self.active = True
-        self.path = path_manager.instance.create_path(agent.getPos(), self.goal,lambda: self.path_is_done_callback(agent))
-        agent.setTarget(nmath.Point(self.target.x, 0, self.target.y))
+        target = entity_manager.instance.getCastlePos()
+        self.path = path_manager.instance.create_path(agent.getPos(), target, lambda: self.path_is_done_callback(agent))
+        agent.setTarget(nmath.Point(target.x, 0, target.y))
 
     def path_is_done_callback(self, agent):
         if len(self.path.reverse_points) > 0:
             p = navMesh.getCenterOfFace(self.path.reverse_points[-1])
-            self.target = nmath.Float2(p.x, p.z)
             if self.active:
                 agent.setTarget(p)
 
@@ -264,9 +334,9 @@ class Flee(Goal):
 
         #Check distance to enemy
         enemyTransform = self.enemy.WorldTransform
-        enemyPos = nmath.Vec3(enemyTransform[0][3], enemyTransform[1][3], enemyTransform[2][3])
-        p = enemyPos - agent.position
-        distance = nmath.Vec4.length3_sq(nmath.Vec4(p.x, p.y, p.z))
+        enemyPos = nmath.Vector(enemyTransform[0][3], enemyTransform[1][3], enemyTransform[2][3])
+        p = agent.entity.Agent.position - enemyPos
+        distance = nmath.Vec4.length3_sq(nmath.Vec4(p.x, p.y, p.z, 0))
         if distance >= 2500:
             agent.popGoal()
 
@@ -284,10 +354,54 @@ class Flee(Goal):
             self.path.reverse_points.pop()
 
             if len(self.path.reverse_points) <= 0:
-                agent.setTarget(nmath.Point(self.BasePos.x, 0, self.BasePos.y)) # Maybe calculate height from navmesh???
+                t = entity_manager.instance.getCastlePos()
+                agent.setTarget(nmath.Point(t.x, 0, t.y)) # Maybe calculate height from navmesh???
             else:
                 agent.setTarget(navMesh.getCenterOfFace(self.path.reverse_points[-1]))
 
+
+    def dbgDraw(self):
+        self.path.algorithm.visualize(self.path)
+        enemyTransform = self.enemy.WorldTransform
+        enemyPos = nmath.Point(enemyTransform[0][3], enemyTransform[1][3], enemyTransform[2][3])
+        demo.DrawDot(enemyPos, 20, nmath.Vec4(0,1,0,1))
+        pass
+
+#--------------------------------------------------------------------#
+
+
+class Build(Goal):
+    def __init__(self, type:demo.buildingType, pos:nmath.Float2):
+        self.toBuild = type
+        self.pos = pos
+        self.working = False
+
+
+    def enter(self, agent):
+        self.active = True
+        self.timer = demo.GetTime()
+
+
+    def paused(self):
+        self.active = False
+
+
+    def execute(self, agent):
+        if not self.working:
+            self.timer = demo.GetTime()
+            self.working = True
+        elif self.working:
+            if demo.GetTime() - self.timer >= statParser.getStat(str(self.type).split(".")[1].lower() + "BuildTime"):
+                if self.toBuild == demo.buildingType.KILN:
+                    newBuilding = buildingManager.KILN(self.pos.x, self.pos.y)
+                elif self.toBuild == demo.buildingType.KILN:
+                    newBuilding = buildingManager.SMELTER(self.pos.x, self.pos.y)
+                elif self.toBuild == demo.buildingType.KILN:
+                    newBuilding = buildingManager.BLACKSMITH(self.pos.x, self.pos.y)
+                elif self.toBuild == demo.buildingType.KILN:
+                    newBuilding = buildingManager.TRAININGCAMP(self.pos.x, self.pos.y)
+
+                entity_manager.instance.buildings[newBuilding.buildingEntity] = newBuilding
 
     def dbgDraw(self):
         self.path.algorithm.visualize(self.path)
@@ -298,13 +412,13 @@ class Flee(Goal):
 class Upgrade(Goal):
     def __init__(self, type:demo.agentType):
         self.type = type
-        pass
+        self.timer = 0
 
     def enter(self, agent):
-        a = agent.Entity.Agent
+        a = agent.entity.Agent
         a.type = self.type
-        agent.Entity.Agent = a
-        self.timer = demo.getTime()
+        agent.entity.Agent = a
+        self.timer = demo.GetTime()
         self.active = True
 
 
@@ -313,10 +427,10 @@ class Upgrade(Goal):
 
 
     def execute(self, agent):
-        if demo.GetTime() - self.timer >= statParser.getStat(str(self.type).lower + "UpgradeTime"):
+        if demo.GetTime() - self.timer >= statParser.getStat(str(self.type).split(".")[1].lower() + "UpgradeTime"):
             entity_manager.instance.doneUpgrade(agent.entity)
+            if agent.entity.Agent.type == demo.agentType.SCOUT:
+                agent.setDiscoverRadius(int(statParser.getStat("scoutExploreRadius")))
             agent.popGoal()
 
 
-    def dbgDraw(self):
-        self.path.algorithm.visualize(self.path)

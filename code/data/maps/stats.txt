@@ -5,8 +5,7 @@ woodCuttingSpeed:30
 amountOfOres:120
 
 ##Walking##
-walkingGround:10
-walkingSlowed:20
+walking:1
 
 ##Agents##
 amountOfWorkers:50
@@ -27,9 +26,13 @@ smelterUpgradeTime:120
 smithUpgradeTime:120
 
 #Fighting
-soldierAttackRange:10
+soldierAttackRange:2
 soldierAttackSpeed:1
 hitChance:0.75
+
+#Exploring
+normalExploreRadius:2
+scoutExploreRadius:6
 
 ##Buildings##
 #Kiln
@@ -45,7 +48,7 @@ smelteryHealth:12
 #Blacksmith
 blacksmithBuildTime:180
 blacksmithWoodCost:10
-blacksmithIronCost:3
+blacksmithOreCost:3
 blacksmithHealth:12
 
 #TrainingCamp

@@ -22,6 +22,9 @@ paused = False
 statParser.loadStats()
 fog_of_war.init(350,350)
 
+resourcedistributor.placeTemps()
+resourcedistributor.placeTemps(temp="")
+
 class SelectedGroup(enum.Enum):
     Grupp1 = 0
     Grupp2 = 1

@@ -289,6 +289,54 @@ PYBIND11_EMBEDDED_MODULE(demo, m)
             }
         }
     });
+    m.def("ForTree",[](std::function<void(Game::Entity&, Demo::Tree&)> &callback)
+    {
+        Game::FilterCreateInfo info;
+        info.inclusive[0] = Game::GetPropertyId("Owner");
+        info.access[0]    = Game::AccessMode::READ;
+        info.inclusive[1] = Game::GetPropertyId("Tree");
+        info.access[1]    = Game::AccessMode::READ;
+        info.numInclusive = 2;
+
+        Game::Filter ht_filter = Game::CreateFilter(info);
+
+        Game::Dataset ht_data = Game::Query(ht_filter);
+        for (int v = 0; v < ht_data.numViews; v++)
+        {
+            Game::Dataset::CategoryTableView const& view = ht_data.views[v];
+            Game::Entity* const entities = (Game::Entity*)view.buffers[0];
+            Demo::Tree* const trees = (Demo::Tree*)view.buffers[1];
+
+            for (IndexT i = 0; i < view.numInstances; ++i)
+            {
+                callback(entities[i], trees[i]);
+            }
+        }
+    });
+    m.def("ForIron",[](std::function<void(Game::Entity&,Demo::Iron&)> &callback)
+    {
+        Game::FilterCreateInfo info;
+        info.inclusive[0] = Game::GetPropertyId("Owner");
+        info.access[0]    = Game::AccessMode::READ;
+        info.inclusive[1] = Game::GetPropertyId("Iron");
+        info.access[1]    = Game::AccessMode::READ;
+        info.numInclusive = 2;
+
+        Game::Filter ht_filter = Game::CreateFilter(info);
+
+        Game::Dataset ht_data = Game::Query(ht_filter);
+        for (int v = 0; v < ht_data.numViews; v++)
+        {
+            Game::Dataset::CategoryTableView const& view = ht_data.views[v];
+            Game::Entity* const entities = (Game::Entity*)view.buffers[0];
+            Demo::Iron* const irons = (Demo::Iron*)view.buffers[1];
+
+            for (IndexT i = 0; i < view.numInstances; ++i)
+            {
+                callback(entities[i], irons[i]);
+            }
+        }
+    });
 
     m.def("HelloSayer", [](){IO::Console::Instance()->Print("I am saying HELLO!!!");}, "Says hello.");
     m.def("SpawnCube", [](Math::point& p){
@@ -376,11 +424,19 @@ PYBIND11_EMBEDDED_MODULE(demo, m)
                 else
                     return false;
             });
-    m.def("IsYDown", []()
+    m.def("IsYdown", []()
             {
                 auto& io = ImGui::GetIO();
                 if (!io.WantCaptureMouse)
                     return io.KeysDown[Input::Key::Y];
+                else
+                    return false;
+            });
+    m.def("IsRdown", []()
+            {
+                auto& io = ImGui::GetIO();
+                if (!io.WantCaptureMouse)
+                    return io.KeysDown[Input::Key::R];
                 else
                     return false;
             });
