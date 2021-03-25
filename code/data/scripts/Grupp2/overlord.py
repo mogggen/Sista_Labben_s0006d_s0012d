@@ -1,4 +1,4 @@
-import random, statParser, demo, msgManager
+import random, statParser, demo, msgManager, navMesh, nmath
 from Grupp2 import agent, fsm, pathfinder, enums
 
 class Overlord:
@@ -24,7 +24,7 @@ class Overlord:
     scoutedIron = []
 
     # Where to place buildings
-    minRadius = 22 # This should be at least half the size of castle
+    minRadius = 20 # This should be at least half the size of castle
     maxRadius = 100 # This should not be more than half of the map
     distanceFromBuildingRadius = 10 # This needs to be at least half the size of a building
 
@@ -80,16 +80,35 @@ class Overlord:
     #     self.scoutedIron.remove(iron)
 
     # A worker requests a tree or iron to gather
+    def GetCastlePosition(self):
+        return self.castleEntity.Building.position
+
     def GetCloseTree(self, agent):
         return self.scoutedTrees.pop(0)
     def GetCloseIron(self, agent):
         return self.scoutedIron.pop(0)
 
-    # def GetPosForBuilding(self, agent):
-    #     while True:
-    #         x = -random.randrange(self.minRadius, self.maxRadius)
-    #         z = -random.randrange(self.minRadius, self.maxRadius)
-    #         if
+    def GetPosForBuilding(self, agent):
+        while True:
+            # Figure out the max and min values for x and z
+            minX = -self.maxRadius
+            maxX = self.maxRadius
+            minZ = self.GetCastlePosition().z + self.minRadius
+            maxZ = self.GetCastlePosition().z + self.maxRadius
+            # Get a random value between the thresholds
+            x = random.randrange(minX, maxX)
+            z = random.randrange(minZ, maxZ)
+            point = nmath.Float2(x, z)
+            # Check if the point is on the navmesh
+            if navMesh.isOnNavMesh(point):
+                # Check if the point is too close to any other building
+                for b in self.buildings:
+                    vec3Pos = b.entityHandle.Building.position
+                    float2Pos = nmath.Float2(vec3Pos.x, vec3Pos.z)
+                    distanceFloat2 = point - float2Pos
+                    absDistance = distanceFloat2.abs
+                    if absDistance.length < self.distanceFromBuildingRadius:
+                        return point
 
     def RequestWorker(self, buildingPos, buildingType):
         for a in self.agents:
