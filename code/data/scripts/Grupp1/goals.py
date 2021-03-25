@@ -1,4 +1,4 @@
-from Grupp1 import path_manager, entity_manager, item_manager
+from Grupp1 import path_manager, entity_manager, item_manager, buildingManager
 import nmath, navMesh, demo, imgui
 import statParser, msgManager
 import enum, random
@@ -389,15 +389,18 @@ class Build(Goal):
             self.timer = demo.GetTime()
             self.working = True
         elif self.working:
-            if demo.GetTime() - self.timer >= statParser.getStat(str(self.type).split(".")[1].lower() + "BuildTime"):
+            if demo.GetTime() - self.timer >= statParser.getStat(str(self.toBuild).split(".")[1].lower() + "BuildTime"):
                 if self.toBuild == demo.buildingType.KILN:
-                    newBuilding = buildingManager.KILN(self.pos.x, self.pos.y)
-                elif self.toBuild == demo.buildingType.SMELTER:
-                    newBuilding = buildingManager.SMELTER(self.pos.x, self.pos.y)
+                    newBuilding = buildingManager.kiln(self.pos.x, self.pos.y)
+
+                elif self.toBuild == demo.buildingType.SMELTERY:
+                    newBuilding = buildingManager.smelter(self.pos.x, self.pos.y)
+
                 elif self.toBuild == demo.buildingType.BLACKSMITH:
-                    newBuilding = buildingManager.BLACKSMITH(self.pos.x, self.pos.y)
+                    newBuilding = buildingManager.blacksmith(self.pos.x, self.pos.y)
+
                 elif self.toBuild == demo.buildingType.TRAININGCAMP:
-                    newBuilding = buildingManager.TRAININGCAMP(self.pos.x, self.pos.y)
+                    newBuilding = buildingManager.trainingCamp(self.pos.x, self.pos.y)
 
                 entity_manager.instance.addBuildings(newBuilding.buildingEntity, newBuilding)
 

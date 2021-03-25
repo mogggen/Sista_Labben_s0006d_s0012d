@@ -17,6 +17,7 @@ files:
     - Grupp1/path_manager.py
     - Grupp1/entity_manager.py
     - Grupp1/item_manager.py
+    - Grupp1/buildingManager.py
     - Grupp1/agent.py
     - Grupp1/goals.py
     - Grupp2/main.py
