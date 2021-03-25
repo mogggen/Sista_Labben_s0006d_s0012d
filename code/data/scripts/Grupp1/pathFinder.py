@@ -110,7 +110,7 @@ class AStar:
 
 
     def visualize(self, path):
-        demo.DrawDot(nmath.Point(path.goal_pos.x, 0, path.goal_pos.y), 15, nmath.Vec4(1,0,0,1))
+        demo.DrawDot(nmath.Point(path.goal_pos.x, 0, path.goal_pos.y), 5, nmath.Vec4(1,0,0,1))
 
         for o in self.closed:
             if o.parent_idx < 0:

@@ -36,6 +36,7 @@ class EntityManager:
         self.ironore = set()
 
         self.selectedEntity = None
+        self.prevSelectedEntity = None
 
         self.castle = None
 
@@ -54,23 +55,46 @@ class EntityManager:
             func(i)
         for i in self.buildings.keys():
             func(i)
-
-
+    
+    def forAllUnmanaged(self, func):
+        for i in self.enemy_workers:
+            func(i)
+        for i in self.enemy_soldiers:
+            func(i)
+        for i in self.enemy_buildings:
+            func(i)
+        for i in self.trees:
+            func(i)
+        for i in self.ironore:
+            func(i)
 
     def updateAll(self):
-        for i in self.upgrading.values():
+        all_objects = list(self.upgrading.values())
+        for i in all_objects:
             i.update()
-        for i in self.workers.values():
+
+        all_objects = list(self.workers.values())
+        for i in all_objects:
             i.update()
-        for i in self.craftsmen.values():
+
+        all_objects = list(self.craftsmen.values())
+        for i in all_objects:
             i.update()
-        for i in self.explorers.values():
+
+        all_objects = list(self.explorers.values())
+        for i in all_objects:
             i.update()
-        for i in self.builders.values():
+
+        all_objects = list(self.builders.values())
+        for i in all_objects:
             i.update()
-        for i in self.soldiers.values():
+
+        all_objects = list(self.soldiers.values())
+        for i in all_objects:
             i.update()
-        for i in self.buildings.values():
+
+        all_objects = list(self.buildings.values())
+        for i in all_objects:
             i.update()
 
 
@@ -114,7 +138,59 @@ class EntityManager:
             self.craftsmen[entity] = obj
 
         self.upgrading.pop(entity)
-        
+
+
+    def removeEntity(self, entity):
+        #managed
+        if   entity in self.upgrading:
+            self.enemy_workers.pop(entity)
+            return entity
+        elif entity in self.workers:
+            self.enemy_workers.pop(entity)
+            return entity
+        elif entity in self.craftsmen:
+            self.enemy_workers.pop(entity)
+            return entity
+        elif entity in self.explorers:
+            self.enemy_workers.pop(entity)
+            return entity
+        elif entity in self.builders:
+            self.enemy_workers.pop(entity)
+            return entity
+        elif entity in self.soldiers:
+            self.enemy_workers.pop(entity)
+            return entity
+        elif entity in self.buildings:
+            self.enemy_workers.pop(entity)
+            return entity
+
+        elif entity in self.enemy_workers:
+            self.enemy_workers.remove(entity)
+            return entity
+        elif entity in self.enemy_soldiers:
+            self.enemy_workers.remove(entity)
+            return entity
+        elif entity in self.enemy_buildings:
+            self.enemy_workers.remove(entity)
+            return entity
+        elif entity in self.trees:
+            self.enemy_workers.remove(entity)
+            return entity
+        elif entity in self.ironore:
+            self.enemy_workers.remove(entity)
+            return entity
+
+        return None
+
+    def deleteEntity(self, entity):
+        if removeEntity(entity):
+            demo.Delete(entity)
+
+    def stageForUpgrade(self, entity):
+        if entity in self.workers:
+            agent = self.workers.pop(entity)
+            self.upgrading[entity] = agent
+
 
     def foundTree(self, entity):
         self.trees.add(entity)
@@ -158,6 +234,7 @@ class EntityManager:
         
         self.forAllManaged(func)
 
+        self.prevSelectedEntity = self.selectedEntity
         self.selectedEntity = best_entity
 
 

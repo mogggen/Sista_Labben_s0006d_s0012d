@@ -11,9 +11,16 @@ import buildings
 left_mouse  = button_input.ButtonInput(demo.IsLeftMouseDown)
 right_mouse = button_input.ButtonInput(demo.IsRightMouseDown)
 y_button    = button_input.ButtonInput(demo.IsYdown)
+r_button    = button_input.ButtonInput(demo.IsRdown)
 
 castle = buildings.initBlueCastle()
 entity_manager.instance.castle = castle
+        
+dummy_enemy = demo.SpawnEntity("AgentEntity/agent")
+a = dummy_enemy.Agent
+a.position = nmath.Point(0, 0, 0)
+a.targetPosition = nmath.Point(0, 0, 0)
+dummy_enemy.Agent = a
 
 p = entity_manager.instance.getCastlePos()
 for _ in range(10):
@@ -39,33 +46,42 @@ def NebulaDraw(p):
         a = entity_manager.instance.getSelectedAgent()
         if a:
             a.addGoal(goals.WalkToGoal(p.x,p.z))
+    
+    if r_button.pressed():
+        _a = dummy_enemy.Agent
+        _a.targetPosition = p
+        dummy_enemy.Agent = _a
 
     if y_button.pressed():
 
-        tree = None
-        tree_property = None
-
-        def func(e, t):
-            nonlocal tree, tree_property
-            tree = e
-            tree_property = t
-
-        demo.ForTree(func)
-
         a = entity_manager.instance.getSelectedAgent()
+        entity_manager.instance.stageForUpgrade(a.entity)
+        a.addGoal(goals.Upgrade(demo.agentType.SCOUT))
 
-        p = tree_property.position
-        a.addGoal(goals.WalkToGoal(p.x,p.z))
-        a.addGoal(goals.CutTree(tree))
-        cp = entity_manager.instance.getCastlePos()
-        a.addGoal(goals.WalkToGoal(cp.x,cp.y))
-        a.addGoal(goals.EmptyInventory())
+        #tree = None
+        #tree_property = None
 
-        tree_pos = p
+        #def func(e, t):
+        #    nonlocal tree, tree_property
+        #    tree = e
+        #    tree_property = t
+
+        #demo.ForTree(func)
+
+        #a = entity_manager.instance.getSelectedAgent()
+
+        #tp = tree_property.position
+        #cp = entity_manager.instance.getCastlePos()
+        #a.addGoals([goals.EmptyInventory(),\
+        #            goals.WalkToGoal(cp.x,cp.y),\
+        #            goals.CutTree(tree),\
+        #            goals.WalkToGoal(tp.x,tp.z)])
+
+        #tree_pos = tp
 
 
     if tree_pos:
-        demo.DrawDot(p, 10, nmath.Vec4(0,1,1,1))
+        demo.DrawDot(tree_pos, 10, nmath.Vec4(0,1,1,1))
 
 
             

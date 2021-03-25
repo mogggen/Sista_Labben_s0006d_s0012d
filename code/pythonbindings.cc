@@ -320,7 +320,7 @@ PYBIND11_EMBEDDED_MODULE(demo, m)
         info.access[0]    = Game::AccessMode::READ;
         info.inclusive[1] = Game::GetPropertyId("Iron");
         info.access[1]    = Game::AccessMode::READ;
-        info.numInclusive = 1;
+        info.numInclusive = 2;
 
         Game::Filter ht_filter = Game::CreateFilter(info);
 
@@ -429,6 +429,14 @@ PYBIND11_EMBEDDED_MODULE(demo, m)
                 auto& io = ImGui::GetIO();
                 if (!io.WantCaptureMouse)
                     return io.KeysDown[Input::Key::Y];
+                else
+                    return false;
+            });
+    m.def("IsRdown", []()
+            {
+                auto& io = ImGui::GetIO();
+                if (!io.WantCaptureMouse)
+                    return io.KeysDown[Input::Key::R];
                 else
                     return false;
             });

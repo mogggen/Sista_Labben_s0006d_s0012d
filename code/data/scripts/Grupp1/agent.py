@@ -48,6 +48,8 @@ class Agent:
 
     def popGoal(self):
         self.goals.pop()
+        if len(self.goals) > 0:
+            self.goals[-1].enter(self)
 
 
     def getPos(self):
@@ -72,10 +74,25 @@ class Agent:
 
         imgui.Begin("Agent", None, 0)
         try:
-            members = [(attr, getattr(self,attr)) for attr in dir(self) if not callable(getattr(self,attr)) and not attr.startswith("__") and not attr == "item_map"]
+            members = [(attr, getattr(self,attr)) for attr in dir(self) if not callable(getattr(self,attr)) and not attr.startswith("__") and not attr == "goals"]
             for member, value in members:
                 imgui.Text(member + ": " + str(value))
             
+            members = [(attr, getattr(self.entity.Agent,attr)) for attr in dir(self.entity.Agent) if not callable(getattr(self.entity.Agent,attr)) and not attr.startswith("__") and not attr == "goals"]
+            for member, value in members:
+                imgui.Text("Agent: " + member + ": " + str(value))
+            members = [(attr, getattr(self.entity.Team,attr)) for attr in dir(self.entity.Team) if not callable(getattr(self.entity.Team,attr)) and not attr.startswith("__") and not attr == "goals"]
+            for member, value in members:
+                imgui.Text("Team: " + member + ": " + str(value))
+            members = [(attr, getattr(self.entity.Health,attr)) for attr in dir(self.entity.Health) if not callable(getattr(self.entity.Health,attr)) and not attr.startswith("__") and not attr == "goals"]
+            for member, value in members:
+                imgui.Text("Health: " + member + ": " + str(value))
+
+            imgui.Text("-- GOALS --")
+            for goal in self.goals:
+                imgui.Text(" " * 4 + str(goal))
+            
+
             imgui.End()
 
         except Exception as e:
