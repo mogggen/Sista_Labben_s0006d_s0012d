@@ -16,22 +16,21 @@ class MoveState(BaseState):
 		agent.pathToGoal = pathfinder.Astar(agent.entityHandle.Agent.position,
 		agent.entityHandle.Agent.targetPosition)
 		
-		
-		
+
 	def Execute(agent):
 		pos = agent.entityHandle.Agent.position
 		if pos != agent.finalGoal:
 			if navMesh.findinNavMesh(pos) != navMesh.findinNavMesh(agent.entityHandle.Agent.targetPosition):
 
-				current = agent.entityHandle.Agent.targetPosition
-				current = navMesh.getCenter(agent.pathToGoal.pop(0))
-				agent.entityHandle.Agent.targetPosition = current
+				current = agent.entityHandle.Agent
+				current.targetPosition = navMesh.getCenter(agent.pathToGoal.pop(0))
+				agent.entityHandle.Agent = current
 
 		elif agent.entityHandle.Agent.position == agent.finalGoal:
 
-			current = agent.entityHandle.Agent.targetPosition
-			current = agent.finalGoal
-			agent.entityHandle.Agent.targetPosition = current
+			current = agent.entityHandle.Agent
+			current.targetPosition = agent.finalGoal
+			agent.entityHandle.Agent = current
 			agent.ChangeState(ChoppingState) #kolla vilken resource vid finalGoal
 
 class FleeState(BaseState):
