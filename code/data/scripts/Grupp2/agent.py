@@ -30,7 +30,7 @@ class Agent:
 	def TakeDamage(self):
 		hp = self.entityHandle.Health
 		hp.hp = statParser.getStat("workerHealth")
-		if hp > 2:
+		if hp > 1:
 			hp -= 1
 			self.entityHandle.Health = hp
 		elif self.hp <= 1:
