@@ -50,9 +50,13 @@ def NebulaDraw(p):
             a.addGoal(goals.WalkToGoal(nmath.Float2(p.x,p.z)))
     
     if r_button.pressed():
-        _a = dummy_enemy.Agent
-        _a.targetPosition = p
-        dummy_enemy.Agent = _a
+        #_a = dummy_enemy.Agent
+        #_a.targetPosition = p
+        #dummy_enemy.Agent = _a
+
+        
+        a = entity_manager.instance.getSelectedAgent()
+        a.addGoal(goals.Build(demo.buildingType.BLACKSMITH, nmath.Float2(0,0) ))
 
     if y_button.pressed():
 

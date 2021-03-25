@@ -13,9 +13,10 @@ class GoalEnum(Enum):
     SMITH_GOAL = 4
     SMELT_GOAL = 5
     BUILD_GOAL = 6
+    SOLDIER_GOAL = 7
 
 class BuildGoalEnum(Enum):
     BUILD_KILNS_GOAL = 0
     BUILD_SMITH_GOAL = 1
     BUILD_SMELTER_GOAL = 2
-    BUILD_TRAININGCAMP_GOAL = 3
+    BUILD_TRAINING_CAMP_GOAL = 3
