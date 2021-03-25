@@ -16,22 +16,21 @@ class MoveState(BaseState):
 		agent.pathToGoal = pathfinder.Astar(agent.entityHandle.Agent.position,
 		agent.entityHandle.Agent.targetPosition)
 		
-		
-		
+
 	def Execute(agent):
 		pos = agent.entityHandle.Agent.position
 		if pos != agent.finalGoal:
 			if navMesh.findinNavMesh(pos) != navMesh.findinNavMesh(agent.entityHandle.Agent.targetPosition):
 
-				current = agent.entityHandle
-				current.targetPosition = navMesh.getCenter(pathToGoal.pop(0))
-				agent.entityHandle = current
+				current = agent.entityHandle.Agent
+				current.targetPosition = navMesh.getCenter(agent.pathToGoal.pop(0))
+				agent.entityHandle.Agent = current
 
 		elif agent.entityHandle.Agent.position == agent.finalGoal:
 
-			current = agent.entityHandle
+			current = agent.entityHandle.Agent
 			current.targetPosition = agent.finalGoal
-			agent.entityHandle = current
+			agent.entityHandle.Agent = current
 			agent.ChangeState(ChoppingState) #kolla vilken resource vid finalGoal
 
 class FleeState(BaseState):
@@ -41,13 +40,21 @@ class FleeState(BaseState):
 
 #Workers Agents
 class ChoppingState(BaseState):
+	def Enter(agent):
+		#starta timer typ / ta start tid
+		pass
 	def Execute(agent, radius):
+		#look if timer is done
 		if not agent.timeBusy:
 			#start chopping timer
 			return
 		print("agent is busy")
 
 class UpgradeState(BaseState):
+	def Enter(agent, newType):
+		#kolla att kan upgrada
+		#starta timer typ / ta start tid
+		pass
 	def Execute(agent, newtype):
 		if not agent.timeBusy:
 			if agent.type == agentType[0]:
@@ -60,10 +67,10 @@ class UpgradeState(BaseState):
 					agent.type = newtype
 					agent.timeBusy == statParser.getStat("scoutUpgradeTime")
 				if newtype == agentType[2]:
-					if overlord.sword > statParser.getStat("soldierSwordCost"):
+					if overlord.overlord.sword > statParser.getStat("soldierSwordCost"):
 						agent.type = newtype
 						agent.timeBusy = statParser.getStat("soldierUpgradeTime")
-						overlord.sword -= statParser.getStat("soldierSwordCost")
+						overlord.overlord.sword -= statParser.getStat("soldierSwordCost")
 					else:
 						print("no spare swords in castle")
 						return
@@ -97,6 +104,10 @@ class ExploreState(BaseState):
 		
 #artisan Agents
 class BuildState(BaseState):
+	def Enter(agent, buildingtype):
+		#kolla om nog med resurser
+		#starta timer typ / ta start tid
+		pass
 	def Execute(agent):
 		if agent.type == agentType[6]:
 			if overlord.tree > statParser.getStat("kilnWoodCost"):

@@ -13,7 +13,7 @@ class kiln:
 
     def consumeAgent(self, agent):
         self.agent = agent.entity.Agent
-        agent.entity.Agent.RemoveFromSystem()
+        entity_manager.instance.removeEntity(self.agent.entity)
         buildingProperty = self.buildingEntity.Building
         buildingProperty.hasWorker = True
         self.buildingEntity.Building = buildingProperty
@@ -46,7 +46,7 @@ class smelter:
 
     def consumeAgent(self, agent):
         self.agent = agent.entity.Agent
-        agent.entity.Agent.RemoveFromSystem()
+        entity_manager.instance.removeEntity(self.agent.entity)
         buildingProperty = self.buildingEntity.Building
         buildingProperty.hasWorker = True
         self.buildingEntity.Building = buildingProperty
@@ -78,7 +78,7 @@ class blacksmith:
 
     def consumeAgent(self, agent):
         self.agent = agent.entity.Agent
-        agent.entity.Agent.RemoveFromSystem()
+        entity_manager.instance.removeEntity(self.agent.entity)
         buildingProperty = self.buildingEntity.Building
         buildingProperty.hasWorker = True
         self.buildingEntity.Building = buildingProperty
@@ -113,6 +113,11 @@ class trainingCamp:
 
         agentProperty = self.agent.entity.Agent
         agentProperty.type = demo.agentType.SOLDIER
+
+        agentPropertyHealth = demo.Health
+        agentPropertyHealth.hp = statParser.getStat("soldierHealth")
+        demo.Health = agentPropertyHealth
+
         self.agent.entity.Agent = agentProperty
 
         entity_manager.instance.stageForUpgrade(self.agent.entity)
@@ -130,10 +135,13 @@ class trainingCamp:
                 working = True
             else:
                 if demo.GetTime() - self.timer >= statParser.getStat("soldierUpgradeTime"):
-                    self.agent.entity.Agent.addToSystem()
-                    s
+                    entity_manager.instance.doneUppgrading(self.agent.entity)
                     self.agent = None
                     working = False
+
+                    buildingProperty = self.buildingEntity.Building
+                    buildingProperty.hasWorker = False
+                    self.buildingEntity.Building = buildingProperty
 
     def removeProductCost(self):
         item_manager.instance.sword -= statParser.getStat("soldierSwordCost")

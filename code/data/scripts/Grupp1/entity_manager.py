@@ -232,6 +232,7 @@ class EntityManager:
         if entity in self.workers:
             agent = self.workers.pop(entity.toInt())
             self.upgrading[entity.toInt()] = agent
+            agent.clearGoals()
 
 
     def getSelectedAgent(self):

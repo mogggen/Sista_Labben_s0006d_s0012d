@@ -20,6 +20,7 @@ switch_ui    = button_input.ButtonInput(demo.IsQdown)
 paused = False
 
 statParser.loadStats()
+
 fog_of_war.init(350,350)
 
 resourcedistributor.placeTemps()
@@ -30,10 +31,19 @@ class SelectedGroup(enum.Enum):
     Grupp2 = 1
     Ingen  = 2
 
+selected_group = SelectedGroup.Ingen
+
+
+
+
 from Grupp1 import main as Grupp1main
 from Grupp2 import main as Grupp2main
+import msgManager
 
-selected_group = SelectedGroup.Ingen
+
+
+
+
 
 # Runs once every frame
 def NebulaUpdate():
@@ -106,7 +116,7 @@ def NebulaUpdate():
     Grupp2main.NebulaUpdate()
 
     fog_of_war.visual.apply_cloud_changes()
-    
+    msgManager.instance.distributeMsg()
 
 # Runs one every frame when it's time to draw
 def NebulaDraw():
