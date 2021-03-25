@@ -9,7 +9,6 @@ class Agent:
 		self.type = demo.agentType.WORKER
 		self.finalGoal = None
 		self.pathToGoal = []
-		self.pathToCastle = []
 		self.state = fsm.BaseState()
 		self.timeBusy = 0
 		
@@ -27,7 +26,7 @@ class Agent:
 	def Update(self):
 		self.state.Execute()
 	# Take Damage - Method
-	def TakeDamage(self):
+	def TakeDamage(self, msg):
 		hp = self.entityHandle.Health
 		hp.hp = statParser.getStat("workerHealth")
 		if hp > 1:
@@ -35,6 +34,8 @@ class Agent:
 			self.entityHandle.Health = hp
 		elif self.hp <= 1:
 			overlord.overlord.KillAgent(self)
+	def DealDamage(self, target):
+		overlord.overlord.SendMsg(self, target)
 	# pick up item
 	def PickupItem(self, item):
 		holding = item

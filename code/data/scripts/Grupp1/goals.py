@@ -1,4 +1,4 @@
-from Grupp1 import path_manager, entity_manager, item_manager, buildingManager, item_manager
+from Grupp1 import path_manager, entity_manager, item_manager, buildings, item_manager
 import nmath, navMesh, demo, imgui
 import statParser, msgManager
 import enum, random
