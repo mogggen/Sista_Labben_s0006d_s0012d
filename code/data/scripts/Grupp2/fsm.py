@@ -1,6 +1,5 @@
-import random
-from Grupp2 import pathfinder, buildings, overlord
-import agent, navMesh, pathfinder, demo
+from Grupp2 import pathfinder, buildings, overlord, agent
+import navMesh, demo
 
 
 #All Agents

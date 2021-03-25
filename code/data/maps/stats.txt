@@ -64,7 +64,7 @@ coalReturn:1
 
 #IronCreation
 ironOreCost:2
-ironCoalcost:3
+ironCoalCost:3
 ironTimeCost:30
 ironReturn:1
 
