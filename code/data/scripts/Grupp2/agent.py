@@ -1,6 +1,7 @@
 import demo, statParser
 from Grupp2 import fsm, pathfinder, overlord
 
+
 agentType = (
 	"WORKER",
 	"SCOUT",
@@ -23,29 +24,36 @@ class Agent:
 		self.state = None
 		self.goalPos = None
 		self.timeBusy = 0
-		self.hp = statParser.getStat("workerHealth")
+		
+		self.entityHandle = demo.SpawnEntity("AgentEntity/agent")
+		
+		self.hp = self.entityHandle.Health
+		self.hp.hp = statParser.getStat("workerHealth")
+		self.entityHandle.Health = self.hp
 	
 	#lämna, orders frome overlord
 	def ChangeState(self, newState):
 		self.state = newState
 	
 	# Take Damage - Method
-	def TakeDamage(self):
+	def TakeDamege(self):
 		if hp > 1:
 			self.hp -= 1;
 		else:
-			#change state to dead
-			pass
+			overlord.overlord.KillAgent(self)
 	# pick up item
 	def PickupItem(self, item):
 		holding = item
 	# drop item
 	def DropItem(self):
-		if self.holding == "tree":
-			overlord.Addtree(1)
-		elif self.holding == "ironOre":
-			overlord.AddironOre(1)
-		self.holding = none;
+		if self.pos == overlord.overlord.castleEntity.Building.position:
+			if self.holding == "tree":
+				overlord.Addtree(1)
+			elif self.holding == "ironOre":
+				overlord.AddironOre(1)
+			self.holding = none;
+		else:
+			print("Agent not in casle keep walking")
 
 
 
