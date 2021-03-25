@@ -5,8 +5,7 @@ woodCuttingSpeed:30
 amountOfOres:120
 
 ##Walking##
-walkingGround:10
-walkingSlowed:20
+walking:1
 
 ##Agents##
 amountOfWorkers:50
