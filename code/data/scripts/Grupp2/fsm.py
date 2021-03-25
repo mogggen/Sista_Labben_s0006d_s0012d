@@ -41,13 +41,21 @@ class FleeState(BaseState):
 
 #Workers Agents
 class ChoppingState(BaseState):
+	def Enter(agent):
+		#starta timer typ / ta start tid
+		pass
 	def Execute(agent, radius):
+		#look if timer is done
 		if not agent.timeBusy:
 			#start chopping timer
 			return
 		print("agent is busy")
 
 class UpgradeState(BaseState):
+	def Enter(agent, newType):
+		#kolla att kan upgrada
+		#starta timer typ / ta start tid
+		pass
 	def Execute(agent, newtype):
 		if not agent.timeBusy:
 			if agent.type == agentType[0]:
@@ -97,6 +105,10 @@ class ExploreState(BaseState):
 		
 #artisan Agents
 class BuildState(BaseState):
+	def Enter(agent, buildingtype):
+		#kolla om nog med resurser
+		#starta timer typ / ta start tid
+		pass
 	def Execute(agent):
 		if agent.type == agentType[6]:
 			if overlord.tree > statParser.getStat("kilnWoodCost"):
