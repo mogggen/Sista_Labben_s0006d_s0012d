@@ -399,7 +399,7 @@ class Build(Goal):
                 elif self.toBuild == demo.buildingType.TRAININGCAMP:
                     newBuilding = buildingManager.TRAININGCAMP(self.pos.x, self.pos.y)
 
-                entity_manager.instance.buildings[newBuilding.buildingEntity] = newBuilding
+                entity_manager.instance.addBuildings(newBuilding.buildingEntity, newBuilding)
 
 #--------------------------------------------------------------------#
 
