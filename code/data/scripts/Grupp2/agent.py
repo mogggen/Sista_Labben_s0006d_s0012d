@@ -9,7 +9,6 @@ class Agent:
 		self.type = demo.agentType.WORKER
 		self.finalGoal = None
 		self.pathToGoal = []
-		self.pathToCastle = []
 		self.state = fsm.BaseState()
 		self.timeBusy = 0
 		
@@ -27,7 +26,7 @@ class Agent:
 	def Update(self):
 		self.state.Execute()
 	# Take Damage - Method
-	def TakeDamage(self):
+	def TakeDamage(self, msg):
 		hp = self.entityHandle.Health
 		hp.hp = statParser.getStat("workerHealth")
 		if hp > 1:
@@ -35,6 +34,8 @@ class Agent:
 			self.entityHandle.Health = hp
 		elif self.hp <= 1:
 			overlord.overlord.KillAgent(self)
+	def DealDamage(self, target):
+		overlord.overlord.SendMsg(self, target)
 	# pick up item
 	def PickupItem(self, item):
 		holding = item
@@ -51,3 +52,32 @@ class Agent:
 
 	def SetGoal(self, newGoal):
 		self.goal = newGoal
+
+
+	def goalHandler(self):
+		if self.goal == enums.WOOD_GOAL:
+			self.finalGoal = overlord.overlord.getwoodposition() #check method name
+			self.ChangeState(MoveState)
+
+		elif self.goal == enums.IRON_GOAL:
+			self.finalGoal = overlord.overlord.getironposition() #check method name
+			self.ChangeState(MoveState)
+		
+			
+		elif self.goal == enums.KILN_GOAL:
+			if agent.entityHandle.agentType == demo.agentType.WORKER:
+				self.ChangeState(UpgradeState(demo.agentType.WORKER))
+		
+		elif self.goal == enums.SMITH_GOAL:
+			if agent.entityHandler.agentType == demo.agentType.WORKER:
+				self.ChangeState(UpgradeState)
+		
+
+		elif self.goal == enum.SMELT_GOAL:
+			if agent.entityHandler.agentType == demo.agentType.WORKER:
+				self.ChangeState(UpgradeState)
+		
+		elif self.goal == enum.BUILD_GOAL:
+			if agent.entityHandler.agentType == demo.agentType.WORKER:
+				self.finalGoal = overlord.overlord.getbuildposition() #check method name
+				self.ChangeState(MoveState)

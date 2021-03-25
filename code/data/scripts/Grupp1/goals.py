@@ -1,4 +1,4 @@
-from Grupp1 import path_manager, entity_manager, item_manager, buildingManager
+from Grupp1 import path_manager, entity_manager, item_manager, buildings, item_manager
 import nmath, navMesh, demo, imgui
 import statParser, msgManager
 import enum, random
@@ -385,11 +385,14 @@ class Build(Goal):
 
     def execute(self, agent):
         if not self.working:
-            self.timer = demo.GetTime()
-            self.working = True
+            if self.canBuild():
+                self.timer = demo.GetTime()
+                self.working = True
+            else:
+                print("Not enough materials!")
         elif self.working:
             if demo.GetTime() - self.timer >= statParser.getStat(str(self.toBuild).split(".")[1].lower() + "BuildTime"):
-                if self.toBuild == demo.buildingType.KILN:
+                if self.toBuild == demo.buildingType.KILN and canBuild():
                     newBuilding = buildingManager.kiln(self.pos.x, self.pos.y)
 
                 elif self.toBuild == demo.buildingType.SMELTERY:
@@ -402,6 +405,19 @@ class Build(Goal):
                     newBuilding = buildingManager.trainingCamp(self.pos.x, self.pos.y)
 
                 entity_manager.instance.addBuildings(newBuilding.buildingEntity, newBuilding)
+
+    def canBuild(self):
+
+        if item_manager.instance.logs >= statParser.getStat(str(self.toBuild).split(".")[1].lower() + "WoodCost"):
+            if self.toBuild in (demo.buildingType.KILN, demo.buildingType.SMELTERY, demo.buildingType.TRAININGCAMP):
+                return True
+
+            elif self.toBuild == demo.buildingType.BLACKSMITH and \
+                    item_manager.instance.ironIngot >= statParser.getStat(str(self.toBuild).split(".")[1].lower() + "IronCost"):
+                return True
+
+            return False
+
 
 #--------------------------------------------------------------------#
 

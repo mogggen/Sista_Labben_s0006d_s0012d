@@ -48,7 +48,7 @@ smelteryHealth:12
 #Blacksmith
 blacksmithBuildTime:180
 blacksmithWoodCost:10
-blacksmithOreCost:3
+blacksmithIronCost:3
 blacksmithHealth:12
 
 #TrainingCamp

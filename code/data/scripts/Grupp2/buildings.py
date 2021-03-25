@@ -29,13 +29,13 @@ class Building:
 
     def Execute(self):
         if self.type == demo.buildingType.KILN:
-            if self.startTime - demo.GetTime() >= statParser.getStat("coalTimeCost"):
+            if demo.GetTime() - self.startTime >= statParser.getStat("coalTimeCost"):
                 self.Produce()
         elif self.type == demo.buildingType.BLACKSMITH:
-            if self.startTime - demo.GetTime() >= statParser.getStat("swordTimeCost"):
+            if demo.GetTime() - self.startTime >= statParser.getStat("swordTimeCost"):
                 self.Produce()
         elif self.type == demo.buildingType.SMELTERY:
-            if self.startTime - demo.GetTime() >= statParser.getStat("ironTimeCost"):
+            if demo.GetTime() - self.startTime >= statParser.getStat("ironTimeCost"):
                 self.Produce()
 
     def Start(self):
