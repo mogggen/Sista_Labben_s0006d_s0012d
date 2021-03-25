@@ -116,8 +116,6 @@ class BuildState(BaseState):
 	startTime = 0
 	buildingtype = None
 	def Enter(agent, buildingtypeIn):
-		#kolla om nog med resurser
-		#starta timer typ / ta start tid
 		buildingtype = buildingtypeIn;
 		if agent.entityHandle.agentType[6]:#builder
 			if buildingtype == demo.buildingType[0]:#kiln
@@ -144,8 +142,34 @@ class BuildState(BaseState):
 			print("Agent is not a builder")
 	def Execute(agent):
 		if buildingtype == demo.buildingType[0]:#kiln
-			if startTime - demo.GetTime >= statParser.getStat("kilnBuildTime"):
-				building(demo.buildingtype[0],agent)
+			if demo.GetTime() - startTime >= statParser.getStat("kilnBuildTime"):
+				building = buildings.Building(demo.buildingtype[0],agent)
+				overlord.overlord.AddBuilding(building)
+			if  demo.GetTime - startTime >= statParser.getStat("kilnBuildTime") - statParser.getStat("kilnerUpgradeTime"):
+				agentprops = agent.entityHandel.Agent
+				RequestWorker(agentprops.pos,demo.buildingType[0])
+				pass
+		elif buildingtype == demo.buildingType[1]:#Smeltery
+			if demo.GetTime() - startTime >= statParser.getStat("smelteryBuildTime"):
+				building = buildings.Building(demo.buildingtype[1],agent)
+				overlord.overlord.AddBuilding(building)
+			if  demo.GetTime - startTime >= statParser.getStat("smelteryBuildTime") - statParser.getStat("smelterUpgradeTime"):
+				agentprops = agent.entityHandel.Agent
+				RequestWorker(agentprops.pos,demo.buildingType[1])
+				pass
+		elif buildingtype == demo.buildingType[2]:#Blacksmith
+			if demo.GetTime() - startTime >= statParser.getStat("blacksmithBuildTime"):
+				building = buildings.Building(demo.buildingtype[2],agent)
+				overlord.overlord.AddBuilding(building)
+			if  demo.GetTime - startTime >= statParser.getStat("blacksmithBuildTime") - statParser.getStat("smithUpgradeTime"):
+				agentprops = agent.entityHandel.Agent
+				RequestWorker(agentprops.pos,demo.buildingType[2])
+				pass
+		elif buildingtype == demo.buildingType[3]:#Trainingcamp
+			if demo.GetTime - startTime>= statParser.getStat("trainingCampBuildTime"):
+				building = buildings.Building(demo.buildingtype[3],agent)
+				overlord.overlord.AddBuilding(building)
+				#add utbildadsoldat
 #Soldier Agents
 class AttackState(BaseState):
 	def Execute(agent, enemy):
