@@ -8,7 +8,7 @@ class kiln:
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.buildingEntity = spawnBuilding(demo.buildingType.kiln, self.x, self.y, 0, demo.teamEnum.GRUPP_1)
+        self.buildingEntity = buildings.spawnBuilding(demo.buildingType.kiln, self.x, self.y, 0, demo.teamEnum.GRUPP_1)
 
 
     def consumeAgent(self, agent):
@@ -41,7 +41,7 @@ class smelter:
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.buildingEntity = spawnBuilding(demo.buildingType.smelter, self.x, self.y, 0, demo.teamEnum.GRUPP_1)
+        self.buildingEntity = buildings.spawnBuilding(demo.buildingType.smelter, self.x, self.y, 0, demo.teamEnum.GRUPP_1)
 
 
     def consumeAgent(self, agent):
@@ -73,7 +73,7 @@ class blacksmith:
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.buildingEntity = spawnBuilding(demo.buildingType.blacksmith, self.x, self.y, 0, demo.teamEnum.GRUPP_1)
+        self.buildingEntity = buildings.spawnBuilding(demo.buildingType.blacksmith, self.x, self.y, 0, demo.teamEnum.GRUPP_1)
 
 
     def consumeAgent(self, agent):
@@ -105,12 +105,18 @@ class trainingCamp:
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.buildingEntity = spawnBuilding(demo.buildingType.traingincamp, self.x, self.y, 0, demo.teamEnum.GRUPP_1)
+        self.buildingEntity = buildings.spawnBuilding(demo.buildingType.traingincamp, self.x, self.y, 0, demo.teamEnum.GRUPP_1)
 
 
     def consumeAgent(self, agent):
-        self.agent = agent.entity.Agent
-        agent.entity.Agent.RemoveFromSystem()
+        self.agent = agent
+
+        agentProperty = self.agent.entity.Agent
+        agentProperty.type = demo.agentType.SOLDIER
+        self.agent.entity.Agent = agentProperty
+
+        entity_manager.instance.stageForUpgrade(self.agent.entity)
+
         buildingProperty = self.buildingEntity.Building
         buildingProperty.hasWorker = True
         self.buildingEntity.Building = buildingProperty
@@ -125,6 +131,7 @@ class trainingCamp:
             else:
                 if demo.GetTime() - self.timer >= statParser.getStat("soldierUpgradeTime"):
                     self.agent.entity.Agent.addToSystem()
+                    s
                     self.agent = None
                     working = False
 

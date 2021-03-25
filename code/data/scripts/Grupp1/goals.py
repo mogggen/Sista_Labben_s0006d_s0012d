@@ -106,8 +106,12 @@ class CutTree(Goal):
 
 
     def enter(self, agent):
-        self.timer = demo.GetTime()
-        self.active = True
+        tp = self.tree.Tree.position
+        if not agent.getPos() == tp:
+            agent.addGoal(WalkToGoal(nmath.Float2(tp.x, tp.z)))
+        else:
+            self.timer = demo.GetTime()
+            self.active = True
 
 
     def paused(self):
@@ -135,7 +139,11 @@ class PickupOre(Goal):
 
 
     def enter(self, agent):
-        self.active = True
+        op = self.ore.Iron.position
+        if not agent.getPos() == op:
+            agent.addGoal(WalkToGoal(nmath.Float2(op.x, op.z)))
+        else:
+            self.active = True
 
 
     def paused(self):
@@ -158,12 +166,15 @@ class PickupOre(Goal):
 
 
 class EmptyInventory(Goal):
-    def __init__(self):
-        pass
+    def __init__(self, castlePos):
+        self.castlePos = castlePos
 
 
     def enter(self, agent):
-        self.active = True
+        if not agent.getPos() == self.castlePos:
+            agent.addGoal(WalkToGoal(nmath.Float2(self.castlePos.x, self.castlePos.z)))
+        else:
+            self.active = True
 
 
     def paused(self):
@@ -355,6 +366,45 @@ class Flee(Goal):
         enemyPos = nmath.Point(enemyTransform[0][3], enemyTransform[1][3], enemyTransform[2][3])
         demo.DrawDot(enemyPos, 20, nmath.Vec4(0,1,0,1))
         pass
+
+#--------------------------------------------------------------------#
+
+
+class Build(Goal):
+    def __init__(self, type:demo.buildingType, pos:nmath.Float2):
+        self.toBuild = type
+        self.pos = pos
+        self.working = False
+
+
+    def enter(self, agent):
+        self.active = True
+        self.timer = demo.GetTime()
+
+
+    def paused(self):
+        self.active = False
+
+
+    def execute(self, agent):
+        if not self.working:
+            self.timer = demo.GetTime()
+            self.working = True
+        elif self.working:
+            if demo.GetTime() - self.timer >= statParser.getStat(str(self.type).split(".")[1].lower() + "BuildTime"):
+                if self.toBuild == demo.buildingType.KILN:
+                    newBuilding = buildingManager.KILN(self.pos.x, self.pos.y)
+                elif self.toBuild == demo.buildingType.KILN:
+                    newBuilding = buildingManager.SMELTER(self.pos.x, self.pos.y)
+                elif self.toBuild == demo.buildingType.KILN:
+                    newBuilding = buildingManager.BLACKSMITH(self.pos.x, self.pos.y)
+                elif self.toBuild == demo.buildingType.KILN:
+                    newBuilding = buildingManager.TRAININGCAMP(self.pos.x, self.pos.y)
+
+                entity_manager.instance.buildings[newBuilding.buildingEntity] = newBuilding
+
+    def dbgDraw(self):
+        self.path.algorithm.visualize(self.path)
 
 #--------------------------------------------------------------------#
 
