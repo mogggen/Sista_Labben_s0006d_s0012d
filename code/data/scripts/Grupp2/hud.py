@@ -121,7 +121,8 @@
 
 #def Nebula Draw:
     #imgui.Begin("")
-    #imgui.Text("Worker: " + worker)
+   
+    #imgui.Text("Worker: " + worker.)
     #imgui.Text("Scout: " + Scout)
     #imgui.Text("Soldier: "+ Soldier)
     #imgui.Text("Builder: " + Builder)

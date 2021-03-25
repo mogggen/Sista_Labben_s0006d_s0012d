@@ -15,13 +15,17 @@ class messageHandler:
     messages = []
 
     def sendMsg(self, msg):
-        messages.Append(msg)
+        self.messages.append(msg)
 
     def distributeMsg(self):
-        for _ in len(messages):
-            current_msg = messages.pop()
+        for _ in range(len(self.messages)):
+            current_msg = self.messages.pop()
             if current_msg.receiver == demo.teamEnum.GRUPP_1:
                 Grupp1main.HandleMessage(current_msg)
+
             
             else:
                 Grupp2main.HandleMessage(current_msg)
+
+
+instance = messageHandler()

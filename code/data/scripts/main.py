@@ -5,6 +5,7 @@ import resourcedistributor
 import math
 import nmath
 import enum
+import msgManager
 
 time = 0
 time_speeds = [0.1, 0.25, 0.5, 1, 2, 4, 7, 10, 25, 50, 100, 150, 200]
@@ -30,10 +31,17 @@ class SelectedGroup(enum.Enum):
     Grupp2 = 1
     Ingen  = 2
 
+selected_group = SelectedGroup.Ingen
+
+
+
+
 from Grupp1 import main as Grupp1main
 from Grupp2 import main as Grupp2main
 
-selected_group = SelectedGroup.Ingen
+
+
+
 
 # Runs once every frame
 def NebulaUpdate():
@@ -106,7 +114,7 @@ def NebulaUpdate():
     Grupp2main.NebulaUpdate()
 
     fog_of_war.visual.apply_cloud_changes()
-    
+    msgManager.instance.distributeMsg()
 
 # Runs one every frame when it's time to draw
 def NebulaDraw():
