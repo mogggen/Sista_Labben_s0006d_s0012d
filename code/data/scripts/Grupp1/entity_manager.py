@@ -190,6 +190,7 @@ class EntityManager:
         if entity in self.workers:
             agent = self.workers.pop(entity)
             self.upgrading[entity] = agent
+            agent.clearGoals()
 
 
     def foundTree(self, entity):
