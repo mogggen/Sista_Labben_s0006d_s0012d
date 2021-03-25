@@ -54,6 +54,12 @@
         [](s& e){ return pybind11::cast(Math::point(e.field));},\
         [](s& e, pybind11::object obj){ e.field = pybind11::cast<Math::point>(obj).vec;})
 
+struct IncrementalIteration
+{
+    int view_i;
+    int index;
+};
+
 namespace Python
 {
 
@@ -321,6 +327,60 @@ PYBIND11_EMBEDDED_MODULE(demo, m)
                 callback(entities[i], trees[i]);
             }
         }
+    });
+
+    py::class_<IncrementalIteration>(m, "IncrementalIteration")
+        .def(py::init([](){return IncrementalIteration{0,0};}))
+        .defReadWrite(IncrementalIteration, view_i)
+        .defReadWrite(IncrementalIteration, index);
+
+    m.def("ForTreeLimit",[](IncrementalIteration& ii, std::function<void(Game::Entity&, Demo::Tree&)> &callback)
+    {
+        Game::FilterCreateInfo info;
+        info.inclusive[0] = Game::GetPropertyId("Owner");
+        info.access[0]    = Game::AccessMode::READ;
+        info.inclusive[1] = Game::GetPropertyId("Tree");
+        info.access[1]    = Game::AccessMode::READ;
+        info.numInclusive = 2;
+
+        Game::Filter ht_filter = Game::CreateFilter(info);
+
+        Game::Dataset ht_data = Game::Query(ht_filter);
+
+        int v = ii.view_i;
+        IndexT i = ii.index;
+        int num_iterations = 100;
+
+        for (; v < ht_data.numViews; v++)
+        {
+            Game::Dataset::CategoryTableView const& view = ht_data.views[v];
+            Game::Entity* const entities = (Game::Entity*)view.buffers[0];
+            Demo::Tree* const trees = (Demo::Tree*)view.buffers[1];
+
+            for (; i < view.numInstances; ++i)
+            {
+                callback(entities[i], trees[i]);
+
+                num_iterations--;
+                if (num_iterations <= 0)
+                    goto IKnowThisIsNotVeryGoodButImTiredAndStressedAndFullOnCoffeinSoFuckIt;
+            }
+            i = 0;
+        }
+IKnowThisIsNotVeryGoodButImTiredAndStressedAndFullOnCoffeinSoFuckIt:
+
+        if( v >= ht_data.numViews )
+        {
+            ii.view_i = 0;
+            ii.index  = 0;
+        }
+        else
+        {
+            ii.view_i = v;
+            ii.index = i;
+        }
+
+        return ii;
     });
     m.def("ForIron",[](std::function<void(Game::Entity&,Demo::Iron&)> &callback)
     {

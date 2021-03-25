@@ -4,17 +4,24 @@ import enum
 
 class UpdateState(enum.Enum):
     TREES  = 0
-    DUMMY1 = 1
-    DUMMY2 = 2
-    DUMMY3 = 3
-    IRON   = 4
-    DUMMY4 = 5
-    DUMMY5 = 6
-    DUMMY6 = 7
-    ENEMIES= 8
-    DUMMY7 = 9
-    DUMMY8 = 10
-    DUMMY9 = 11
+    IRON   = 1
+    ENEMIES= 2
+
+updateOrder = [
+        UpdateState.IRON,\
+        UpdateState.ENEMIES,\
+        UpdateState.TREES,\
+        UpdateState.TREES,\
+        UpdateState.TREES,\
+        UpdateState.TREES,\
+        UpdateState.TREES,\
+        UpdateState.TREES,\
+        UpdateState.TREES,\
+        UpdateState.TREES,\
+        UpdateState.TREES,\
+        UpdateState.TREES]
+
+
 
 def validateUnmanagedEntity(entity_dict, entity):
     if not demo.IsValid(entity):
@@ -55,7 +62,12 @@ class EntityManager:
 
         self.castle = None
         
-        self.updateState = UpdateState.TREES
+        self.updateState = 0
+
+        self.incrementUpdateState = demo.IncrementalIteration()
+        self.incrementUpdateState.view_i = 0
+        self.incrementUpdateState.index  = 0
+        self.new_trees = set()
 
     def addWorker(self, entity, agent):
         self.workers[entity.toInt()] = agent
@@ -229,7 +241,7 @@ class EntityManager:
             demo.Delete(entity)
 
     def stageForUpgrade(self, entity):
-        if entity in self.workers:
+        if entity.toInt() in self.workers:
             agent = self.workers.pop(entity.toInt())
             self.upgrading[entity.toInt()] = agent
             agent.clearGoals()
@@ -270,22 +282,26 @@ class EntityManager:
         return nmath.Float2(p.x, p.z)
 
     def updateUnManagedEntities(self):
-        if self.updateState == UpdateState.TREES:
+        updateState = updateOrder[self.updateState]
 
-            trees = set()
+        if updateState == UpdateState.TREES:
+
 
             def updateTrees(entity, tree):
-                nonlocal trees
                 x = int(tree.position.x)
                 y = int(tree.position.z)
                 if fog_of_war.grupp1.is_discovered(x, y):
-                    trees.add(entity.toInt())
+                    self.new_trees.add(entity.toInt())
 
-            demo.ForTree(updateTrees)
+            demo.ForTreeLimit(self.incrementUpdateState, updateTrees)
 
-            self.trees = trees
+            #print("view_i: ", self.incrementUpdateState.view_i, " index: ", self.incrementUpdateState.index)
 
-        elif self.updateState == UpdateState.IRON:
+            if self.incrementUpdateState.view_i == 0 and self.incrementUpdateState.index == 0:
+                self.trees = self.new_trees
+                self.new_trees = set()
+
+        elif updateState == UpdateState.IRON:
             ironores = set()
 
             def updateIron(entity, iron):
@@ -299,7 +315,7 @@ class EntityManager:
 
             self.ironore = ironores
 
-        elif self.updateState == UpdateState.ENEMIES:
+        elif updateState == UpdateState.ENEMIES:
             workers = set()
             soldiers = set()
             buildings = set()
@@ -338,7 +354,7 @@ class EntityManager:
             self.enemy_buildings = buildings
 
         
-        self.updateState = UpdateState((self.updateState.value+1)%12)
+        self.updateState = (self.updateState+1)%len(updateOrder)
 
 
     def dbgDraw(self):
@@ -367,7 +383,6 @@ class EntityManager:
             imgui.Text("enemy_buildings: " + str(len(self.enemy_buildings)))
             imgui.Text("trees: " + str(len(self.trees)))
             imgui.Text("ironore: " + str(len(self.ironore)))
-            
 
             imgui.End()
 
