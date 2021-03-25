@@ -26,7 +26,7 @@ class Agent:
 	def Update(self):
 		self.state.Execute()
 	# Take Damage - Method
-	def TakeDamage(self):
+	def TakeDamage(self, msg):
 		hp = self.entityHandle.Health
 		hp.hp = statParser.getStat("workerHealth")
 		if hp > 1:
