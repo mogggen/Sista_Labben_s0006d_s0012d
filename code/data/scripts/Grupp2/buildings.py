@@ -14,27 +14,27 @@ class Building:
                 self.Produce(self)
                 self.Start()
             else:
-                self.timer -= 1 * frameTime
+                self.timer -= 1 * demo.GetFrameTime()
 
     def Produce(self):
         if self.type == demo.buildingType.KILN:
-            overlord.AddCharcoal(statPaser.getStat("coalReturn"))
+            overlord.overlord.AddCharcoal(statParser.getStat("coalReturn"))
         elif self.type == demo.buildingType.BLACKSMITH:
-            overlord.Addsword(statPaser.getStat("ironReturn"))
+            overlord.overlord.Addsword(statParser.getStat("ironReturn"))
         elif self.type == demo.buildingType.SMELTERY:
-            overlord.Addironbar(statPaser.getStat("swordReturn"))
+            overlord.overlord.Addironbar(statParser.getStat("swordReturn"))
         elif self.type == demo.buildingType.TRAININGCAMP:
-            overlord.Addsoilders()
+            overlord.overlord.Addsoldiers()
 
     def Start(self):
         if self.type == demo.buildingType.KILN:
-            if overlord.tree >= statPaser.getStat("coalWoodCost"):
-                overlord.Taketree(statPaser.getStat("coalWoodCost"))
-                self.timer = statPaser.getStat("coalTimeCost") * demo.GetFrameTime()  
+            if overlord.overlord.tree >= statParser.getStat("coalWoodCost"):
+                overlord.overlord.Taketree(statParser.getStat("coalWoodCost"))
+                self.timer = statParser.getStat("coalTimeCost") * demo.GetFrameTime()
         elif self.type == demo.buildingType.BLACKSMITH:
-            if overlord.ironebar >= statPaser.getStat("swordIronCost") and overlord.charcoal >= statPaser.getStat("swordCoalCost"):
-                self.timer = tatPaser.getStat("swordTimeCost") * demo.GetFrameTime()  
+            if overlord.overlord.ironbar >= statParser.getStat("swordIronCost") and overlord.charcoal >= statParser.getStat("swordCoalCost"):
+                self.timer = statParser.getStat("swordTimeCost") * demo.GetFrameTime()
         elif self.type == demo.buildingType.SMELTERY:
-            if overlord.ironOre >= statPaser.getStat("ironOreCost") and overlord.charcoal >= statPaser.getStat("ironCoalcost"):
-                self.timer = statPaser.getStat("ironTimeCost") * demo.GetFrameTime()  
+            if overlord.overlord.ironOre >= statParser.getStat("ironOreCost") and overlord.charcoal >= statParser.getStat("ironCoalcost"):
+                self.timer = statParser.getStat("ironTimeCost") * demo.GetFrameTime()
        #traingcamp dose not restart   

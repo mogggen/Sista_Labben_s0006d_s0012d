@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import fsm, pathfinder, demo
 from Grupp2 import fsm, pathfinder, overlord
+=======
+import fsm, pathfinder, demo, statParser
+from Grupp2 import fsm, pathfinder
+>>>>>>> 7cd0a4f4576f8211d897d23e00aa3664cfb46512
 
 agentType = (
 	"WORKER",

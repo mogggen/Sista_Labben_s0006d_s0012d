@@ -5,7 +5,6 @@ path = []
 class PathFinder:
 
     def AStar(self, agentPosition, goalPosition):
-        print("hello")
         goalFound = False
         visited = []
         global path
@@ -19,7 +18,7 @@ class PathFinder:
         if goalFace == -1:
             print("goalFace is -1")
 
-        backtrack[startFace] = 0
+        backtrack[startFace] = -1
         openList = []
         closedList = []
         openList.append(startFace)
@@ -28,7 +27,6 @@ class PathFinder:
             q = openList[0]
             # find best block by f value
             for i in range(len(openList)):
-                print()
                 if ghfValues.get(q)[2] > ghfValues.get(openList[i])[2]:
                     q = openList[i]
             openList.remove(q)
@@ -37,21 +35,20 @@ class PathFinder:
             neighbouringFaces = self.GetNeighbouringFaces(q)
             for neighbourFace in neighbouringFaces:
                 skip = False
-                #neighbourBlock = paths.GetBlockByID(neighbourID)
 
                 if (neighbourFace == goalFace):
-                    path.append(navMesh.getCenterOfFace(neighbourFace))
+                    path.append(neighbourFace)
+                    path.append(q)
                     prevFace = backtrack.get(q)
-                    while (prevFace != 0):
-                        #prevBlock = paths.GetBlockByID(prevID)
-                        path.append(navMesh.getCenterOfFace(prevFace))
-                        prevFace = backtrack.get(prevFace)
+                    while (prevFace != -1):
+                        path.append(prevFace)
+                        prevFace = backtrack.get(prevFace, -1)
                     return path
 
                 g = ghfValues.get(q)[0] + 1 # g value addition should not be one but instead distance from this and previous center
                 h = self.Euclidean(neighbourFace, goalFace)
                 f = g + h
-                ghf = [(g, h, f)]
+                ghf = (g, h, f)
                 ghfValues[neighbourFace] = ghf
 
                 for i in openList:
@@ -102,12 +99,13 @@ class PathFinder:
         return neighbouringFaces
 
     def DrawAStar(self):
-        print(len(path))
         for i in range(len(path)-1):
-            startPoint = nmath.Point(path[i].x, 3, path[i].z)
-            endPoint = nmath.Point(path[i+1].x, 3, path[i+1].z)
-            demo.DrawDot(startPoint, 400, nmath.Vec4(0, 1, 0, 1))
-            demo.DrawDot(endPoint, 400, nmath.Vec4(0, 0, 1, 1))
+            point = navMesh.getCenterOfFace(path[i])
+            startPoint = point + nmath.Vector(0,3,0)
+            point2 = navMesh.getCenterOfFace(path[i+1])
+            endPoint = point2 + nmath.Vector(0,3,0)
+            demo.DrawDot(startPoint, 8, nmath.Vec4(0, 1, 0, 1))
+            demo.DrawDot(endPoint, 8, nmath.Vec4(0, 0, 1, 1))
             demo.DrawLine(startPoint, endPoint, 1, nmath.Vec4(1, 0, 0, 1))
 
 class PathBlock:
