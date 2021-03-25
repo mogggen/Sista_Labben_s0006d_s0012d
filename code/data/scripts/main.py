@@ -73,7 +73,7 @@ def NebulaUpdate():
             for x in range(-radius, radius+1):
                 for y in range(-radius, radius+1):
                     if (x**2 + y**2) < radius**2:
-                        fog_of_war.grupp1.uncloud(round(p.x-x),round(p.z-y))
+                        fog_of_war.visual.uncloud(round(p.x-x),round(p.z-y))
     
         if right_mouse.pressed():
             p = demo.RayCastMousePos()

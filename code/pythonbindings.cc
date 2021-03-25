@@ -74,7 +74,10 @@ PYBIND11_EMBEDDED_MODULE(demo, m)
         .defPropertyAccessor(Demo::Tree,              Tree)
         .defPropertyAccessor(Demo::Iron,              Iron)
         .defPropertyAccessor(GraphicsFeature::Camera, Camera)
-        .def(py::self == py::self);
+        .def("__eq__", [](Game::Entity& e1, Game::Entity& e2){return e1 == e2;})
+        .def("__eq__", [](Game::Entity& e1, pybind11::none n){return false;})
+        .def("toInt", [](Game::Entity& e) {return (int)e.id;})
+        .def_static("fromInt", [](uint32_t i){return Game::Entity{i};});
 
     m.def("Delete", [](Game::Entity& e)
             {
@@ -187,14 +190,16 @@ PYBIND11_EMBEDDED_MODULE(demo, m)
             }
         }
     });
-    m.def("ForAgentTeam",[](std::function<void(Demo::Agent&, Demo::Team&)> &callback)
+    m.def("ForAgentTeam",[](std::function<void(Game::Entity&,Demo::Agent&, Demo::Team&)> &callback)
     {
         Game::FilterCreateInfo info;
-        info.inclusive[0] = Game::GetPropertyId("Agent");
+        info.inclusive[0] = Game::GetPropertyId("Owner");
         info.access[0]    = Game::AccessMode::READ;
-        info.inclusive[1] = Game::GetPropertyId("Team");
+        info.inclusive[1] = Game::GetPropertyId("Agent");
         info.access[1]    = Game::AccessMode::READ;
-        info.numInclusive = 2;
+        info.inclusive[2] = Game::GetPropertyId("Team");
+        info.access[2]    = Game::AccessMode::READ;
+        info.numInclusive = 3;
 
         Game::Filter filter = Game::CreateFilter(info);
 
@@ -202,23 +207,26 @@ PYBIND11_EMBEDDED_MODULE(demo, m)
         for (int v = 0; v < data.numViews; v++)
         {
             Game::Dataset::CategoryTableView const& view = data.views[v];
-            Demo::Agent* const agents = (Demo::Agent*)view.buffers[0];
-            Demo::Team* const teams = (Demo::Team*)view.buffers[1];
+            Game::Entity* const entities = (Game::Entity*)view.buffers[0];
+            Demo::Agent* const agents = (Demo::Agent*)view.buffers[1];
+            Demo::Team* const teams = (Demo::Team*)view.buffers[2];
 
             for (IndexT i = 0; i < view.numInstances; ++i)
             {
-                callback(agents[i], teams[i]);
+                callback(entities[i], agents[i], teams[i]);
             }
         }
     });
-    m.def("ForBuildingTeam",[](std::function<void(Demo::Building&, Demo::Team&)> &callback)
+    m.def("ForBuildingTeam",[](std::function<void(Game::Entity&, Demo::Building&, Demo::Team&)> &callback)
     {
         Game::FilterCreateInfo info;
-        info.inclusive[0] = Game::GetPropertyId("Building");
+        info.inclusive[0] = Game::GetPropertyId("Owner");
         info.access[0]    = Game::AccessMode::READ;
-        info.inclusive[1] = Game::GetPropertyId("Team");
+        info.inclusive[1] = Game::GetPropertyId("Building");
         info.access[1]    = Game::AccessMode::READ;
-        info.numInclusive = 2;
+        info.inclusive[2] = Game::GetPropertyId("Team");
+        info.access[2]    = Game::AccessMode::READ;
+        info.numInclusive = 3;
 
         Game::Filter filter = Game::CreateFilter(info);
 
@@ -226,12 +234,13 @@ PYBIND11_EMBEDDED_MODULE(demo, m)
         for (int v = 0; v < data.numViews; v++)
         {
             Game::Dataset::CategoryTableView const& view = data.views[v];
-            Demo::Building* const buildings = (Demo::Building*)view.buffers[0];
-            Demo::Team* const teams = (Demo::Team*)view.buffers[1];
+            Game::Entity* const entities = (Game::Entity*)view.buffers[0];
+            Demo::Building* const buildings = (Demo::Building*)view.buffers[1];
+            Demo::Team* const teams = (Demo::Team*)view.buffers[2];
 
             for (IndexT i = 0; i < view.numInstances; ++i)
             {
-                callback(buildings[i], teams[i]);
+                callback(entities[i], buildings[i], teams[i]);
             }
         }
     });

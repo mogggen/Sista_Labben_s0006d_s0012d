@@ -3,7 +3,7 @@ import statParser, fog_of_war
 
 class Agent:
     def __init__(self, pos):
-        self.entity = demo.SpawnEntity("AgentEntity/agent")
+        self.entity = demo.SpawnEntity("AgentEntity/blueagent")
         a = self.entity.Agent
         a.position = nmath.Point(pos.x, 0, pos.y)
         a.targetPosition = nmath.Point(pos.x, 0, pos.y)
@@ -32,14 +32,14 @@ class Agent:
 
     def addGoal(self, goal):
         if len(self.goals) > 0:
-            self.goals[-1].pause(self)
+            self.goals[-1].pause()
         self.goals.append(goal)
         self.goals[-1].enter(self)
 
 
     def addGoals(self, goals):
         if len(self.goals) > 0:
-            self.goals[-1].pause(self)
+            self.goals[-1].pause()
         self.goals += goals
         self.goals[-1].enter(self)
 
