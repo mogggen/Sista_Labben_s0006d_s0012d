@@ -33,6 +33,11 @@ class MoveState(BaseState):
 			agent.entityHandle.Agent = current
 			agent.ChangeState(ChoppingState) #kolla vilken resource vid finalGoal
 
+			# om agent.goal är woodgoal ändra sate till chopping state
+			# om agenten.goal är irongoal plocka upp iron och gå  till slottet 
+			# om goal är kiln/smith/smelt changeState till start production
+			
+
 class FleeState(BaseState):
 	def Execute(agent, danger, fleeRadius):
 		return
@@ -41,10 +46,11 @@ class FleeState(BaseState):
 #Workers Agents
 class ChoppingState(BaseState):
 	def Enter(agent):
-		#starta timer typ / ta start tid
+		#om worker få en start tid
 		pass
 	def Execute(agent, radius):
 		#look if timer is done
+		#om done, plocka upp träd och gå till slotet
 		if not agent.timeBusy:
 			#start chopping timer
 			return
@@ -52,10 +58,12 @@ class ChoppingState(BaseState):
 
 class UpgradeState(BaseState):
 	def Enter(agent, newType):
-		#kolla att kan upgrada
-		#starta timer typ / ta start tid
+		#kolla att agenten kan upgrada
+		#record start tid
 		pass
 	def Execute(agent, newtype):
+		#kolla om timer är klar
+		#när tinmern är klar gå till ledigt bygnad av den sort som utbildad för
 		if not agent.timeBusy:
 			if agent.type == agentType[0]:
 				if newtype == agentType[0]:
