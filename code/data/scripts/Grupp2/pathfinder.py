@@ -37,13 +37,14 @@ class PathFinder:
                 skip = False
 
                 if (neighbourFace == goalFace):
+                    path.append(goalPosition)
                     path.append(neighbourFace)
                     path.append(q)
                     prevFace = backtrack.get(q)
                     while (prevFace != -1):
                         path.append(prevFace)
                         prevFace = backtrack.get(prevFace, -1)
-                    return path
+                    return path[::-1]
 
                 g = ghfValues.get(q)[0] + 1 # g value addition should not be one but instead distance from this and previous center
                 h = self.Euclidean(neighbourFace, goalFace)

@@ -24,7 +24,7 @@ class MoveState(BaseState):
 			if navMesh.findinNavMesh(pos) != navMesh.findinNavMesh(agent.entityHandle.Agent.targetPosition):
 
 				current = agent.entityHandle
-				current.targetPosition = navMesh.getCenter(pathToGoal.pop(0))
+				current.targetPosition = navMesh.getCenter(agent.pathToGoal.pop(0))
 				agent.entityHandle = current
 
 		elif agent.entityHandle.Agent.position == agent.finalGoal:

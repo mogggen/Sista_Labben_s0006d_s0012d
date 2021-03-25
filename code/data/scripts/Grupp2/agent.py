@@ -32,7 +32,7 @@ class Agent:
 	
 	#lämna, orders frome overlord
 	def ChangeState(self, newState):
-		self.state.Exit(this)
+		self.state.Exit(self)
 		self.state =newState
 		self.state.Enter(self)
 	
@@ -52,7 +52,7 @@ class Agent:
 				overlord.Addtree(1)
 			elif self.holding == "ironOre":
 				overlord.AddironOre(1)
-			self.holding = none;
+			self.holding = None;
 		else:
 			print("Agent not in casle keep walking")
 
