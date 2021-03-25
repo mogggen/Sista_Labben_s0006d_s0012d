@@ -379,6 +379,8 @@ class Upgrade(Goal):
     def execute(self, agent):
         if demo.GetTime() - self.timer >= statParser.getStat(str(self.type).split(".")[1].lower() + "UpgradeTime"):
             entity_manager.instance.doneUpgrade(agent.entity)
+            if agent.entity.Agent.type == demo.agentType.SCOUT:
+                agent.setDiscoverRadius(int(statParser.getStat("scoutExploreRadius")))
             agent.popGoal()
 
 

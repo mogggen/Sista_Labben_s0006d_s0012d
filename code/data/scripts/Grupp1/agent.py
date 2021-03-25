@@ -17,6 +17,7 @@ class Agent:
 
         self.goals = []
 
+        self.setDiscoverRadius(int(statParser.getStat("normalExploreRadius")))
 
 
     def update(self):
@@ -25,11 +26,8 @@ class Agent:
 
         p = self.entity.Agent.position
 
-        radius = 4 
-        for x in range(-radius, radius+1):
-            for y in range(-radius, radius+1):
-                if (x**2 + y**2) < radius**2:
-                    fog_of_war.grupp1.uncloud(round(p.x-x),round(p.z-y))
+        for x, y in self.uncloudTiles:
+            fog_of_war.grupp1.uncloud(round(p.x-x),round(p.z-y))
 
 
     def addGoal(self, goal):
@@ -60,6 +58,14 @@ class Agent:
     def getTarget(self):
         pos = self.entity.Agent.targetPosition
         return nmath.Float2(pos.x, pos.z)
+
+    def setDiscoverRadius(self, radius: int):
+        self.uncloudTiles = []
+        for x in range(-radius, radius+1):
+            for y in range(-radius, radius+1):
+                if (x**2 + y**2) < radius**2:
+                    self.uncloudTiles.append((x,y))
+
 
 
     def setTarget(self, pos: nmath.Point):

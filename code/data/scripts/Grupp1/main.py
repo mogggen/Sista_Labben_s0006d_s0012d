@@ -113,7 +113,3 @@ def HandleMessage(msg):
         if castleHealth.hp <= 0:
             demo.SetTimeFactor(0)
             print("Defeat")
-
-
-
-

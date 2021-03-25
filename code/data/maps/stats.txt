@@ -31,6 +31,10 @@ soldierAttackRange:2
 soldierAttackSpeed:1
 hitChance:0.75
 
+#Exploring
+normalExploreRadius:2
+scoutExploreRadius:6
+
 ##Buildings##
 #Kiln
 kilnBuildTime:60
