@@ -23,6 +23,11 @@ class Overlord:
     scoutedTrees = []
     scoutedIron = []
 
+    # Where to place buildings
+    minRadius = 22 # This should be at least half the size of castle
+    maxRadius = 100 # This should not be more than half of the map
+    distanceFromBuildingRadius = 10 # This needs to be at least half the size of a building
+
     def UpdateActors(self):
         for i in range(len(self.agents)):
             self.agents[i].Update()
@@ -80,11 +85,26 @@ class Overlord:
     def GetCloseIron(self, agent):
         return self.scoutedIron.pop(0)
 
-    def GetPosForBuilding(self, agent):
-        pass
+    # def GetPosForBuilding(self, agent):
+    #     while True:
+    #         x = -random.randrange(self.minRadius, self.maxRadius)
+    #         z = -random.randrange(self.minRadius, self.maxRadius)
+    #         if
 
     def RequestWorker(self, buildingPos, buildingType):
-        pass
+        for a in self.agents:
+            if a.type == demo.agentType.WORKER:
+                if a.goal == enums.GoalEnum.WOOD_GOAL:
+                    if buildingType == demo.buildingType.KILN:
+                        a.SetGoal(enums.GoalEnum.KILN_GOAL)
+                    elif buildingType == demo.buildingType.SMELTERY:
+                        a.SetGoal(enums.GoalEnum.SMELT_GOAL)
+                    elif buildingType == demo.buildingType.BLACKSMITH:
+                        a.SetGoal(enums.GoalEnum.SMITH_GOAL)
+                    a.pathToGoal = pathfinder.pf.AStar(a.entityHandle.Agent.position, buildingPos)
+                    a.ChangeState(fsm.MoveState())
+            else:
+                print("Worker requested but there are no more workers!")
 
     def AddSoldier(self, agent):
         self.soldiers += 1
