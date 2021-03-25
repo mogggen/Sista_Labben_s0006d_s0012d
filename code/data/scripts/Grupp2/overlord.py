@@ -20,22 +20,18 @@ class Overlord:
 
     kilns = []
 
+    def SpawnAgent(self):
+        a = agent.Agent(len(self.agents))
+        agentProperty = a.entityHandle.Agent
+        agentProperty.position = self.castleEntity.Building.position
+        agentProperty.targetPosition = self.castleEntity.Building.position
+        a.entityHandle.Agent = agentProperty
+        self.agents.append(a)
+
     def SpawnAgents(self):
         maxAgents = 50
-        #startBlock.Discover()
-        i = 0
-        while i < maxAgents:
-            #self.agents.append(agent.Agent(i, startBlock.IdToCoordinates()))
-            #self.agents[i].SetHubBlock(startBlock)
-            i += 1
-            # for j in range(len(startBlock.adjacents)):
-            #     if i >= maxAgents:
-            #         return
-            #     nBlock = pathfinder.paths.GetBlockByID(startBlock.adjacents[j])
-            #     nBlock.Discover()
-            #     self.agents.append(agent.Agent(i, nBlock.IdToCoordinates()))
-            #     self.agents[i].SetHubBlock(startBlock)
-            #     i += 1
+        for i in range(maxAgents):
+            self.SpawnAgent()
 
 
     def UpdateAgents(self):

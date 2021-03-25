@@ -26,9 +26,9 @@ class Agent:
 		
 		self.entityHandle = demo.SpawnEntity("AgentEntity/agent")
 		
-		self.hp = self.entityHandle.Health
-		self.hp.hp = statParser.getStat("workerHealth")
-		self.entityHandle.Health = self.hp
+		self.hp = self.entityHandle.Health.hp
+		self.hp = statParser.getStat("workerHealth")
+		self.entityHandle.Health.hp = self.hp
 	
 	#lämna, orders frome overlord
 	def ChangeState(self, newState):
