@@ -9,7 +9,6 @@ class Agent:
 		self.type = demo.agentType.WORKER
 		self.finalGoal = None
 		self.pathToGoal = []
-		self.pathToCastle = []
 		self.state = fsm.BaseState()
 		self.timeBusy = 0
 		
