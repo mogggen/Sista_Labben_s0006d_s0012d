@@ -14,13 +14,13 @@ class EntityManager():
                 y = int(tree.postion.z) 
                 if fog_of_war.grupp2.is_discovered(x, y):
                     self.new_trees.add(entity.toInt())
-                    overlord.overlord.AddScoutedTree(tree)
 
             demo.ForTreeLimit(self.incrementUpdateState, updateTrees)
 
             if self.incrementUpdateState.view_i == 0 and self.incrementUpdateState.index == 0:
                 self.trees = self.new_trees
                 self.new_trees = set()
+                overlord.overlord.AddScoutedTree(list(self.trees))
 
         elif updateState == enums.UpdateState.IRON:
             #overlord.overlord.AddScoutedTree()
@@ -33,6 +33,7 @@ class EntityManager():
                     ownedIron.add(entity.toInt())
             demo.ForIron(updateIron)
             self.ironore = ownedIron
+            overlord.overlord.AddScoutedIron(list(self.ironore))
             #send to overlord
         elif updateState == enums.UpdateState.ENEMIES:
             workers = set()
