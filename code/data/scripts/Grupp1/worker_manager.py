@@ -1,6 +1,6 @@
 from Grupp1 import entity_manager, item_manager, goals
-import demo
-
+import demo, imgui
+import random
 def treeKeyFunc(tree):
     cp = entity_manager.instance.getCastlePos()
     tp = tree.Tree.position
@@ -22,6 +22,8 @@ class WorkerManager:
 
         self.update_timer = 0
 
+        self.tree_focus = 0.85
+
     def update_free_trees(self):
         self.free_trees = []
         for tree in entity_manager.instance.trees:
@@ -29,8 +31,6 @@ class WorkerManager:
                 self.free_trees.append(demo.Entity.fromInt(tree))
 
         self.free_trees.sort(key=treeKeyFunc)
-        for tree in self.free_trees:
-            print(tree.Tree.position)
 
     def update_free_iron(self):
         self.free_iron = []
@@ -49,22 +49,35 @@ class WorkerManager:
         elif self.update_timer == 60:
             self.update_free_trees()
             self.update_timer = 0
-        else:
-            self.update_timer += 1
+        self.update_timer += 1
 
 
         for worker in entity_manager.instance.workers.values():
             if worker.isFree():
-                if len(self.free_trees) <= 0:
-                    break;
 
-                tree = self.free_trees.pop(0)
+                if random.random() < self.tree_focus:
+                    if len(self.free_trees) <= 0:
+                        continue;
 
-                if not demo.IsValid(tree):
-                    continue
+                    tree = self.free_trees.pop(0)
 
-                worker.addGoals([goals.EmptyInventory(), goals.CutTree(tree)])
-                self.assigned_trees.add(tree.toInt())
+                    if not demo.IsValid(tree):
+                        continue
+
+                    worker.addGoals([goals.EmptyInventory(), goals.CutTree(tree)])
+                    self.assigned_trees.add(tree.toInt())
+
+                else:
+                    if len(self.free_iron) <= 0:
+                        continue;
+
+                    iron = self.free_iron.pop(0)
+
+                    if not demo.IsValid(iron):
+                        continue
+
+                    worker.addGoals([goals.EmptyInventory(), goals.PickupOre(iron)])
+                    self.assigned_iron.add(iron.toInt())
 
 
 

@@ -231,13 +231,10 @@ class EntityManager:
             self.ironore.remove(i_entity)
             return entity
 
-        print("here22")
-
         return None
 
     def deleteEntity(self, entity):
         if not self.removeEntity(entity) == None:
-            print("here")
             demo.Delete(entity)
 
     def stageForUpgrade(self, entity):
