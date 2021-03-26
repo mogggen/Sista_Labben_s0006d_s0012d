@@ -139,7 +139,9 @@ class PickupOre(Goal):
 
     def enter(self, agent):
         op = self.ore.Iron.position
-        if not agent.getPos() == op:
+        p = agent.entity.Agent.position - nmath.Vector(op.x, op.y, op.z) 
+
+        if nmath.Vec4.length3(nmath.Vec4(p.x, p.y, p.z, 0)) > 0.001:
             agent.addGoal(WalkToGoal(nmath.Float2(op.x, op.z)))
         else:
             self.active = True
@@ -441,6 +443,7 @@ class Upgrade(Goal):
 
     def execute(self, agent):
         if demo.GetTime() - self.timer >= statParser.getStat(str(self.type).split(".")[1].lower() + "UpgradeTime"):
+            print("done")
             entity_manager.instance.doneUpgrade(agent.entity)
             if agent.entity.Agent.type == demo.agentType.SCOUT:
                 agent.setDiscoverRadius(int(statParser.getStat("scoutExploreRadius")))

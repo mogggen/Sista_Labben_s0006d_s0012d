@@ -84,8 +84,10 @@ class Overlord:
         return self.castleEntity.Building.position
 
     def GetCloseTree(self, agent):
+        # try catch
         return self.scoutedTrees.pop(0)
     def GetCloseIron(self, agent):
+        # try catch
         return self.scoutedIron.pop(0)
 
     def GetPosForBuilding(self, agent):
@@ -120,8 +122,9 @@ class Overlord:
                         a.SetGoal(enums.GoalEnum.SMELT_GOAL)
                     elif buildingType == demo.buildingType.BLACKSMITH:
                         a.SetGoal(enums.GoalEnum.SMITH_GOAL)
-                    a.pathToGoal = pathfinder.pf.AStar(a.entityHandle.Agent.position, buildingPos)
+                    a.finalGoal = buildingPos
                     a.ChangeState(fsm.MoveState())
+                    return
             else:
                 print("Worker requested but there are no more workers!")
 
@@ -133,6 +136,11 @@ class Overlord:
         self.buildings.append(building)
         # do stuff
 
+    def GetBuildingAtPosition(self, pos):
+        for b in self.buildings:
+            if b.entityHandle.Building.position == pos:
+                return b
+        print("There is no building at this location!")
 
     #add resources
     def AddCharcoal(self, n):
