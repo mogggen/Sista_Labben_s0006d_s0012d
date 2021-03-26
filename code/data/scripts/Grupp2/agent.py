@@ -5,6 +5,7 @@ class Agent:
 	def __init__(self, ID):
 		self.ID = ID
 		self.holding = None
+		self.itemEntity = None
 		self.goal = enums.GoalEnum.WOOD_GOAL
 		self.type = demo.agentType.WORKER
 		self.finalGoal = None
@@ -37,8 +38,9 @@ class Agent:
 	def DealDamage(self, target):
 		overlord.overlord.SendMsg(self, target)
 	# pick up item
-	def PickupItem(self, item):
-		holding = item
+	def PickupItem(self, item, itemType):
+		demo.Delete(item)
+		holding = itemType
 	# drop item
 	def DropItem(self):
 		if self.pos == overlord.overlord.castleEntity.Building.position:
@@ -46,7 +48,7 @@ class Agent:
 				overlord.Addtree(1)
 			elif self.holding == enums.ItemEnum.IRON_ORE:
 				overlord.AddironOre(1)
-			self.holding = None;
+			self.holding = None
 		else:
 			print("Agent not in castle keep walking")
 
@@ -59,19 +61,15 @@ class Agent:
 
 	def goalHandler(self):
 		if self.goal == enums.WOOD_GOAL:
-			self.finalGoal = overlord.overlord.GetWoodPosition() #check method name
+			self.itemEntity = overlord.overlord.GetCloseTree()
+			self.finalGoal = self.itemEntity #check method name
 			self.ChangeState(fsm.MoveState())
 
 		elif self.goal == enums.IRON_GOAL:
 			self.finalGoal = overlord.overlord.GetIronPosition() #check method name
 			self.ChangeState(fsm.MoveState())
 		
-			
-		if self.goal in (enums.GoalEnum.KILN_GOAL, enums.GoalEnum.SMITH_GOAL, enums.GoalEnum.SMELT_GOAL):
-			if self.entityHandle.agentType == demo.agentType.WORKER:
-				self.ChangeState(fsm.UpgradeState())
-
-
+		# Soldier goal needs fix maybe
 		elif self.goal == enums.SOLDIER_GOAL:
 			if self.entityHandler.agentType == demo.agentType.WORKER:
 				self.ChangeState(fsm.UpgradeState())
@@ -81,5 +79,3 @@ class Agent:
 			if self.entityHandler.agentType == demo.agentType.WORKER or self.entityHandle.agentType == demo.agentType.BUILDER:
 				self.finalGoal = overlord.overlord.GetBuildPosition()
 				self.ChangeState(fsm.MoveState())
-
-		

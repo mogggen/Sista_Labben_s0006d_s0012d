@@ -16,25 +16,34 @@ class MoveState(BaseState):
 		agent.pathToGoal = pathfinder.Astar(agent.entityHandle.Agent.position, agent.finalGoal)
 		
 
-	# def Execute(agent):
-	# 	pos = agent.entityHandle.Agent.position
-	# 	if pos != agent.finalGoal:
-	# 		if navMesh.findinNavMesh(pos) != navMesh.findinNavMesh(agent.entityHandle.Agent.targetPosition):
-	#
-	# 			current = agent.entityHandle.Agent
-	# 			current.targetPosition = navMesh.getCenter(agent.pathToGoal.pop(0))
-	# 			agent.entityHandle.Agent = current
-	#
-	# 	elif navMesh.findinNavMesh() agent.entityHandle.Agent.position == agent.finalGoal:
-	#
-	# 		current = agent.entityHandle.Agent
-	# 		current.targetPosition = agent.finalGoal
-	# 		agent.entityHandle.Agent = current
-	# 		agent.ChangeState(ChoppingState) #kolla vilken resource vid finalGoal
-	#
-	# 		# om agent.goal är woodgoal ändra sate till chopping state
-	# 		# om agenten.goal är irongoal plocka upp iron och gå  till slottet
-	# 		# om goal är kiln/smith/smelt changeState till start uppgrade
+	def Execute(agent):
+		pos = agent.entityHandle.Agent.position
+		if pos != agent.finalGoal:
+			if navMesh.findinNavMesh(pos) != navMesh.findinNavMesh(agent.entityHandle.Agent.targetPosition):
+
+				current = agent.entityHandle.Agent
+				current.targetPosition = navMesh.getCenter(agent.pathToGoal.pop(0))
+				agent.entityHandle.Agent = current
+
+		elif navMesh.findinNavMesh(agent.entityHandle.Agent.position) == navMesh.findinNavMesh(agent.finalGoal):
+
+			current = agent.entityHandle.Agent
+			current.targetPosition = agent.finalGoal
+			agent.entityHandle.Agent = current
+			 #kolla vilken resource vid finalGoal
+
+		if agent.entityHandle.Agent.position == agent.finalGoal:
+			if agent.goal in (enums.GoalEnum.KILN_GOAL, enums.GoalEnum.SMITH_GOAL, enums.GoalEnum.SMELT_GOAL):
+				if agent.entityHandle.agentType == demo.agentType.WORKER:
+					agent.ChangeState(UpgradeState())
+			if agent.goal == enums.GoalEnum.WOOD_GOAL:
+				agent.ChangeState(ChoppingState())
+			if agent.goal == enums.GoalEnum.IRON_GOAL:
+				agent.PickUpItem(enums.ItemEnum.IRON_ORE)
+
+			# om agent.goal är woodgoal ändra sate till chopping state
+			# om agenten.goal är irongoal plocka upp iron och gå  till slottet
+			# om goal är kiln/smith/smelt changeState till start uppgrade
 			
 
 class FleeState(BaseState):
@@ -53,7 +62,6 @@ class ChoppingState(BaseState):
 		#look if timer is done
 		if demo.GetTime() - agent.startTime >= statParser.getStat("woodCuttingSpeed"):
 			#om done, ta bort trädet, plocka upp träd och gå till slottet
-			demo.Delete() # remove for both trees
 			agent.PickUpItem(enums.ItemEnum.WOOD)
 			agent.ChangeState(MoveState())
 
