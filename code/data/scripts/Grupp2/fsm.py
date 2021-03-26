@@ -44,7 +44,8 @@ class MoveState(BaseState):
 			agent.SetTargetPosition(navMesh.getCenterOfFace(self.currentGoalFace))
 
 		if agent.entityHandle.Agent.position == agent.finalGoal:
-
+			if agent.GoalHandler.agentType == demo.agentType.SCOUT:
+				agent.ChangeState(ExploreState())
 			if agent.goal in (enums.GoalEnum.KILN_GOAL, enums.GoalEnum.SMITH_GOAL, enums.GoalEnum.SMELT_GOAL):
 				if agent.entityHandle.Agent.type == demo.agentType.WORKER:
 					agent.ChangeState(UpgradeState())
@@ -171,11 +172,22 @@ class UpgradeState(BaseState):
 # Scout Agents
 class ExploreState(BaseState):
 
-	def Enter(self, agent):
-		return
-
 	def Execute(self, agent):
-		return
+		if agent.entityHandle.Agent.position.z <= 0:
+			if agent.lane == enums.LaneEnum.LEFT:
+				agent.finalGoal = nmath.Point(-135, 0, 0)
+			elif agent.Lane == enums.LaneEnum.MIDDLE:
+				agent.finalGoal = nmath.Point(0, 0, 0)
+			elif agent.lane == enums.LaneEnum.RIGHT:
+				agent.finalGoal = nmath.Point(140, 0, 0)
+		else:
+			agent.finalGoal = nmath.Point(0, 0, 170)
+
+		agent.ChangeState(MoveState())
+		agent.Discover()
+
+
+
 
 		
 # artisan Agents
