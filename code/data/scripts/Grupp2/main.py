@@ -12,7 +12,6 @@ def NebulaUpdate():
     pass
 
 def NebulaDraw(p):
-    pathfinder.pf.DrawAStar()
     hud.DrawHUD()
     pass
 

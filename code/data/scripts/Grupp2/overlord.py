@@ -76,7 +76,7 @@ class Overlord:
 
     def KillAgent(self, agent):
         self.agents.remove(agent)
-        demo.Delete(agent.enityHandle)
+        demo.Delete(agent.entityHandle)
         del agent
 
     def KillBuilding(self, building):
@@ -263,6 +263,9 @@ class Overlord:
         for a in self.agents:
             if a.entityHandle == msg.taker:
                 a.TakeDamage(msg)
+        for b in self.buildings:
+            if b.entityHandle == msg.taker:
+                b.buildingTakeDamage(msg)
         # Reaction
 
     def SendMsg(self, agent, target:demo.Entity):

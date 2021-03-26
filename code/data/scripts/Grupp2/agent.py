@@ -36,12 +36,12 @@ class Agent:
 		self.state.Execute(self)
 	# Take Damage - Method
 	def TakeDamage(self, msg):
-		hp = self.entityHandle.Health
-		hp.hp = statParser.getStat("workerHealth")
-		if hp > 1:
-			hp -= 1
-			self.entityHandle.Health = hp
-		elif self.hp <= 1:
+		healthProperty = self.entityHandle.Health
+		print(healthProperty.hp)
+		if healthProperty.hp > 1:
+			healthProperty.hp -= 1
+			self.entityHandle.Health = healthProperty
+		elif healthProperty.hp <= 1:
 			overlord.overlord.KillAgent(self)
 	def DealDamage(self, targetEntity):
 		overlord.overlord.SendMsg(self, targetEntity)

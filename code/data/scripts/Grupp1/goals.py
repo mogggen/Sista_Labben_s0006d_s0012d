@@ -103,6 +103,9 @@ class CutTree(Goal):
 
 
     def enter(self, agent):
+        if not demo.IsValid(self.tree):
+            agent.popGoal()
+            return
         tp = self.tree.Tree.position
         p = agent.entity.Agent.position - nmath.Vector(tp.x, tp.y, tp.z) 
 
@@ -138,6 +141,9 @@ class PickupOre(Goal):
 
 
     def enter(self, agent):
+        if not demo.IsValid(self.ore):
+            agent.popGoal()
+            return
         op = self.ore.Iron.position
         p = agent.entity.Agent.position - nmath.Vector(op.x, op.y, op.z) 
 
@@ -189,7 +195,8 @@ class EmptyInventory(Goal):
         elif agent.inventory == item.ore:
             item_manager.instance.ironore += 1
         else:
-            print("why tho...")
+            #print("why tho...")
+            pass
 
         agent.inventory = item.none
         agent.popGoal()
@@ -276,7 +283,7 @@ class Attack(Goal):
             agent.setTarget(nmath.Point(0,0,0) + enemyPos)
         elif not self.onCooldown:
             if random.uniform(0, 1) <= statParser.getStat("hitChance"):
-                #msgManager.instance.sendMsg(msgManager.message(demo.teamEnum.GRUPP_2, agent, self.enemy, "attacked"))
+                msgManager.instance.sendMsg(msgManager.message(demo.teamEnum.GRUPP_2, agent, self.enemy, "attacked"))
                 self.timer = demo.GetTime()
                 self.onCooldown = True
 
