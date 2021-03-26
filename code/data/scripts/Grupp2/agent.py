@@ -67,16 +67,8 @@ class Agent:
 			self.ChangeState(fsm.MoveState())
 		
 			
-		elif self.goal == enums.KILN_GOAL:
+		if self.goal in (enums.GoalEnum.KILN_GOAL, enums.GoalEnum.SMITH_GOAL, enums.GoalEnum.SMELT_GOAL):
 			if self.entityHandle.agentType == demo.agentType.WORKER:
-				self.ChangeState(fsm.UpgradeState())
-		
-		elif self.goal == enums.SMITH_GOAL:
-			if self.entityHandler.agentType == demo.agentType.WORKER:
-				self.ChangeState(fsm.UpgradeState())
-
-		elif self.goal == enums.SMELT_GOAL:
-			if self.entityHandler.agentType == demo.agentType.WORKER:
 				self.ChangeState(fsm.UpgradeState())
 
 

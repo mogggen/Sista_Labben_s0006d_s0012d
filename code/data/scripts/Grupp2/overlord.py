@@ -136,6 +136,11 @@ class Overlord:
         self.buildings.append(building)
         # do stuff
 
+    def GetBuildingAtPosition(self, pos):
+        for b in self.buildings:
+            if b.entityHandle.Building.position == pos:
+                return b
+        print("There is no building at this location!")
 
     #add resources
     def AddCharcoal(self, n):

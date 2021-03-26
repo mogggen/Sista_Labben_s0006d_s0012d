@@ -13,29 +13,28 @@ class BaseState:
 #All Agents
 class MoveState(BaseState):
 	def Enter(agent):
-		agent.pathToGoal = pathfinder.Astar(agent.entityHandle.Agent.position,
-		agent.entityHandle.Agent.targetPosition)#goal position eller target position?
+		agent.pathToGoal = pathfinder.Astar(agent.entityHandle.Agent.position, agent.finalGoal)
 		
 
-	def Execute(agent):
-		pos = agent.entityHandle.Agent.position
-		if pos != agent.finalGoal:
-			if navMesh.findinNavMesh(pos) != navMesh.findinNavMesh(agent.entityHandle.Agent.targetPosition):
-
-				current = agent.entityHandle.Agent
-				current.targetPosition = navMesh.getCenter(agent.pathToGoal.pop(0))
-				agent.entityHandle.Agent = current
-
-		elif agent.entityHandle.Agent.position == agent.finalGoal:
-
-			current = agent.entityHandle.Agent
-			current.targetPosition = agent.finalGoal
-			agent.entityHandle.Agent = current
-			agent.ChangeState(ChoppingState) #kolla vilken resource vid finalGoal
-
-			# om agent.goal är woodgoal ändra sate till chopping state
-			# om agenten.goal är irongoal plocka upp iron och gå  till slottet 
-			# om goal är kiln/smith/smelt changeState till start uppgrade
+	# def Execute(agent):
+	# 	pos = agent.entityHandle.Agent.position
+	# 	if pos != agent.finalGoal:
+	# 		if navMesh.findinNavMesh(pos) != navMesh.findinNavMesh(agent.entityHandle.Agent.targetPosition):
+	#
+	# 			current = agent.entityHandle.Agent
+	# 			current.targetPosition = navMesh.getCenter(agent.pathToGoal.pop(0))
+	# 			agent.entityHandle.Agent = current
+	#
+	# 	elif navMesh.findinNavMesh() agent.entityHandle.Agent.position == agent.finalGoal:
+	#
+	# 		current = agent.entityHandle.Agent
+	# 		current.targetPosition = agent.finalGoal
+	# 		agent.entityHandle.Agent = current
+	# 		agent.ChangeState(ChoppingState) #kolla vilken resource vid finalGoal
+	#
+	# 		# om agent.goal är woodgoal ändra sate till chopping state
+	# 		# om agenten.goal är irongoal plocka upp iron och gå  till slottet
+	# 		# om goal är kiln/smith/smelt changeState till start uppgrade
 			
 
 class FleeState(BaseState):
