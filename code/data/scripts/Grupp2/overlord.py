@@ -124,6 +124,7 @@ class Overlord:
                         a.SetGoal(enums.GoalEnum.SMITH_GOAL)
                     a.finalGoal = buildingPos
                     a.ChangeState(fsm.MoveState())
+                    return
             else:
                 print("Worker requested but there are no more workers!")
 

@@ -50,6 +50,9 @@ class Agent:
 		else:
 			print("Agent not in castle keep walking")
 
+	def Discover(self):
+		pass
+
 	def SetGoal(self, newGoal):
 		self.goal = newGoal
 
@@ -71,15 +74,16 @@ class Agent:
 		elif self.goal == enums.SMITH_GOAL:
 			if self.entityHandler.agentType == demo.agentType.WORKER:
 				self.ChangeState(fsm.UpgradeState())
-		
 
 		elif self.goal == enums.SMELT_GOAL:
 			if self.entityHandler.agentType == demo.agentType.WORKER:
 				self.ChangeState(fsm.UpgradeState())
 
+
 		elif self.goal == enums.SOLDIER_GOAL:
 			if self.entityHandler.agentType == demo.agentType.WORKER:
 				self.ChangeState(fsm.UpgradeState())
+
 
 		elif self.goal == enums.BUILD_SMELTER_GOAL or self.goal == enums.BUILD_SMITH_GOAL or self.goal == enums.BUILD_KILNS_GOAL or self.goal == enums.BUILD_TRAINING_CAMP_GOAL:
 			if self.entityHandler.agentType == demo.agentType.WORKER or self.entityHandle.agentType == demo.agentType.BUILDER:
