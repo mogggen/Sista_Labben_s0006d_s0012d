@@ -257,14 +257,15 @@ class ChargeAndAttackState(BaseState):
 				agent.SetTargetPosition(navMesh.getCenterOfFace(self.currentGoalFace))
 			if agent.entityHandle.Agent.position == agent.finalGoal:
 
+				pos = agent.entityHandle.Agent.position
+				enemy = overlord.overlord.GetEnemyCastle().Building.position
 
-				agent.timeBusy = statParser.getStat("soldierAttackSpeed")
-				if ((agent.pos[0] - enemy.pos[0])**2 + (agent.pos[1] - enemy.pos[1])**2)**.5 < statParser.getStat("soldierAttackRange") and random.random() < statParser.getStat("hitChance"):
-					# sent message to enemy team
-					print("Attacking")
-					return
-		else:
-			print("Wrong type of agent")
+				if ((pos.x - enemy.x)**2 + (pos.z - enemy.z)**2)**.5 < statParser.getStat("soldierAttackRange")\
+					and demo.GetTime() - agent.startTime < statParser.getStat("soldierAttackSpeed"):
+					if random.random() > statParser.getStat("hitChance"):
+						overlord.overlord.SendMsg(agent, enemy)
+					agent.startTime = demo.getTime()
+
 
 class StartProducingState(BaseState):
 	def Enter(self, agent):
