@@ -1,4 +1,4 @@
-import demo, statParser
+import demo, statParser, nmath
 from Grupp2 import fsm, pathfinder, overlord, enums
 
 class Agent:
@@ -51,7 +51,17 @@ class Agent:
 			print("Agent not in castle keep walking")
 
 	def Discover(self):
-		pass
+		self.p = self.entityHandle.Agent.position
+		self.p.x = round(self.p.x)
+		self.p.y += 0.5
+		self.p.z = round(self.p.z)
+		self.radius = statParser.getStat("normalExploreRadius")
+		if self.entityhandel.agentType == demo.agentType[1]:
+			self.radius = statParser.getStat("scoutExploreRadius")
+		for x in range(-radius, radius+1):
+			for y in range(-radius, radius+1):
+				if (x**2 + y**2) < radius**2:
+					fog_of_war.visual.uncloud(round(self.p.x-x),round(self.p.z-y))
 
 	def SetGoal(self, newGoal):
 		self.goal = newGoal

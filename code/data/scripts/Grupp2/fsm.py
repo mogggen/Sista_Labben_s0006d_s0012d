@@ -1,6 +1,6 @@
 import random
 from Grupp2 import agent, pathfinder, buildings, overlord, enums
-import navMesh, demo, statParser
+import navMesh, demo, statParser, math
 
 class BaseState:
 	def Enter(agent):
@@ -99,11 +99,8 @@ class UpgradeState(BaseState):
 				agent.ChangeState(StartProdusingState)
 #Scout Agents
 class ExploreState(BaseState):
-	def Execute(agent, fog):
-		agent.goal = random.randint()
-		return
+	pass
 
-		
 #artisan Agents
 class BuildState(BaseState):
 	buildingtype = None
