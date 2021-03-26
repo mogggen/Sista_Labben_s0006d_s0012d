@@ -35,7 +35,7 @@ class MoveState(BaseState):
 		agent.Discover()
 		pos = agent.entityHandle.Agent.position
 		pos = nmath.Float2(pos.x, pos.z)
-
+		#print(agent, agent.finalGoal, agent.entityHandle.Agent.type, agent.goal)
 		if navMesh.findInNavMesh(pos) == navMesh.findInNavMesh(nmath.Float2(agent.finalGoal.x, agent.finalGoal.z)):
 			agent.SetTargetPosition(agent.finalGoal)
 
@@ -44,22 +44,24 @@ class MoveState(BaseState):
 			agent.SetTargetPosition(navMesh.getCenterOfFace(self.currentGoalFace))
 
 		if agent.entityHandle.Agent.position == agent.finalGoal:
-			if agent.GoalHandler.agentType == demo.agentType.SCOUT:
-				agent.ChangeState(ExploreState())
+			if agent.entityHandle.Agent.type == demo.agentType.SCOUT:
+				agent.finalGoal = nmath.Point(0, 0, 170)
+				agent.ChangeState(MoveState())
+
 			if agent.goal in (enums.GoalEnum.KILN_GOAL, enums.GoalEnum.SMITH_GOAL, enums.GoalEnum.SMELT_GOAL):
 				if agent.entityHandle.Agent.type == demo.agentType.WORKER:
 					agent.ChangeState(UpgradeState())
 
 			elif agent.goal == enums.GoalEnum.WOOD_GOAL:
 				if agent.holding == enums.ItemEnum.WOOD:
-					agent.dropItem()
+					agent.DropItem()
 					agent.ChangeState(BaseState())
 				else:
 					agent.ChangeState(ChoppingState())
 
 			elif agent.goal == enums.GoalEnum.IRON_GOAL:
 				if agent.holding == enums.ItemEnum.IRON_ORE:
-					agent.dropItem()
+					agent.DropItem()
 					agent.ChangeState(BaseState())
 				else:
 					agent.PickupItem(agent.itemEntity, enums.ItemEnum.IRON_ORE)
@@ -91,7 +93,7 @@ class FleeState(BaseState):
 class ChoppingState(BaseState):
 	def Enter(self, agent):
 		# om worker få en start tid
-		if agent.enitityHandle.Agent.type == demo.agentType.WORKER:
+		if agent.entityHandle.Agent.type == demo.agentType.WORKER:
 			agent.startTime = demo.GetTime()
 
 	def Execute(self, agent):
@@ -176,8 +178,8 @@ class ExploreState(BaseState):
 		if agent.entityHandle.Agent.position.z <= 0:
 			if agent.lane == enums.LaneEnum.LEFT:
 				agent.finalGoal = nmath.Point(-135, 0, 0)
-			elif agent.Lane == enums.LaneEnum.MIDDLE:
-				agent.finalGoal = nmath.Point(0, 0, 0)
+			elif agent.lane == enums.LaneEnum.MIDDLE:
+				agent.finalGoal = nmath.Point(0, 0, 170)
 			elif agent.lane == enums.LaneEnum.RIGHT:
 				agent.finalGoal = nmath.Point(140, 0, 0)
 		else:

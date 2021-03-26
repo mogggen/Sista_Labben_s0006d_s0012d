@@ -47,16 +47,16 @@ class Agent:
 		overlord.overlord.SendMsg(self, targetEntity)
 	# pick up item
 	def PickupItem(self, item, itemType):
-		if demo.isValid(item):
+		if demo.IsValid(item):
 			demo.Delete(item)
 			self.holding = itemType
 	# drop item
 	def DropItem(self):
-		if self.pos == overlord.overlord.castleEntity.Building.position:
+		if self.entityHandle.Agent.position == overlord.overlord.castleEntity.Building.position:
 			if self.holding == enums.ItemEnum.WOOD:
-				overlord.Addtree(1)
+				overlord.overlord.Addtree(1)
 			elif self.holding == enums.ItemEnum.IRON_ORE:
-				overlord.AddironOre(1)
+				overlord.overlord.Addironore(1)
 			self.holding = None
 		else:
 			print("Agent not in castle keep walking")
