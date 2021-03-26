@@ -69,4 +69,4 @@ class Building:
             hp -= 1
             self.entityHandle.Health = hp
         elif self.hp <= 1:
-            pass
+            overlord.overlord.KillBuilding(self)
