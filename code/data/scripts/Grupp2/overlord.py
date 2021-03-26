@@ -98,7 +98,7 @@ class Overlord:
     def AddScoutedIron(self, iron):
         self.scoutedIron = iron
 
-    def AddEnemyCastle(self, castleEntity):
+    def AddScoutedEnemyCastle(self, castleEntity):
         self.enemyCastleEntity = castleEntity
 
     def GetCastlePosition(self):
