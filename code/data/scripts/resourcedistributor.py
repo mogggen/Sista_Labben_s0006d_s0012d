@@ -5,7 +5,7 @@ import math
 import nmath
 
 ### distribution of resources occurs at a decending radius from the castles.
-def placeTemps(CastleA=(0, 170), CastleB=(0, -170), temp="tree"):
+def placeTemps(CastleA=(0, 160), CastleB=(0, -160), temp="tree"):
     
     r = ((CastleA[0] - CastleB[0])**2 + (CastleA[1] - CastleB[1])**2)**.5
     stops, steps = None, None
