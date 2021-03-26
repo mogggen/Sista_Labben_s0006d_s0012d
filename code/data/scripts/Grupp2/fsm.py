@@ -12,7 +12,7 @@ class BaseState:
 		pass
 
 	def Execute(self, agent):
-		pass
+		agent.GoalHandler()
 
 	def Exit(self, agent):
 		pass
@@ -115,10 +115,12 @@ class UpgradeState(BaseState):
 				agent.startTime = demo.getTime()
 			elif agent.goal == enums.GoalEnum.SMELT_GOAL:
 				agent.startTime = demo.getTime()
+			elif agent.goal == enums.GoalEnum.SCOUT_GOAL:
+				agent.startTime = demo.getTime()
 		else:
 			print("Agent can't be upgraded")
 
-	def Execute(self, agent, newtype):
+	def Execute(self, agent):
 		# kolla om timer är klar
 		# när tinmern är klar change state to start production(kiln,smelt&smith)
 		# om timmern är clar soldat medela over lorde utbildad soldat.
@@ -137,7 +139,9 @@ class UpgradeState(BaseState):
 		elif agent.goal == enums.GoalEnum.SMELT_GOAL:
 			if demo.getTime() - agent.startTime >= statParser.getStat("smelterUpgradeTime"):
 				agent.ChangeState(StartProdusingState)
-
+		elif agent.goal == enums.GoalEnum.SCOUT_GOAL:
+			if demo.getTime() - agent.startTime >= statParser.getStat("scoutUpgradeTime"):
+				agent.ChangeState(ExploreState())
 
 # Scout Agents
 class ExploreState(BaseState):
@@ -155,17 +159,17 @@ class BuildState(BaseState):
 	
 	def Enter(self, agent):
 		if agent.entityHandle.agentType[6]:
-			if agent.goal == enums.BUILD_TRAINING_CAMP_GOAL:
+			if agent.goal == enums.GoalEnum.BUILD_TRAINING_CAMP_GOAL:
 				if overlord.overlord.tree >= statParser.getStat("trainingCampWoodCost"):
 					agent.startTime = demo.GetTime()
 				else:
 					print("Not enough resources for a Trainingcamp")
-			elif agent.goal == enums.Goalenum.BUILD_KILNS_GOAL:
+			elif agent.goal == enums.GoalEnum.BUILD_KILNS_GOAL:
 				if overlord.overlord.tree >= statParser.getStat("kilnWoodCost"):
 					agent.startTime = demo.GetTime()
 				else:
 					print("Not enough resources for a Kiln")
-			elif agent.goal == enums.BUILD_SMELTER_GOAL:
+			elif agent.goal == enums.GoalEnum.BUILD_SMELTER_GOAL:
 				if overlord.overlord.tree >= statParser.getStat("smelteryWoodCost"):
 					agent.startTime = demo.GetTime()
 				else:

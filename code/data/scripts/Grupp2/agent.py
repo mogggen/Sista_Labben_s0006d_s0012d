@@ -80,7 +80,7 @@ class Agent:
 		agentProperty.targetPosition = position
 		self.entityHandle.Agent = agentProperty
 
-	def goalHandler(self):
+	def GoalHandler(self):
 		if self.goal == enums.GoalEnum.WOOD_GOAL:
 			self.itemEntity = overlord.overlord.GetCloseTree()
 			self.finalGoal = self.itemEntity.Tree.position

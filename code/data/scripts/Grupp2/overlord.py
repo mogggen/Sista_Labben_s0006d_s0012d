@@ -3,6 +3,7 @@ from Grupp2 import agent, fsm, pathfinder, enums
 
 class Overlord:
     agents = []
+    soldiers = []
     buildings = []
     castleEntity = 0
     #resorses
@@ -16,7 +17,6 @@ class Overlord:
     nrKiln = 0
     nrBuild = 0
     nrIdleKilners = 0
-    soldiers = 0
 
     kilns = []
 
@@ -71,8 +71,14 @@ class Overlord:
 
 # FSM requests or information
     def AddScoutedTree(self, tree):
+        if tree in self.scoutedTrees:
+            print("overlord, AddScoutedTree: Tree has already been scouted")
+            return
         self.scoutedTrees.append(tree)
     def AddScoutedIron(self, iron):
+        if iron in self.scoutedIron:
+            print("overlord, AddScoutedIron: Iron has already been scouted")
+            return
         self.scoutedIron.append(iron)
 
     # def RemoveScoutedTree(self, tree):
@@ -130,7 +136,7 @@ class Overlord:
                 print("Worker requested but there are no more workers!")
 
     def AddSoldier(self, agent):
-        self.soldiers += 1
+        self.soldiers.append(agent)
         # do stuff
 
     def AddBuilding(self, building):
