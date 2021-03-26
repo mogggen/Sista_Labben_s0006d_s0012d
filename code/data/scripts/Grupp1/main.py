@@ -5,6 +5,7 @@ import Grupp1.agent as agent
 import Grupp1.goals as goals
 import Grupp1.worker_manager as worker_manager
 import Grupp1.explorerManager as explorerManager
+import Grupp1.soldierManager as soldierManager
 
 import nmath, demo
 import button_input
@@ -16,6 +17,7 @@ import cProfile
 left_mouse  = button_input.ButtonInput(demo.IsLeftMouseDown)
 right_mouse = button_input.ButtonInput(demo.IsRightMouseDown)
 y_button    = button_input.ButtonInput(demo.IsYdown)
+t_button    = button_input.ButtonInput(demo.IsTdown)
 r_button    = button_input.ButtonInput(demo.IsRdown)
 
 castle = buildings.initBlueCastle()
@@ -28,7 +30,7 @@ a.targetPosition = nmath.Point(0, 0, 0)
 dummy_enemy.Agent = a
 
 p = entity_manager.instance.getCastlePos()
-for _ in range(10):
+for _ in range(50):
     a = agent.Agent(p);
     entity_manager.instance.addWorker(a.entity, a)
 
@@ -43,6 +45,8 @@ def NebulaUpdate():
     ## update managers
     worker_manager.instance.update()
     explorerManager.update()
+    soldierManager.update()
+
 
 
     entity_manager.instance.updateAll()
@@ -54,7 +58,7 @@ def NebulaUpdate():
 
 
 def NebulaDraw(p):
-    global tree_pos
+    global tree_pos, dummy_enemy
 
     if left_mouse.pressed():
         entity_manager.instance.selectAgent(p)
@@ -66,19 +70,28 @@ def NebulaDraw(p):
             a.addGoal(goals.WalkToGoal(nmath.Float2(p.x,p.z)))
     
     if r_button.pressed():
-        #_a = dummy_enemy.Agent
-        #_a.targetPosition = p
-        #dummy_enemy.Agent = _a
+        _a = dummy_enemy.Agent
+        _a.targetPosition = p
+        dummy_enemy.Agent = _a
 
         
-        a = entity_manager.instance.getSelectedAgent()
-        a.addGoal(goals.Build(demo.buildingType.BLACKSMITH, nmath.Float2(0,0) ))
+        #a = entity_manager.instance.getSelectedAgent()
+        #a.addGoal(goals.Build(demo.buildingType.BLACKSMITH, nmath.Float2(0,0) ))
+    
+    if t_button.pressed():
+        #dummy_enemy = demo.SpawnEntity("AgentEntity/redagent")
+        #a = dummy_enemy.Agent
+        #a.position = nmath.Point(0, 0, 0)
+        #a.targetPosition = nmath.Point(0, 0, 0)
+        #dummy_enemy.Agent = a
+
+        demo.Delete(dummy_enemy)
 
     if y_button.pressed():
 
         a = entity_manager.instance.getSelectedAgent()
         entity_manager.instance.stageForUpgrade(a.entity)
-        a.addGoal(goals.Upgrade(demo.agentType.SCOUT))
+        a.addGoal(goals.Upgrade(demo.agentType.SOLDIER))
 
         #tree_property = tree.Tree
 

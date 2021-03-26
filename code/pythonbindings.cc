@@ -501,6 +501,14 @@ IKnowThisIsNotVeryGoodButImTiredAndStressedAndFullOnCoffeinSoFuckIt:
                 else
                     return false;
             });
+    m.def("IsTdown", []()
+            {
+                auto& io = ImGui::GetIO();
+                if (!io.WantCaptureMouse)
+                    return io.KeysDown[Input::Key::T];
+                else
+                    return false;
+            });
     m.def("IsRdown", []()
             {
                 auto& io = ImGui::GetIO();
