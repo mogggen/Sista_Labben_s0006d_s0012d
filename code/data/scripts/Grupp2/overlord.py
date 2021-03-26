@@ -3,6 +3,7 @@ from Grupp2 import agent, fsm, pathfinder, enums
 
 class Overlord:
     agents = []
+    availableBuilders = []
     soldiers = []
     buildings = []
     availableTrainingCamps = []
@@ -58,19 +59,18 @@ class Overlord:
             self.SpawnAgent()
 
     # LEGACY
-    def OperationCharcoal(self, nrDisc, nrKiln, nrBuild):
-        self.nrDisc = nrDisc
-        self.nrKiln = nrKiln
-        self.nrBuild = nrBuild
+    def OperationKILL(self):
         for i in range(len(self.agents)):
-            if i < nrDisc:
+            if i < self.nrScouts:
                 self.agents[i].SetGoal(enums.GoalEnum.SCOUT_GOAL)
-                # add correct LaneEnum value to respective scout
-            elif i < nrDisc + nrKiln:
-                self.agents[i].SetGoal(enums.GoalEnum.KILN_GOAL)
-                self.nrIdleKilners += 1
-            elif i < nrDisc + nrKiln + nrBuild:
-                self.agents[i].SetGoal(enums.GoalEnum.BUILD_KILNS_GOAL)
+                if i == 0:
+                    self.agents[i].SetLane(enums.LaneEnum.LEFT)
+                if i == 1:
+                    self.agents[i].SetLane(enums.LaneEnum.MIDDLE)
+                if i == 2:
+                    self.agents[i].SetLane(enums.LaneEnum.RIGHT)
+            elif i < self.nrScouts + self.nrIronGatherers:
+                self.agents[i].SetGoal(enums.GoalEnum.IRON_GOAL)
             else:
                 return
 
@@ -151,6 +151,15 @@ class Overlord:
             else:
                 print("Worker requested but there are no more workers!")
 
+    def TrainSoldier(self):
+        if len(self.availableTrainingCamps) > 0 and self.sword > 0:
+            for a in self.agents:
+                if a.type == demo.agentType.WORKER:
+                    if a.goal == enums.GoalEnum.WOOD_GOAL:
+                        a.SetGoal(enums.GoalEnum.SOLDIER_GOAL)
+                        a.finalGoal = self.availableTrainingCamps.pop()
+                        a.ChangeState(fsm.MoveState())
+
     def AddSoldier(self, agent):
         self.soldiers.append(agent)
         if len(self.soldiers) < self.amountOfSoldiersForAttack:
@@ -167,11 +176,19 @@ class Overlord:
 
     def AddAvailableTrainingCamp(self, building):
         self.availableTrainingCamps.append(building)
-        # Call TrainSoldier
+        self.TrainSoldier()
 
     def RemoveAvailableTrainingCamp(self, building):
         if building in self.availableTrainingCamps:
             self.availableTrainingCamps.remove(building)
+
+    def AddAvailableBuilder(self, builder):
+        self.availableBuilders.append(builder)
+        self.CheckBuildPossibilities()
+
+    def RemoveAvailableBuilder(self, builder):
+        if builder in self.availableBuilders:
+            self.availableBuilders.remove(builder)
 
     def GetBuildingAtPosition(self, pos):
         for b in self.buildings:
@@ -182,38 +199,65 @@ class Overlord:
     #add resources
     def AddCharcoal(self, n):
         for x in range(n):    
-            self.charcoal += n
+            self.charcoal += 1
+        self.CheckBuildPossibilities()
     def Addironbar(self, n):
         for x in range(n):
-            self.ironbar += n
+            self.ironbar += 1
+        self.CheckBuildPossibilities()
     def Addironore(self, n):
         for x in range(n):
-            self.ironore += n
+            self.ironore += 1
+        self.CheckBuildPossibilities()
     def Addsword(self, n):
         for x in range(n):
-            self.sword += n
+            self.sword += 1
+        self.TrainSoldier()
     def Addtree(self, n):
         for x in range(n):
-            self.tree += n
+            self.tree += 1
+        self.CheckBuildPossibilities()
     #take resources
     def Takecharcoal(self, n):
         for x in range(n):
-            self.charcoal = self.charcoal - n
+            self.charcoal = self.charcoal - 1
     def Takeironbar(self, n):
         for x in range(n):
-            self.ironbar = self.ironbar - n
+            self.ironbar = self.ironbar - 1
     def Takeironore(self,n):
         for x in range(n):
-            self.ironore = self.ironore - n
+            self.ironore = self.ironore - 1
     def Takeswords(self, n):
         for x in range(n):
-            self.sword = self.sword - n
+            self.sword = self.sword - 1
     def Taketree(self, n):
         for x in range(n):
-            self.tree = self.tree - n
+            self.tree = self.tree - 1
 
     def CheckBuildPossibilities(self):
-        pass
+        if len(self.availableBuilders) < 1 or self.tree < 10:
+            return
+        b = self.availableBuilders.pop()
+
+        if self.GetBuiltBuildingsOfType(demo.buildingType.BLACKSMITH) < self.nrSmithy and self.tree >= statParser.getStat("blacksmithWoodCost") and self.ironbar >= statParser.getStat("blacksmithIronCost"):
+            b.SetGoal(enums.GoalEnum.BUILD_SMITH_GOAL)
+        elif self.GetBuiltBuildingsOfType(demo.buildingType.TRAININGCAMP) < self.nrTrainingCamp and self.tree >= statParser.getStat("trainingCampWoodCost"):
+            b.SetGoal(enums.GoalEnum.BUILD_TRAINING_CAMP_GOAL)
+        elif self.GetBuiltBuildingsOfType(demo.buildingType.SMELTERY) < self.nrSmelters and self.tree >= statParser.getStat("smelteryWoodCost"):
+            b.SetGoal(enums.GoalEnum.BUILD_SMELTER_GOAL)
+        elif self.GetBuiltBuildingsOfType(demo.buildingType.KILN) < self.nrKiln and self.tree >= statParser.getStat("kilnWoodCost"):
+            b.SetGoal(enums.GoalEnum.BUILD_KILNS_GOAL)
+
+        self.RemoveAvailableBuilder(b)
+        self.finalGoal = overlord.overlord.GetBuildPosition()
+        self.ChangeState(fsm.MoveState())
+
+    def GetBuiltBuildingsOfType(self, type):
+        i = 0
+        for b in self.buildings:
+            if b.entityHandle.Building.type == type:
+                i += 1
+        return i
 
     def HandleMsg(self, msg):
         for a in self.agents:
