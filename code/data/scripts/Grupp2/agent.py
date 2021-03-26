@@ -25,7 +25,7 @@ class Agent:
 		self.state = newState
 		self.state.Enter(self)
 	def Update(self):
-		self.state.Execute()
+		self.state.Execute(self)
 	# Take Damage - Method
 	def TakeDamage(self, msg):
 		hp = self.entityHandle.Health
@@ -40,7 +40,7 @@ class Agent:
 	# pick up item
 	def PickupItem(self, item, itemType):
 		demo.Delete(item)
-		holding = itemType
+		self.holding = itemType
 	# drop item
 	def DropItem(self):
 		if self.pos == overlord.overlord.castleEntity.Building.position:
@@ -58,15 +58,20 @@ class Agent:
 	def SetGoal(self, newGoal):
 		self.goal = newGoal
 
+	def SetTargetPosition(self, position):
+		agentProperty = self.entityHandle.Agent
+		agentProperty.targetPosition = position
+		self.entityHandle.Agent = agentProperty
 
 	def goalHandler(self):
 		if self.goal == enums.WOOD_GOAL:
 			self.itemEntity = overlord.overlord.GetCloseTree()
-			self.finalGoal = self.itemEntity #check method name
+			self.finalGoal = self.itemEntity.Tree.position
 			self.ChangeState(fsm.MoveState())
 
 		elif self.goal == enums.IRON_GOAL:
-			self.finalGoal = overlord.overlord.GetIronPosition() #check method name
+			self.itemEntity = overlord.overlord.GetCloseIron()
+			self.finalGoal = self.itemEntity.Iron.position
 			self.ChangeState(fsm.MoveState())
 		
 		# Soldier goal needs fix maybe

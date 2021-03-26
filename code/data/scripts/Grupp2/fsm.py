@@ -1,46 +1,63 @@
 import random
 from Grupp2 import agent, pathfinder, buildings, overlord, enums
-import navMesh, demo, statParser
+import navMesh, demo, statParser, nmath
 
 class BaseState:
-	def Enter(agent):
+	def Enter(self, agent):
 		pass
-	def Execute(agent):
+	def Execute(self, agent):
 		pass
-	def Exit(agent):
+	def Exit(self, agent):
 		pass
 
 #All Agents
 class MoveState(BaseState):
-	def Enter(agent):
+	currentGoalFace = -1
+	def Enter(self, agent):
 		agent.pathToGoal = pathfinder.Astar(agent.entityHandle.Agent.position, agent.finalGoal)
-		
+		agent.pathToGoal.pop(0)
+		self.currentGoalFace = agent.pathToGoal.pop(0)
+		if self.currentGoalFace is type(int):
+			agent.SetTargetPosition(navMesh.getCenterOfFace(self.currentGoalFace))
+		else:
+			agent.SetTargetPosition(self.currentGoalFace)
 
-	def Execute(agent):
+	def Execute(self, agent):
 		pos = agent.entityHandle.Agent.position
-		if pos != agent.finalGoal:
-			if navMesh.findinNavMesh(pos) != navMesh.findinNavMesh(agent.entityHandle.Agent.targetPosition):
+		pos = nmath.Float2(pos.x, pos.z)
 
-				current = agent.entityHandle.Agent
-				current.targetPosition = navMesh.getCenter(agent.pathToGoal.pop(0))
-				agent.entityHandle.Agent = current
+		if navMesh.findinNavMesh(pos) == navMesh.findinNavMesh(nmath.Float2(agent.finalGoal.x, agent.finalGoal.z)):
+			agent.SetTargetPosition(agent.finalGoal)
 
-		elif navMesh.findinNavMesh(agent.entityHandle.Agent.position) == navMesh.findinNavMesh(agent.finalGoal):
+		elif navMesh.findinNavMesh(pos) == navMesh.findinNavMesh(nmath.Float2(agent.entityHandle.Agent.targetPosition.x, agent.entityHandle.Agent.targetPosition.z)):
+			self.currentGoalFace = agent.pathToGoal.pop(0)
+			agent.SetTargetPosition(navMesh.getCenterOfFace(self.currentGoalFace))
 
-			current = agent.entityHandle.Agent
-			current.targetPosition = agent.finalGoal
-			agent.entityHandle.Agent = current
-			 #kolla vilken resource vid finalGoal
 
 		if agent.entityHandle.Agent.position == agent.finalGoal:
+
 			if agent.goal in (enums.GoalEnum.KILN_GOAL, enums.GoalEnum.SMITH_GOAL, enums.GoalEnum.SMELT_GOAL):
 				if agent.entityHandle.agentType == demo.agentType.WORKER:
 					agent.ChangeState(UpgradeState())
-			if agent.goal == enums.GoalEnum.WOOD_GOAL:
-				agent.ChangeState(ChoppingState())
-			if agent.goal == enums.GoalEnum.IRON_GOAL:
-				agent.PickUpItem(enums.ItemEnum.IRON_ORE)
 
+			elif agent.goal == enums.GoalEnum.WOOD_GOAL:
+				agent.ChangeState(ChoppingState())
+			elif agent.goal == enums.GoalEnum.IRON_GOAL:
+				agent.PickUpItem(agent.itemEntity, enums.ItemEnum.IRON_ORE)
+				agent.finalGoal = overlord.overlord.GetCastlePosition()
+				agent.ChangeState(MoveState())
+
+			elif agent.goal == enums.GoalEnum.SOLDIER_GOAL:
+				if agent.entityHandle.agentType != demo.agentType.WORKER:
+					pass # attack?
+				else:
+					agent.ChangeState(UpgradeState())
+
+			elif agent.goal in (enums.GoalEnum.BUILD_KILNS_GOAL, enums.GoalEnum.BUILD_SMITH_GOAL, enums.GoalEnum.BUILD_SMELTER_GOAL, enums.GoalEnum.BUILD_TRAINING_CAMP_GOAL):
+				if agent.entityHandle.agentType != demo.agentType.WORKER:
+					agent.ChangeState(BuildState())
+				else:
+					agent.ChangeState(UpgradeState())
 			# om agent.goal är woodgoal ändra sate till chopping state
 			# om agenten.goal är irongoal plocka upp iron och gå  till slottet
 			# om goal är kiln/smith/smelt changeState till start uppgrade
@@ -53,21 +70,21 @@ class FleeState(BaseState):
 
 #Workers Agents
 class ChoppingState(BaseState):
-	def Enter(agent):
+	def Enter(self, agent):
 		#om worker få en start tid
 		if agent.type == demo.agentType.WORKER:
 			agent.startTime = demo.GetTime()
 
-	def Execute(agent):
+	def Execute(self, agent):
 		#look if timer is done
 		if demo.GetTime() - agent.startTime >= statParser.getStat("woodCuttingSpeed"):
 			#om done, ta bort trädet, plocka upp träd och gå till slottet
-			agent.PickUpItem(enums.ItemEnum.WOOD)
+			agent.PickUpItem(agent.itemEntity, enums.ItemEnum.WOOD)
 			agent.ChangeState(MoveState())
 
 class UpgradeState(BaseState):
 	newType= None
-	def Enter(agent):
+	def Enter(self, agent):
 		if agent.entityHandel.agentType[0]:
 			#goalenum to agentType'
 			if agent.goal == enums.GoalEnum.SOLDIER_GOAL:
@@ -86,7 +103,7 @@ class UpgradeState(BaseState):
 				agent.startTimer = demo.getTime()
 		else:
 			print("Agent can't be upgraded")
-	def Execute(agent, newtype):
+	def Execute(self, agent, newtype):
 		#kolla om timer är klar
 		#när tinmern är klar change state to start production(kiln,smelt&smith)
 		#om timmern är clar soldat medela over lorde utbildad soldat.
@@ -107,7 +124,7 @@ class UpgradeState(BaseState):
 				agent.ChangeState(StartProdusingState)
 #Scout Agents
 class ExploreState(BaseState):
-	def Execute(agent, fog):
+	def Execute(self, agent, fog):
 		agent.goal = random.randint()
 		return
 
@@ -116,7 +133,7 @@ class ExploreState(BaseState):
 class BuildState(BaseState):
 	buildingtype = None
 	
-	def Enter(agent):
+	def Enter(self, agent):
 		if agent.entityHandle.agentType[6]:
 			if agent.goal == enums.BUILD_TRAINING_CAMP_GOAL:
 				if overlord.overlord.tree >= statParser.getStat("trainingCampWoodCost"):
@@ -141,7 +158,7 @@ class BuildState(BaseState):
 				
 		else:
 			print("Agent is not a builder")
-	def Execute(agent):
+	def Execute(self, agent):
 		if agent.goal == enums.Goalenum.BUILD_KILNS_GOAL:
 			if demo.GetTime() - agent.startTime >= statParser.getStat("kilnBuildTime"):
 				building = buildings.Building(demo.buildingtype[0],agent)
@@ -171,7 +188,7 @@ class BuildState(BaseState):
 				overlord.overlord.AddBuilding(building)
 #Soldier Agents
 class AttackState(BaseState):
-	def Execute(agent, enemy):
+	def Execute(self, agent, enemy):
 		if agent.type == agentType[2]:
 			if not agent.timeBusy:
 				agent.timeBusy = statParser.getStat("soldierAttackSpeed")
@@ -184,7 +201,7 @@ class AttackState(BaseState):
 		return
 
 class StartProdusingState(BaseState):
-	def Enter(agent):
+	def Enter(self, agent):
 		building = overlord.overlord.GetBuildingAtPosition(agent.finalGoal)
 		building.AddWorker()
 		overlord.overlord.KillAgent(agent)		
