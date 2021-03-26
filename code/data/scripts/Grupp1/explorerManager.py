@@ -5,7 +5,7 @@ import random
 
 startupGoals = [
             [goals.WalkToGoal(nmath.Float2(0, -170))],
-            [goals.WalkToGoal(nmath.Float2(-125, -20)), goals.WalkToGoal(nmath.Float2(140, -20))]
+            [goals.WalkToGoal(nmath.Float2(0, 170)), goals.WalkToGoal(nmath.Float2(-125, -20)), goals.WalkToGoal(nmath.Float2(140, -20))]
         ]
 
 def startup():
@@ -26,7 +26,7 @@ def update():
 
 def roam(scout):
     while True:
-        offset = nmath.Float2(random.randrange(-25, 25), random.randrange(-50, 50))
+        offset = nmath.Float2(random.randrange(-25, 25), random.randrange(-25, 25))
         pos = scout.getPos() + offset
         if navMesh.isOnNavMesh(pos):
             scout.addGoal(goals.WalkToGoal(pos))

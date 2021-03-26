@@ -46,6 +46,12 @@ class Agent:
     def clearGoals(self):
         self.goals.clear()
 
+    def getGoal(self):
+        if len(self.goals) > 0:
+            return self.goals[-1]
+        else:
+            return None
+
 
     def popGoal(self):
         self.goals.pop()

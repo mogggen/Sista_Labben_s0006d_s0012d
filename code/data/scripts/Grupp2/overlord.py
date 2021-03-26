@@ -68,6 +68,11 @@ class Overlord:
         demo.Delete(agent.enityHandle)
         del agent
 
+    def KillBuilding(self, building):
+        self.buildings.remove(building)
+        demo.Delete(building.entityHandle)
+        del building
+
 # FSM requests or information
     def AddScoutedTree(self, tree):
         self.scoutedTrees.append(tree)
