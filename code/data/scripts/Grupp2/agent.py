@@ -18,6 +18,8 @@ class Agent:
 		self.healthProperty = self.entityHandle.Health
 		self.healthProperty.hp = int(statParser.getStat("workerHealth"))
 		self.entityHandle.Health = self.healthProperty
+
+		self.Discover()
 	
 	#lämna, orders frome overlord
 	def ChangeState(self, newState):
@@ -57,9 +59,9 @@ class Agent:
 		p.x = round(p.x)
 		p.y += 0.5
 		p.z = round(p.z)
-		radius = statParser.getStat("normalExploreRadius")
+		radius = int(statParser.getStat("normalExploreRadius"))
 		if self.entityHandle.Agent.type == demo.agentType.SCOUT:
-			radius = statParser.getStat("scoutExploreRadius")
+			radius = int(statParser.getStat("scoutExploreRadius"))
 		for x in range(-radius, radius+1):
 			for y in range(-radius, radius+1):
 				if (x**2 + y**2) < radius**2:

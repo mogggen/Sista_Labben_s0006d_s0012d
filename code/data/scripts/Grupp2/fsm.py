@@ -23,15 +23,16 @@ class MoveState(BaseState):
 	currentGoalFace = -1
 
 	def Enter(self, agent):
-		agent.pathToGoal = pathfinder.pf.Astar(agent.entityHandle.Agent.position, agent.finalGoal)
+		agent.pathToGoal = pathfinder.pf.AStar(agent.entityHandle.Agent.position, agent.finalGoal)
 		agent.pathToGoal.pop(0)
 		self.currentGoalFace = agent.pathToGoal.pop(0)
-		if self.currentGoalFace is type(int):
+		if type(self.currentGoalFace) == int:
 			agent.SetTargetPosition(navMesh.getCenterOfFace(self.currentGoalFace))
 		else:
 			agent.SetTargetPosition(self.currentGoalFace)
 
 	def Execute(self, agent):
+		agent.Discover()
 		pos = agent.entityHandle.Agent.position
 		pos = nmath.Float2(pos.x, pos.z)
 
@@ -51,7 +52,7 @@ class MoveState(BaseState):
 			elif agent.goal == enums.GoalEnum.WOOD_GOAL:
 				agent.ChangeState(ChoppingState())
 			elif agent.goal == enums.GoalEnum.IRON_GOAL:
-				agent.PickUpItem(agent.itemEntity, enums.ItemEnum.IRON_ORE)
+				agent.PickupItem(agent.itemEntity, enums.ItemEnum.IRON_ORE)
 				agent.finalGoal = overlord.overlord.GetCastlePosition()
 				agent.ChangeState(MoveState())
 
@@ -90,7 +91,7 @@ class ChoppingState(BaseState):
 		# look if timer is done
 		if demo.GetTime() - agent.startTime >= statParser.getStat("woodCuttingSpeed"):
 			# om done, ta bort trädet, plocka upp träd och gå till slottet
-			agent.PickUpItem(agent.itemEntity, enums.ItemEnum.WOOD)
+			agent.PickupItem(agent.itemEntity, enums.ItemEnum.WOOD)
 			agent.ChangeState(MoveState())
 
 
