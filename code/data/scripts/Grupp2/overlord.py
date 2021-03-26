@@ -68,6 +68,11 @@ class Overlord:
         demo.Delete(agent.enityHandle)
         del agent
 
+    def KillBuilding(self, building):
+        self.buildings.remove(building)
+        demo.Delete(building.entityHandle)
+        del building
+
 # FSM requests or information
     def AddScoutedTree(self, tree):
         self.scoutedTrees.append(tree)
@@ -124,6 +129,7 @@ class Overlord:
                         a.SetGoal(enums.GoalEnum.SMITH_GOAL)
                     a.finalGoal = buildingPos
                     a.ChangeState(fsm.MoveState())
+                    return
             else:
                 print("Worker requested but there are no more workers!")
 
@@ -135,6 +141,11 @@ class Overlord:
         self.buildings.append(building)
         # do stuff
 
+    def GetBuildingAtPosition(self, pos):
+        for b in self.buildings:
+            if b.entityHandle.Building.position == pos:
+                return b
+        print("There is no building at this location!")
 
     #add resources
     def AddCharcoal(self, n):
