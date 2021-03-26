@@ -114,9 +114,9 @@ class trainingCamp:
         agentProperty = self.agent.entity.Agent
         agentProperty.type = demo.agentType.SOLDIER
 
-        agentPropertyHealth = demo.Health
+        agentPropertyHealth = demo.agent.Health
         agentPropertyHealth.hp = statParser.getStat("soldierHealth")
-        demo.Health = agentPropertyHealth
+        demo.agent.Health = agentPropertyHealth
 
         self.agent.entity.Agent = agentProperty
 

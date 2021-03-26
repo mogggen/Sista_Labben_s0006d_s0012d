@@ -8,12 +8,6 @@ startupGoals = [
             [goals.WalkToGoal(nmath.Float2(0, 170)), goals.WalkToGoal(nmath.Float2(-125, -20)), goals.WalkToGoal(nmath.Float2(140, -20))]
         ]
 
-def startup():
-    for i in range(2):
-        worker = demo.Entity.fromInt(list(entity_manager.instance.workers.keys())[0])
-        entity_manager.instance.stageForUpgrade(worker)
-        entity_manager.instance.findAgent(worker).addGoal(goals.Upgrade(demo.agentType.SCOUT))
-
 def update():
     if len(entity_manager.instance.explorers) > 0:
         for scout in entity_manager.instance.explorers.values():
