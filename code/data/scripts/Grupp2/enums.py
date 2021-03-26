@@ -18,6 +18,11 @@ class GoalEnum(Enum):
     BUILD_SMELTER_GOAL = 9
     BUILD_TRAINING_CAMP_GOAL = 10
 
+class LaneEnum(Enum):
+    LEFT = 0
+    MIDDLE = 1
+    RIGHT = 2
+
 class UpdateState(Enum):
     TREES = 0
     IRON = 1

@@ -5,6 +5,7 @@ class Overlord:
     agents = []
     soldiers = []
     buildings = []
+    availableTrainingCamps = []
     castleEntity = 0
     enemyCastleEntity = None
     #resources
@@ -64,6 +65,7 @@ class Overlord:
         for i in range(len(self.agents)):
             if i < nrDisc:
                 self.agents[i].SetGoal(enums.GoalEnum.SCOUT_GOAL)
+                # add correct LaneEnum value to respective scout
             elif i < nrDisc + nrKiln:
                 self.agents[i].SetGoal(enums.GoalEnum.KILN_GOAL)
                 self.nrIdleKilners += 1
@@ -163,6 +165,14 @@ class Overlord:
         self.buildings.append(building)
         # do stuff
 
+    def AddAvailableTrainingCamp(self, building):
+        self.availableTrainingCamps.append(building)
+        # Call TrainSoldier
+
+    def RemoveAvailableTrainingCamp(self, building):
+        if building in self.availableTrainingCamps:
+            self.availableTrainingCamps.remove(building)
+
     def GetBuildingAtPosition(self, pos):
         for b in self.buildings:
             if b.entityHandle.Building.position == pos:
@@ -202,6 +212,8 @@ class Overlord:
         for x in range(n):
             self.tree = self.tree - n
 
+    def CheckBuildPossibilities(self):
+        pass
 
     def HandleMsg(self, msg):
         for a in self.agents:
