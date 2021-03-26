@@ -1,5 +1,5 @@
 import random
-from Grupp2 import agent, pathfinder, buildings, overlord
+from Grupp2 import agent, pathfinder, buildings, overlord, enums
 import navMesh, demo, statParser
 
 class BaseState:
@@ -47,33 +47,35 @@ class FleeState(BaseState):
 class ChoppingState(BaseState):
 	def Enter(agent):
 		#om worker få en start tid
-		pass
-	def Execute(agent, radius):
+		if agent.type == demo.agentType.WORKER:
+			agent.startTime = demo.GetTime()
+
+	def Execute(agent):
 		#look if timer is done
-		#om done, plocka upp träd och gå till slotet
-		if not agent.timeBusy:
-			#start chopping timer
-			return
-		print("agent is busy")
+		if demo.GetTime() - agent.startTime >= statParser.getStat("woodCuttingSpeed"):
+			#om done, ta bort trädet, plocka upp träd och gå till slottet
+			demo.Delete() # remove for both trees
+			agent.PickUpItem(enums.ItemEnum.WOOD)
+			agent.ChangeState(MoveState())
 
 class UpgradeState(BaseState):
 	newType= None
 	def Enter(agent):
 		if agent.entityHandel.agentType[0]:
 			#goalenum to agentType'
-			if angent.goal == enum.GoalEnum.SOLDIER_GOAL:
+			if agent.goal == enums.GoalEnum.SOLDIER_GOAL:
 				if overlord.overlord.swords>=statParser.getStat("soldierSwordCost"):
 					overlord.overlord.Takeswords(statParser.getStat("soldierSwordCost"))
 					agent.startTimer = demo.getTime()
 				else:
 					print("Not enogh resorses to upgrade a soilder")
-			elif angent.goal == enum.GoalEnum.BUILD_KILNS_GOAL or angent.goal == enum.GoalEnum.BUILD_SMITH_GOAL or angent.goal == enum.GoalEnum.BUILD_SMELTER_GOAL or angent.goal == enum.GoalEnum.BUILD_TRAINING_CAMP_GOAL:
+			elif agent.goal == enums.GoalEnum.BUILD_KILNS_GOAL or agent.goal == enums.GoalEnum.BUILD_SMITH_GOAL or agent.goal == enums.GoalEnum.BUILD_SMELTER_GOAL or agent.goal == enums.GoalEnum.BUILD_TRAINING_CAMP_GOAL:
 				agent.startTimer = demo.getTime()
-			elif angent.goal == enum.GoalEnum.KILN_GOAL:
+			elif agent.goal == enums.GoalEnum.KILN_GOAL:
 				agent.startTimer = demo.getTime()
-			elif angent.goal == enum.GoalEnum.SMITH_GOAL:
+			elif agent.goal == enums.GoalEnum.SMITH_GOAL:
 				agent.startTimer = demo.getTime()
-			elif angent.goal == enum.GoalEnum.SMELT_GOAL:
+			elif agent.goal == enums.GoalEnum.SMELT_GOAL:
 				agent.startTimer = demo.getTime()
 		else:
 			print("Agent can't be upgraded")
@@ -81,19 +83,19 @@ class UpgradeState(BaseState):
 		#kolla om timer är klar
 		#när tinmern är klar change state to start production(kiln,smelt&smith)
 		#om timmern är clar soldat medela over lorde utbildad soldat.
-		if angent.goal == enum.GoalEnum.SOLDIER_GOAL:
+		if agent.goal == enums.GoalEnum.SOLDIER_GOAL:
 			if demo.getTime() - agent.startTimer >= statParser.getStat("soldierUpgradeTime"):
 				overlord.overlord.AddSoldier(agent)
-		elif angent.goal == enum.GoalEnum.BUILD_KILNS_GOAL or angent.goal == enum.GoalEnum.BUILD_SMITH_GOAL or angent.goal == enum.GoalEnum.BUILD_SMELTER_GOAL or angent.goal == enum.GoalEnum.BUILD_TRAINING_CAMP_GOAL:
+		elif agent.goal == enums.GoalEnum.BUILD_KILNS_GOAL or agent.goal == enums.GoalEnum.BUILD_SMITH_GOAL or agent.goal == enums.GoalEnum.BUILD_SMELTER_GOAL or agent.goal == enums.GoalEnum.BUILD_TRAINING_CAMP_GOAL:
 			if demo.getTime() - agent.startTimer >= statParser.getStat("builderUpgradeTime"):
-				agent.ChangeState(BuildingState)
-		elif angent.goal == enum.GoalEnum.KILN_GOAL:
+				agent.ChangeState(BuildState)
+		elif agent.goal == enums.GoalEnum.KILN_GOAL:
 			if demo.getTime() - agent.startTimer >= statParser.getStat("kilnerUpgradeTime"):
 				agent.ChangeState(StartProdusingState)
-		elif angent.goal == enum.GoalEnum.SMITH_GOAL:
+		elif agent.goal == enums.GoalEnum.SMITH_GOAL:
 			if demo.getTime() - agent.startTimer >= statParser.getStat("smithUpgradeTime"):
 				agent.ChangeState(StartProdusingState)
-		elif angent.goal == enum.GoalEnum.SMELT_GOAL:
+		elif agent.goal == enums.GoalEnum.SMELT_GOAL:
 			if demo.getTime() - agent.startTimer >= statParser.getStat("smelterUpgradeTime"):
 				agent.ChangeState(StartProdusingState)
 #Scout Agents
@@ -109,13 +111,13 @@ class BuildState(BaseState):
 	
 	def Enter(agent):
 		#Goalenum till buildingtype
-		if agent.goal == enum.BUILD_TRAINING_CAMP_GOAL:
+		if agent.goal == enums.BUILD_TRAINING_CAMP_GOAL:
 			buildingtype = demo.buildType.TRAININGCAMP
-		elif agent.goal == enum.Goalenum.BUILD_KILNS_GOAL:
+		elif agent.goal == enums.Goalenum.BUILD_KILNS_GOAL:
 			buildingtype = demo.buildType.KILN
-		elif agent.goal == enum.BUILD_SMELTER_GOAL:
+		elif agent.goal == enums.BUILD_SMELTER_GOAL:
 			buildingtype = demo.buildType.SMELTERY
-		elif agent.goal == enum.BUILD_SMITH_GOAL:
+		elif agent.goal == enums.BUILD_SMITH_GOAL:
 			buildingtype = demo.buildType.BLACKSMITH
 
 
