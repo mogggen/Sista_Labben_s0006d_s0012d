@@ -10,12 +10,17 @@ class EntityManager():
         self.soldiers = {}
         self.workers = {}
         self.buildings = {}
+
+        self.incrementUpdateState = demo.IncrementalIteration()
+        self.incrementUpdateState.view_i = 0
+        self.incrementUpdateState.index = 0
+        self.new_trees = set()
     def updatetUnManageEntities(self):
         updateState = enums.updateOrder[self.updateState]
-        if updateState == enums.UpdateState.TREE:
+        if updateState == enums.UpdateState.TREES:
             def updateTrees(entity, tree):
                 x = int(tree.position.x)
-                y = int(tree.postion.z) 
+                y = int(tree.position.z)
                 if fog_of_war.grupp2.is_discovered(x, y):
                     self.new_trees.add(entity.toInt())
 
@@ -46,7 +51,7 @@ class EntityManager():
 
             def updateEnemyAgents(entity,agent, team):
                 nonlocal workers,soldiers
-                if team.team == demo.teamEnum.GROUP_2:
+                if team.team == demo.teamEnum.GRUPP_2:
                     return
                 x = int(agent.position.x)
                 y = int(agent.position.z)
@@ -60,7 +65,7 @@ class EntityManager():
                 nonlocal buildings
                 if team.team == demo.teamEnum.GRUPP_2:
                     return
-                if building.buildingType == demo.buildingType.CASLE:
+                if building.type == demo.buildingType.CASTLE:
                     overlord.overlord.AddScoutedEnemyCastle(building)
 
                 x = int(building.position.x)
@@ -75,16 +80,16 @@ class EntityManager():
             self.enemy_workers = workers
             self.enemy_soldiers = soldiers
             self.enemy_buildings = buildings
-            overlord.overlord.scoutedWorkers(self.setTolistOfEntetys(self.enemy_workers))
-            overlord.overlord.scoutedSoldiers(self.setTolistOfEntetys(self.enemy_soldiers))
-            overlord.overlord.scoutedBuildings(self.setTolistOfEntetys(self.enemy_buildings))
+            overlord.overlord.AddScoutedWorkers(self.setTolistOfEntetys(self.enemy_workers))
+            overlord.overlord.AddScoutedSoldiers(self.setTolistOfEntetys(self.enemy_soldiers))
+            overlord.overlord.AddScoutedBuildings(self.setTolistOfEntetys(self.enemy_buildings))
 
         self.updateState = (self.updateState+1) % len(enums.updateOrder)
 
     def setTolistOfEntetys(self,s:set()):
         temp = []
         for i in s:
-            temp.append(i.fromInt())
+            temp.append(demo.Entity.fromInt(i))
         return temp
 
 entitymanger = EntityManager()

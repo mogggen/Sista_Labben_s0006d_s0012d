@@ -47,8 +47,9 @@ class Agent:
 		overlord.overlord.SendMsg(self, targetEntity)
 	# pick up item
 	def PickupItem(self, item, itemType):
-		demo.Delete(item)
-		self.holding = itemType
+		if demo.isValid(item):
+			demo.Delete(item)
+			self.holding = itemType
 	# drop item
 	def DropItem(self):
 		if self.pos == overlord.overlord.castleEntity.Building.position:

@@ -111,19 +111,19 @@ class UpgradeState(BaseState):
 			if agent.goal == enums.GoalEnum.SOLDIER_GOAL:
 				if overlord.overlord.swords >= statParser.getStat("soldierSwordCost"):
 					overlord.overlord.Takeswords(statParser.getStat("soldierSwordCost"))
-					agent.startTime = demo.getTime()
+					agent.startTime = demo.GetTime()
 				else:
 					agent.ChangeState(BaseState())
 			elif agent.goal == enums.GoalEnum.BUILD_KILNS_GOAL or agent.goal == enums.GoalEnum.BUILD_SMITH_GOAL or agent.goal == enums.GoalEnum.BUILD_SMELTER_GOAL or agent.goal == enums.GoalEnum.BUILD_TRAINING_CAMP_GOAL:
-				agent.startTime = demo.getTime()
+				agent.startTime = demo.GetTime()
 			elif agent.goal == enums.GoalEnum.KILN_GOAL:
-				agent.startTime = demo.getTime()
+				agent.startTime = demo.GetTime()
 			elif agent.goal == enums.GoalEnum.SMITH_GOAL:
-				agent.startTime = demo.getTime()
+				agent.startTime = demo.GetTime()
 			elif agent.goal == enums.GoalEnum.SMELT_GOAL:
-				agent.startTime = demo.getTime()
+				agent.startTime = demo.GetTime()
 			elif agent.goal == enums.GoalEnum.SCOUT_GOAL:
-				agent.startTime = demo.getTime()
+				agent.startTime = demo.GetTime()
 		else:
 			print("Agent can't be upgraded")
 
@@ -132,7 +132,7 @@ class UpgradeState(BaseState):
 		# när tinmern är klar change state to start production(kiln,smelt&smith)
 		# om timmern är clar soldat medela over lorde utbildad soldat.
 		if agent.goal == enums.GoalEnum.SOLDIER_GOAL:
-			if demo.getTime() - agent.startTime >= statParser.getStat("soldierUpgradeTime"):
+			if demo.GetTime() - agent.startTime >= statParser.getStat("soldierUpgradeTime"):
 				agent.setType(demo.agentType.SOLDIER)
 				overlord.overlord.AddSoldier(agent)
 				tc = overlord.overlord.GetBuildingAtPosition(agent.entityHandler.Agent.position)
@@ -144,28 +144,28 @@ class UpgradeState(BaseState):
 			if agent.entityHandler.Agent.agentType == demo.agentType.BUILDER:
 				agent.ChangeState(BuildState())
 				return
-			if demo.getTime() - agent.startTime >= statParser.getStat("builderUpgradeTime"):
+			if demo.GetTime() - agent.startTime >= statParser.getStat("builderUpgradeTime"):
 				agent.setType(demo.agentType.BUILDER)
 				agent.ChangeState(BuildState())
 
 		elif agent.goal == enums.GoalEnum.KILN_GOAL:
-			if demo.getTime() - agent.startTime >= statParser.getStat("kilnerUpgradeTime"):
+			if demo.GetTime() - agent.startTime >= statParser.getStat("kilnerUpgradeTime"):
 				agent.setType(demo.agentType.KILNER)
 				agent.ChangeState(StartProducingState())
 
 		elif agent.goal == enums.GoalEnum.SMITH_GOAL:
-			if demo.getTime() - agent.startTime >= statParser.getStat("smithUpgradeTime"):
+			if demo.GetTime() - agent.startTime >= statParser.getStat("smithUpgradeTime"):
 				agent.setType(demo.agentType.SMITH)
 				agent.ChangeState(StartProducingState())
 
 		elif agent.goal == enums.GoalEnum.SMELT_GOAL:
-			if demo.getTime() - agent.startTime >= statParser.getStat("smelterUpgradeTime"):
+			if demo.GetTime() - agent.startTime >= statParser.getStat("smelterUpgradeTime"):
 				agent.setType(demo.agentType.SMELTER)
 				agent.ChangeState(StartProducingState())
 
 		elif agent.goal == enums.GoalEnum.SCOUT_GOAL:
-			if demo.getTime() - agent.startTime >= statParser.getStat("scoutUpgradeTime"):
-				agent.setType(demo.agentType.SCOUT)
+			if demo.GetTime() - agent.startTime >= statParser.getStat("scoutUpgradeTime"):
+				agent.SetType(demo.agentType.SCOUT)
 				agent.ChangeState(ExploreState())
 
 # Scout Agents
@@ -274,7 +274,7 @@ class ChargeAndAttackState(BaseState):
 					and demo.GetTime() - agent.startTime < statParser.getStat("soldierAttackSpeed"):
 					if random.random() > statParser.getStat("hitChance"):
 						overlord.overlord.SendMsg(agent, enemy)
-					agent.startTime = demo.getTime()
+					agent.startTime = demo.GetTime()
 
 
 class StartProducingState(BaseState):

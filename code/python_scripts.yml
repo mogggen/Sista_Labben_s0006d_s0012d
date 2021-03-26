@@ -32,3 +32,4 @@ files:
     - Grupp2/overlord.py
     - Grupp2/pathfinder.py
     - Grupp2/enums.py
+    - Grupp2/EntityManager.py
