@@ -7,11 +7,13 @@ import Grupp1.worker_manager as worker_manager
 import Grupp1.explorerManager as explorerManager
 import Grupp1.build_manager as build_manager
 import Grupp1.soldierManager as soldierManager
+import Grupp1.godManager as godManager
+
 
 import nmath, demo
 import button_input
 import buildings
-
+import msgManager
 import cProfile
 
 
@@ -24,30 +26,18 @@ r_button    = button_input.ButtonInput(demo.IsRdown)
 castle = buildings.initBlueCastle()
 entity_manager.instance.castle = castle
         
-dummy_enemy = demo.SpawnEntity("AgentEntity/redagent")
-a = dummy_enemy.Agent
-a.position = nmath.Point(0, 0, 0)
-a.targetPosition = nmath.Point(0, 0, 0)
-dummy_enemy.Agent = a
 
 p = entity_manager.instance.getCastlePos()
 for _ in range(50):
     a = agent.Agent(p);
     entity_manager.instance.addWorker(a.entity, a)
 
-tree_pos = None
-
-explorerManager.startup()
-entity_manager.instance.queueUpgrade(demo.agentType.BUILDER)
-build_manager.placing(demo.buildingType.KILN)
-build_manager.placing(demo.buildingType.SMELTERY)
-build_manager.placing(demo.buildingType.BLACKSMITH)
-build_manager.placing(demo.buildingType.TRAININGCAMP)
-
 
 def NebulaUpdate():
 
     path_manager.instance.calc_paths(100)
+
+    godManager.update()
 
     ## update managers
     worker_manager.instance.update()
@@ -66,7 +56,6 @@ def NebulaUpdate():
 
 
 def NebulaDraw(p):
-    global tree_pos, dummy_enemy
 
     demo.DrawDot(nmath.Point(-30, 0, 125), 10, nmath.Vec4(1, 0, 0, 1))
     demo.DrawDot(nmath.Point(30, 0, 125), 10, nmath.Vec4(1, 0, 0, 1))
@@ -98,7 +87,11 @@ def NebulaDraw(p):
         #a.targetPosition = nmath.Point(0, 0, 0)
         #dummy_enemy.Agent = a
 
-        demo.Delete(dummy_enemy)
+
+        a = entity_manager.instance.getSelectedAgent()
+        msgManager.instance.sendMsg(msgManager.message(demo.teamEnum.GRUPP_1, None, a.entity, "jkh"))
+
+        #demo.Delete(dummy_enemy)
 
     if y_button.pressed():
 
@@ -106,20 +99,7 @@ def NebulaDraw(p):
         entity_manager.instance.stageForUpgrade(a.entity)
         a.addGoal(goals.Upgrade(demo.agentType.SOLDIER))
 
-        #tree_property = tree.Tree
 
-        #a = entity_manager.instance.getSelectedAgent()
-
-        #tp = tree_property.position
-        #cp = entity_manager.instance.getCastlePos()
-        #a.addGoals([goals.EmptyInventory(),\
-        #            goals.CutTree(tree)])
-
-        #tree_pos = tp
-
-
-    if tree_pos:
-        demo.DrawDot(tree_pos, 10, nmath.Vec4(0,1,1,1))
         
     p.x = round(p.x)
     p.y += 0.5
@@ -128,37 +108,32 @@ def NebulaDraw(p):
     entity_manager.instance.dbgDraw()
     item_manager.instance.drawGui()
 
+    godManager.dbgDraw()
+
 
 def HandleMessage(msg):
-    if entity_manager.instance.findAgent(msg[2]):
-        agentHealth = msg[2].Health
+    if entity_manager.instance.findAgent(msg.taker):
+        agentHealth = msg.taker.Health
         agentHealth.hp -= 1
-        msg[2].Health = agentHealth
+        msg.taker.Health = agentHealth
 
         if agentHealth.hp <= 0:
-            if entity_manager.agent.AgentType == demo.agentType.WORKER:
-                for goal in agent.goals:
-                    if goal == goals.CutTree:
-                        entity_manager.addTree(goal.tree.entity)
-                    elif goal == goals.PickupOre:
-                        entity_manager.addOre(goal.ore.entity)
-
-            entity_manager.instance.deleteEntity(entity_manager.instance.findAgent(msg[2]))
+            entity_manager.instance.deleteEntity(msg.taker)
 
 
-    elif entity_manager.instance.findBuilding(msg[2]):
-        buildingHealth = msg[2].Health
+    elif entity_manager.instance.findBuilding(msg.taker):
+        buildingHealth = msg.taker.Health
         buildingHealth.hp -= 1
-        msg[2].Health = buildingHealth
+        msg.taker.Health = buildingHealth
 
         if buildingHealth.hp <= 0:
-            entity_manager.instance.deleteEntity(entity_manager.instance.findBuilding(msg[2]))
+            entity_manager.instance.deleteEntity(msg.taker)
 
-    elif entity_manager.instamce.castle == msg[2]:
-        castleHealth = msg[2].Health
+    elif entity_manager.instamce.castle.toInt() == msg.taker.toInt():
+        castleHealth = msg.taker.Health
         castleHealth.hp -= 1
-        msg[2].Health = castleHealth
+        msg.taker.Health = castleHealth
 
         if castleHealth.hp <= 0:
             demo.SetTimeFactor(0)
-            print("Defeat")
+            print("Blue Defeat")

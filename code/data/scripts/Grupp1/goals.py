@@ -277,7 +277,6 @@ class Attack(Goal):
         elif not self.onCooldown:
             if random.uniform(0, 1) <= statParser.getStat("hitChance"):
                 #msgManager.instance.sendMsg(msgManager.message(demo.teamEnum.GRUPP_2, agent, self.enemy, "attacked"))
-                print("Attacking")
                 self.timer = demo.GetTime()
                 self.onCooldown = True
 
@@ -426,7 +425,6 @@ class Upgrade(Goal):
 
     def execute(self, agent):
         if demo.GetTime() - self.timer >= statParser.getStat(str(self.type).split(".")[1].lower() + "UpgradeTime"):
-            print("done")
             entity_manager.instance.doneUpgrade(agent.entity)
             if agent.entity.Agent.type == demo.agentType.SCOUT:
                 agent.setDiscoverRadius(int(statParser.getStat("scoutExploreRadius")))

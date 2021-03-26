@@ -41,10 +41,6 @@ from Grupp2 import main as Grupp2main
 import msgManager
 
 
-
-
-
-
 # Runs once every frame
 def NebulaUpdate():
     global selected_time, selected_group
@@ -59,12 +55,12 @@ def NebulaUpdate():
             print("Unpaused")
             demo.SetTimeFactor(time_speeds[selected_time])
 
-    if speed_up.pressed() and selected_time < len(time_speeds) -1:
+    if not paused and speed_up.pressed() and selected_time < len(time_speeds) -1:
         selected_time += 1
         print("Time: " + str(time_speeds[selected_time]) + "x")
         demo.SetTimeFactor(time_speeds[selected_time])
 
-    if speed_down.pressed() and selected_time > 0:
+    if not paused and speed_down.pressed() and selected_time > 0:
         selected_time -= 1
         print("Time: " + str(time_speeds[selected_time]) + "x")
         demo.SetTimeFactor(time_speeds[selected_time])
@@ -109,14 +105,12 @@ def NebulaUpdate():
             print("vertex: ", he.vertIdx)
             face = he.nextEdge
 
-    if paused:
-        return
-
-    Grupp1main.NebulaUpdate()
-    Grupp2main.NebulaUpdate()
+    if not paused:
+        Grupp1main.NebulaUpdate()
+        Grupp2main.NebulaUpdate()
+        msgManager.instance.distributeMsg()
 
     fog_of_war.visual.apply_cloud_changes()
-    msgManager.instance.distributeMsg()
 
 # Runs one every frame when it's time to draw
 def NebulaDraw():

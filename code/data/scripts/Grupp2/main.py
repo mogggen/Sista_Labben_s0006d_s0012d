@@ -7,6 +7,7 @@ pathfinder.pf.AStar(nmath.Point(0,0,0), nmath.Point(-20,0,-60))
 overlord.overlord.SpawnAgent()
 
 def NebulaUpdate():
+    overlord.overlord.UpdateActors()
     pass
 
 def NebulaDraw(p):

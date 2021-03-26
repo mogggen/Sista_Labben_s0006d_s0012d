@@ -64,7 +64,6 @@ def placing(type:demo.buildingType):
     while True:
         x = random.randrange(minX, maxX)
         z = random.randrange(minZ, maxZ)
-        print(x, z)
         point = nmath.Float2(x, z)
         if navMesh.isOnNavMesh(point):
             for b in entity_manager.instance.buildings.values():

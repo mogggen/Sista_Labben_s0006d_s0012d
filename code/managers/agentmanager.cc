@@ -63,7 +63,7 @@ AgentManager::Create()
                 
                 //Moving every agent towards their target position every frame
                 a.position = a.position + Math::normalize(a.targetPosition - a.position) * 1 * Game::TimeManager::GetTimeSource(TIMESOURCE_GAMEPLAY)->frameTime;
-                if (Math::length(a.targetPosition - a.position) < 0.1f) {
+                if (Math::length(a.targetPosition - a.position) < 1.1 * Game::TimeManager::GetTimeSource(TIMESOURCE_GAMEPLAY)->frameTime) {
                     a.position = a.targetPosition;
                 }
 

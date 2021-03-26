@@ -153,7 +153,6 @@ class EntityManager:
                     break
 
                 t = self.upgrade_queue.pop(0)
-                print(t)
                 if not t == demo.agentType.SOLDIER:
                     self.stageForUpgrade(worker.entity)
                     worker.addGoal(goals.Upgrade(t))

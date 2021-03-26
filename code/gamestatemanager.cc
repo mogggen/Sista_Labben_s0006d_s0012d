@@ -216,7 +216,7 @@ GameStateManager::OnActivate()
 
     GraphicsFeature::GraphicsFeatureUnit::Instance()->AddRenderUICallback([]()
     {
-        NavMesh::Instance()->DbgDraw();
+        //NavMesh::Instance()->DbgDraw();
         Scripting::ScriptServer::Instance()->Eval("NebulaDraw()");
     });
 
