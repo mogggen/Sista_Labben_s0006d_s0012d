@@ -12,8 +12,8 @@ class kiln:
 
 
     def consumeAgent(self, agent):
-        self.agent = agent.entity.Agent
-        entity_manager.instance.removeEntity(self.agent.entity)
+        self.agent = agent
+        entity_manager.instance.deleteEntity(self.agent.entity)
         buildingProperty = self.buildingEntity.Building
         buildingProperty.hasWorker = True
         self.buildingEntity.Building = buildingProperty
@@ -23,16 +23,19 @@ class kiln:
         if self.buildingEntity.Building.hasWorker:
             if not self.working:
                 self.timer = demo.GetTime()
-                self.removeProductCost()
-                working = True
+                self.working = self.removeProductCost()
             else:
                 if demo.GetTime() - self.timer >= statParser.getStat("coalTimeCost"):
                     item_manager.instance.coal += statParser.getStat("coalReturn")
-                    working = False
+                    self.working = False
 
 
     def removeProductCost(self):
-        item_manager.instance.logs -= statParser.getStat("coalWoodCost")
+        coalWoodCost = statParser.getStat("coalWoodCost")
+        if item_manager.instance.logs >= coalWoodCost:
+            item_manager.instance.logs -= coalWoodCost
+            return True
+        return False
 
 
 class smelter:
@@ -45,8 +48,8 @@ class smelter:
 
 
     def consumeAgent(self, agent):
-        self.agent = agent.entity.Agent
-        entity_manager.instance.removeEntity(self.agent.entity)
+        self.agent = agent
+        entity_manager.instance.deleteEntity(self.agent.entity)
         buildingProperty = self.buildingEntity.Building
         buildingProperty.hasWorker = True
         self.buildingEntity.Building = buildingProperty
@@ -55,16 +58,21 @@ class smelter:
         if self.buildingEntity.Building.hasWorker:
             if not self.working:
                 self.timer = demo.GetTime()
-                self.removeProductCost()
-                working = True
+                self.working = self.removeProductCost()
             else:
                 if demo.GetTime() - self.timer >= statParser.getStat("ironTimeCost"):
-                    item_manager.instance.iron += statParser.getStat("ironReturn")
-                    working = False
+                    item_manager.instance.ironIngot += statParser.getStat("ironReturn")
+                    self.working = False
 
     def removeProductCost(self):
-        item_manager.instance.coal -= statParser.getStat("ironCoalCost")
-        item_manager.instance.ironore -= statParser.getStat("ironOreCost")
+        ironCoalCost = statParser.getStat("ironCoalCost")
+        ironOreCost = statParser.getStat("ironOreCost")
+
+        if item_manager.instance.coal >= ironCoalCost and item_manager.instance.ironore >= ironOreCost:
+            item_manager.instance.coal -= ironCoalCost
+            item_manager.instance.ironore -= ironOreCost
+            return True
+        return False
 
 
 class blacksmith:
@@ -77,8 +85,8 @@ class blacksmith:
 
 
     def consumeAgent(self, agent):
-        self.agent = agent.entity.Agent
-        entity_manager.instance.removeEntity(self.agent.entity)
+        self.agent = agent
+        entity_manager.instance.deleteEntity(self.agent.entity)
         buildingProperty = self.buildingEntity.Building
         buildingProperty.hasWorker = True
         self.buildingEntity.Building = buildingProperty
@@ -87,16 +95,21 @@ class blacksmith:
         if self.buildingEntity.Building.hasWorker:
             if not self.working:
                 self.timer = demo.GetTime()
-                self.removeProductCost()
-                working = True
+                self.working = self.removeProductCost()
             else:
                 if demo.GetTime() - self.timer >= statParser.getStat("swordTimeCost"):
-                    item_manager.instance.sword += statParser.getStat("swordReturn")
-                    working = False
+                    item_manager.instance.swords += statParser.getStat("swordReturn")
+                    self.working = False
 
     def removeProductCost(self):
-        item_manager.instance.coal -= statParser.getStat("swordCoalCost")
-        item_manager.instance.iron -= statParser.getStat("swordIronCost")
+        swordCoalCost = statParser.getStat("swordCoalCost")
+        swordIronCost = statParser.getStat("swordIronCost")
+
+        if item_manager.instance.coal >= swordCoalCost and item_manager.instance.ironIngot >= swordIronCost:
+            item_manager.instance.coal -= swordCoalCost
+            item_manager.instance.ironIngot -= swordIronCost
+            return True
+        return False
 
 
 class trainingCamp:
@@ -114,9 +127,9 @@ class trainingCamp:
         agentProperty = self.agent.entity.Agent
         agentProperty.type = demo.agentType.SOLDIER
 
-        agentPropertyHealth = demo.agent.Health
-        agentPropertyHealth.hp = statParser.getStat("soldierHealth")
-        demo.agent.Health = agentPropertyHealth
+        agentPropertyHealth = agent.entity.Health
+        agentPropertyHealth.hp = int(statParser.getStat("soldierHealth"))
+        agent.entity.Health = agentPropertyHealth
 
         self.agent.entity.Agent = agentProperty
 
@@ -132,16 +145,21 @@ class trainingCamp:
             if not self.working:
                 self.timer = demo.GetTime()
                 self.removeProductCost()
-                working = True
+                self.working = True
             else:
                 if demo.GetTime() - self.timer >= statParser.getStat("soldierUpgradeTime"):
-                    entity_manager.instance.doneUppgrading(self.agent.entity)
+                    entity_manager.instance.doneUpgrade(self.agent.entity)
+                    entity_manager.instance.queueUpgrade(demo.agentType.SOLDIER)
                     self.agent = None
-                    working = False
+                    self.working = False
 
                     buildingProperty = self.buildingEntity.Building
                     buildingProperty.hasWorker = False
                     self.buildingEntity.Building = buildingProperty
 
     def removeProductCost(self):
-        item_manager.instance.sword -= statParser.getStat("soldierSwordCost")
+        soldierSwordCost = statParser.getStat("soldierSwordCost")
+        if item_manager.instance.swords >= soldierSwordCost:
+            item_manager.instance.swords -= soldierSwordCost
+            return True
+        return False

@@ -22,6 +22,7 @@ def spawnBuilding(type:demo.buildingType, x, y, rot, team:demo.teamEnum):
     health = entityHandle.Health
     health.hp = int(statParser.getStat(str(type).split(".")[1].lower() + "Health"))
     entityHandle.Health = health
+
     return entityHandle
 
 

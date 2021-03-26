@@ -1,5 +1,5 @@
 from Grupp1 import entity_manager, item_manager, goals
-import demo, imgui
+import demo, imgui, nmath
 import random
 def treeKeyFunc(tree):
     cp = entity_manager.instance.getCastlePos()
@@ -12,7 +12,30 @@ def ironKeyFunc(iron):
     return (cp.x - tp.x)**2 + (cp.y - tp.z)**2
 
 
+scoutPos = [ 
+    nmath.Float2(10,131),
+    nmath.Float2( 0,131),
+    nmath.Float2(-26,164),
+    nmath.Float2(-32,153),
+    nmath.Float2(-28,146),
+    nmath.Float2(-17,139),
+    nmath.Float2(-10,136),
+    nmath.Float2(-3,131),
+    
+    nmath.Float2(-1*(  0-5) + 5,131),
+    nmath.Float2(-1*(-26-5) + 5,164),
+    nmath.Float2(-1*(-32-5) + 5,153),
+    nmath.Float2(-1*(-28-5) + 5,146),
+    nmath.Float2(-1*(-17-5) + 5,139),
+    nmath.Float2(-1*(-10-5) + 5,136),
+    nmath.Float2(-1*( -3-5) + 5,131),
+    ]
+
+
 class WorkerManager:
+
+    first = True
+
     def __init__(self):
         self.assigned_trees = set()
         self.free_trees = []
@@ -42,7 +65,18 @@ class WorkerManager:
 
 
 
+    def beginScout(self):
+        workers = list(entity_manager.instance.workers.values())
+        for i in range(len(scoutPos)):
+            workers[i].addGoal(goals.WalkToGoal(scoutPos[i]))
+
+        self.first = False
+
+
     def update(self):
+        if self.first:
+            self.beginScout()
+
         
         if self.update_timer == 30:
             self.update_free_iron()
