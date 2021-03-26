@@ -236,10 +236,28 @@ class BuildState(BaseState):
 # Soldier Agents
 class ChargeAndAttackState(BaseState):
 	def Enter(self, agent):
-		pass
+		agent.pathToGoal = pathfinder.pf.AStar(agent.entityHandle.Agent.position, agent.finalGoal)
+		agent.pathToGoal.pop(0)
+		self.currentGoalFace = agent.pathToGoal.pop(0)
+		if type(self.currentGoalFace) == int:
+			agent.SetTargetPosition(navMesh.getCenterOfFace(self.currentGoalFace))
+		else:
+			agent.SetTargetPosition(self.currentGoalFace)
 
 	def Execute(self, agent):
 		if agent.entityHandle.Agent.type == demo.agentType.SOLDIER:
+			agent.Discover()
+			pos = agent.entityHandle.Agent.position
+			pos = nmath.Float2(pos.x, pos.z)
+			if navMesh.findInNavMesh(pos) == navMesh.findInNavMesh(nmath.Float2(agent.finalGoal.x, agent.finalGoal.z)):
+				agent.SetTargetPosition(agent.finalGoal)
+			elif navMesh.findInNavMesh(pos) == navMesh.findInNavMesh(
+					nmath.Float2(agent.entityHandle.Agent.targetPosition.x, agent.entityHandle.Agent.targetPosition.z)):
+				self.currentGoalFace = agent.pathToGoal.pop(0)
+				agent.SetTargetPosition(navMesh.getCenterOfFace(self.currentGoalFace))
+			if agent.entityHandle.Agent.position == agent.finalGoal:
+
+
 				agent.timeBusy = statParser.getStat("soldierAttackSpeed")
 				if ((agent.pos[0] - enemy.pos[0])**2 + (agent.pos[1] - enemy.pos[1])**2)**.5 < statParser.getStat("soldierAttackRange") and random.random() < statParser.getStat("hitChance"):
 					# sent message to enemy team

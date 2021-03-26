@@ -82,27 +82,26 @@ class Overlord:
         demo.Delete(building.entityHandle)
         del building
 
-    # FSM requests or information
+    # Discover adds discovered objects here
     def AddScoutedWorkers(self, workers):
         self.scoutedWorkers = workers
-
     def AddScoutedSoldiers(self, soldiers):
         self.scoutedSoldiers = soldiers
-
     def AddScoutedBuildings(self, buildings):
         self.scoutedBuildings = buildings
-
     def AddScoutedTree(self, trees):
         self.scoutedTrees = trees
-
     def AddScoutedIron(self, iron):
         self.scoutedIron = iron
-
     def AddScoutedEnemyCastle(self, castleEntity):
         self.enemyCastleEntity = castleEntity
 
+    # FSM requests or information
     def GetCastlePosition(self):
         return self.castleEntity.Building.position
+
+    def GetEnemyCastle(self):
+        return self.enemyCastleEntity
 
     # A worker requests a tree or iron to gather
     def GetCloseTree(self, agent):

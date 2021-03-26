@@ -42,8 +42,8 @@ class Agent:
 			self.entityHandle.Health = hp
 		elif self.hp <= 1:
 			overlord.overlord.KillAgent(self)
-	def DealDamage(self, target):
-		overlord.overlord.SendMsg(self, target)
+	def DealDamage(self, targetEntity):
+		overlord.overlord.SendMsg(self, targetEntity)
 	# pick up item
 	def PickupItem(self, item, itemType):
 		demo.Delete(item)
