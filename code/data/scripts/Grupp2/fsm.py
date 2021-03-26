@@ -45,7 +45,7 @@ class MoveState(BaseState):
 
 		if agent.entityHandle.Agent.position == agent.finalGoal:
 			if agent.GoalHandler.agentType == demo.agentType.SCOUT:
-				agent.ChangeState(agent.ExploreState())
+				agent.ChangeState(ExploreState())
 			if agent.goal in (enums.GoalEnum.KILN_GOAL, enums.GoalEnum.SMITH_GOAL, enums.GoalEnum.SMELT_GOAL):
 				if agent.entityHandle.Agent.type == demo.agentType.WORKER:
 					agent.ChangeState(UpgradeState())
@@ -183,7 +183,7 @@ class ExploreState(BaseState):
 		else:
 			agent.finalGoal = nmath.Point(0, 0, 170)
 
-		agent.ChangeState(agent.Movestate())
+		agent.ChangeState(MoveState())
 		agent.Discover()
 
 
