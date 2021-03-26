@@ -37,6 +37,12 @@ smelt goal:
 5. gå till smelter
 6. starta produktion i smelter
 
+Soldier goal:
+1. fråga overlord var det finn ett ledigt träningsläger
+2. gå till träningslägret <--
+3. utbildasig till soldat
+4. medela overlord att jag är soldat
+
 Buildgoals:
 
 1. kolla om builder
