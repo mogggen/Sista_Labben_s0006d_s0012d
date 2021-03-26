@@ -1,4 +1,4 @@
-import demo, statParser
+import demo, statParser, nmath, fog_of_war
 from Grupp2 import fsm, pathfinder, overlord, enums
 
 class Agent:
@@ -11,7 +11,7 @@ class Agent:
 		self.finalGoal = None
 		self.pathToGoal = []
 		self.state = fsm.BaseState()
-		self.Starttime = 0
+		self.startTime = 0
 		
 		self.entityHandle = demo.SpawnEntity("AgentEntity/agent")
 		
@@ -53,7 +53,17 @@ class Agent:
 			print("Agent not in castle keep walking")
 
 	def Discover(self):
-		pass
+		p = self.entityHandle.Agent.position
+		p.x = round(p.x)
+		p.y += 0.5
+		p.z = round(p.z)
+		radius = statParser.getStat("normalExploreRadius")
+		if self.entityHandle.Agent.type == demo.agentType.SCOUT:
+			radius = statParser.getStat("scoutExploreRadius")
+		for x in range(-radius, radius+1):
+			for y in range(-radius, radius+1):
+				if (x**2 + y**2) < radius**2:
+					fog_of_war.grupp2.uncloud(round(p.x-x), round(p.z-y))
 
 	def SetGoal(self, newGoal):
 		self.goal = newGoal
@@ -64,23 +74,23 @@ class Agent:
 		self.entityHandle.Agent = agentProperty
 
 	def goalHandler(self):
-		if self.goal == enums.WOOD_GOAL:
+		if self.goal == enums.GoalEnum.WOOD_GOAL:
 			self.itemEntity = overlord.overlord.GetCloseTree()
 			self.finalGoal = self.itemEntity.Tree.position
 			self.ChangeState(fsm.MoveState())
 
-		elif self.goal == enums.IRON_GOAL:
+		elif self.goal == enums.GoalEnum.IRON_GOAL:
 			self.itemEntity = overlord.overlord.GetCloseIron()
 			self.finalGoal = self.itemEntity.Iron.position
 			self.ChangeState(fsm.MoveState())
 		
 		# Soldier goal needs fix maybe
-		elif self.goal == enums.SOLDIER_GOAL:
-			if self.entityHandler.agentType == demo.agentType.WORKER:
+		elif self.goal == enums.GoalEnum.SOLDIER_GOAL:
+			if self.entityHandle.Agent.type == demo.agentType.WORKER:
 				self.ChangeState(fsm.UpgradeState())
 
 
-		elif self.goal == enums.BUILD_SMELTER_GOAL or self.goal == enums.BUILD_SMITH_GOAL or self.goal == enums.BUILD_KILNS_GOAL or self.goal == enums.BUILD_TRAINING_CAMP_GOAL:
-			if self.entityHandler.agentType == demo.agentType.WORKER or self.entityHandle.agentType == demo.agentType.BUILDER:
+		elif self.goal == enums.GoalEnum.BUILD_SMELTER_GOAL or self.goal == enums.GoalEnum.BUILD_SMITH_GOAL or self.goal == enums.GoalEnum.BUILD_KILNS_GOAL or self.goal == enums.GoalEnum.BUILD_TRAINING_CAMP_GOAL:
+			if self.entityHandle.Agent.type == demo.agentType.WORKER or self.entityHandle.agentType == demo.agentType.BUILDER:
 				self.finalGoal = overlord.overlord.GetBuildPosition()
 				self.ChangeState(fsm.MoveState())
