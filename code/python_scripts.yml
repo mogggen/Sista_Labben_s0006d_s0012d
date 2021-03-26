@@ -23,6 +23,7 @@ files:
     - Grupp1/buildings.py
     - Grupp1/agent.py
     - Grupp1/goals.py
+    - Grupp1/build_manager.py
     - Grupp2/main.py
     - Grupp2/agent.py
     - Grupp2/buildings.py

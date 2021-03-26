@@ -5,6 +5,7 @@ import Grupp1.agent as agent
 import Grupp1.goals as goals
 import Grupp1.worker_manager as worker_manager
 import Grupp1.explorerManager as explorerManager
+import Grupp1.build_manager as build_manager
 import Grupp1.soldierManager as soldierManager
 
 import nmath, demo
@@ -37,6 +38,7 @@ for _ in range(50):
 tree_pos = None
 
 explorerManager.startup()
+build_manager.placing(demo.buildingType.BLACKSMITH)
 
 def NebulaUpdate():
 
@@ -59,6 +61,11 @@ def NebulaUpdate():
 
 def NebulaDraw(p):
     global tree_pos, dummy_enemy
+
+    demo.DrawDot(nmath.Point(-21, 0, 125), 10, nmath.Vec4(1, 0, 0, 1))
+    demo.DrawDot(nmath.Point(21, 0, 125), 10, nmath.Vec4(1, 0, 0, 1))
+    demo.DrawDot(nmath.Point(21, 0, 150), 10, nmath.Vec4(1, 0, 0, 1))
+    demo.DrawDot(nmath.Point(-21, 0, 150), 10, nmath.Vec4(1, 0, 0, 1))
 
     if left_mouse.pressed():
         entity_manager.instance.selectAgent(p)
