@@ -1,11 +1,15 @@
 from Grupp2 import overlord, enums
-import fog_of_war, demo
+import fog_of_war, demo, enum
 
 class EntityManager():
     def __init__(self):
         self.updateState = 0
         self.trees = set()
         self.ironore = set()
+
+        self.soldiers = {}
+        self.workers = {}
+        self.buildings = {}
     def updatetUnManageEntities(self):
         updateState = enums.updateOrder[self.updateState]
         if updateState == enums.UpdateState.TREE:
@@ -20,7 +24,7 @@ class EntityManager():
             if self.incrementUpdateState.view_i == 0 and self.incrementUpdateState.index == 0:
                 self.trees = self.new_trees
                 self.new_trees = set()
-                overlord.overlord.AddScoutedTree(list(self.trees))
+                overlord.overlord.AddScoutedTree(self.setTolistOfEntetys(self.trees))
 
         elif updateState == enums.UpdateState.IRON:
             #overlord.overlord.AddScoutedTree()
@@ -33,7 +37,7 @@ class EntityManager():
                     ownedIron.add(entity.toInt())
             demo.ForIron(updateIron)
             self.ironore = ownedIron
-            overlord.overlord.AddScoutedIron(list(self.ironore))
+            overlord.overlord.AddScoutedIron(self.setTolistOfEntetys(self.ironore))
             #send to overlord
         elif updateState == enums.UpdateState.ENEMIES:
             workers = set()
@@ -46,12 +50,40 @@ class EntityManager():
                     return
                 x = int(agent.position.x)
                 y = int(agent.position.z)
-                if fog_of_war.grupp1.is_discovered(x, y):
+                if fog_of_war.grupp2.is_discovered(x, y):
                     if agent.type == demo.agentType.SOLDIER:
                         soldiers.add(entity.toInt())
                     else:
                         workers.add(entity.toInt())
+
+            def updateEnemyBuildings(entity, building, team):
+                nonlocal buildings
+                if team.team == demo.teamEnum.GRUPP_2:
+                    return
+                if building.buildingType == demo.buildingType.CASLE:
+                    overlord.overlord.AddScoutedEnemyCastle(building)
+
+                x = int(building.position.x)
+                y = int(building.position.z)
+
+                if fog_of_war.grupp2.is_discovered(x, y):
+                    buildings.add(entity.toInt())
+
+            demo.ForAgentTeam(updateEnemyAgents)
+            demo.ForBuildingTeam(updateEnemyBuildings)
+
+            self.enemy_workers = workers
+            self.enemy_soldiers = soldiers
+            self.enemy_buildings = buildings
+            overlord.overlord.scoutedWorkers(self.setTolistOfEntetys(self.enemy_workers))
+            overlord.overlord.scoutedSoldiers(self.setTolistOfEntetys(self.enemy_soldiers))
+            overlord.overlord.scoutedBuildings(self.setTolistOfEntetys(self.enemy_buildings))
+
         self.updateState = (self.updateState+1) % len(enums.updateOrder)
 
-
+    def setTolistOfEntetys(self,s:set()):
+        temp = []
+        for i in s:
+            temp.append(i.fromInt())
+        return temp
 
