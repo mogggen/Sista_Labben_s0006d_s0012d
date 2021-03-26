@@ -107,7 +107,7 @@ class Overlord:
                     float2Pos = nmath.Float2(vec3Pos.x, vec3Pos.z)
                     distanceFloat2 = point - float2Pos
                     absDistance = distanceFloat2.abs
-                    if absDistance.length < self.distanceFromBuildingRadius:
+                    if absDistance.length > self.distanceFromBuildingRadius:
                         return point
 
     def RequestWorker(self, buildingPos, buildingType):
