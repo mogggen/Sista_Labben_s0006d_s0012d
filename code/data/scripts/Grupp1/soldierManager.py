@@ -172,3 +172,18 @@ def update():
 def launchAssult():
     global defendState
     defendState = False
+
+
+def phase1_1():
+    if askldfjskladjf:
+        do aslkdjföklasjdflk
+        return True
+
+
+phases = [[phase1_1, phase1_2, ...], [phase2_1, phase2_2, ...]]
+
+
+def update():
+    for step in phases[0]:
+        if step():
+            remove step from phase
