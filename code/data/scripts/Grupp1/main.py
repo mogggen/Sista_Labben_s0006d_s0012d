@@ -32,7 +32,6 @@ for _ in range(50):
     a = agent.Agent(p);
     entity_manager.instance.addWorker(a.entity, a)
 
-
 def NebulaUpdate():
 
     path_manager.instance.calc_paths(100)

@@ -8,6 +8,7 @@ class Agent:
 		self.itemEntity = None
 		self.goal = enums.GoalEnum.WOOD_GOAL
 		self.type = demo.agentType.WORKER
+		self.lane = None
 		self.finalGoal = None
 		self.pathToGoal = []
 		self.state = fsm.BaseState()
@@ -42,12 +43,13 @@ class Agent:
 			self.entityHandle.Health = hp
 		elif self.hp <= 1:
 			overlord.overlord.KillAgent(self)
-	def DealDamage(self, target):
-		overlord.overlord.SendMsg(self, target)
+	def DealDamage(self, targetEntity):
+		overlord.overlord.SendMsg(self, targetEntity)
 	# pick up item
 	def PickupItem(self, item, itemType):
-		demo.Delete(item)
-		self.holding = itemType
+		if demo.isValid(item):
+			demo.Delete(item)
+			self.holding = itemType
 	# drop item
 	def DropItem(self):
 		if self.pos == overlord.overlord.castleEntity.Building.position:
@@ -89,6 +91,11 @@ class Agent:
 			healthProperty.hp = statParser.getStat("soldierHealth")
 			self.entityHandle.Health = healthProperty
 
+	def SetLane(self, lane):
+		if self.goal == enums.GoalEnum.SCOUT_GOAL:
+			self.lane = lane
+		else:
+			print("agent, SetLane: This agent is not a scout")
 
 	def GoalHandler(self):
 		if self.goal == enums.GoalEnum.WOOD_GOAL:
@@ -102,8 +109,7 @@ class Agent:
 			if not self.itemEntity: return
 			self.finalGoal = self.itemEntity.Iron.position
 			self.ChangeState(fsm.MoveState())
-		
-		# Soldier goal needs fix maybe
+
 		elif self.goal == enums.GoalEnum.SOLDIER_GOAL:
 			if self.entityHandle.Agent.type == demo.agentType.WORKER:
 				self.ChangeState(fsm.UpgradeState())

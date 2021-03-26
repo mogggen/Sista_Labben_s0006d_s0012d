@@ -44,7 +44,8 @@ class MoveState(BaseState):
 			agent.SetTargetPosition(navMesh.getCenterOfFace(self.currentGoalFace))
 
 		if agent.entityHandle.Agent.position == agent.finalGoal:
-
+			if agent.GoalHandler.agentType == demo.agentType.SCOUT:
+				agent.ChangeState(ExploreState())
 			if agent.goal in (enums.GoalEnum.KILN_GOAL, enums.GoalEnum.SMITH_GOAL, enums.GoalEnum.SMELT_GOAL):
 				if agent.entityHandle.Agent.type == demo.agentType.WORKER:
 					agent.ChangeState(UpgradeState())
@@ -67,7 +68,7 @@ class MoveState(BaseState):
 
 			elif agent.goal == enums.GoalEnum.SOLDIER_GOAL:
 				if agent.entityHandle.Agent.type != demo.agentType.WORKER:
-					pass # attack?
+					agent.ChangeState(BaseState())
 				else:
 					agent.ChangeState(UpgradeState())
 
@@ -76,9 +77,6 @@ class MoveState(BaseState):
 					agent.ChangeState(BuildState())
 				else:
 					agent.ChangeState(UpgradeState())
-			# om agent.goal är woodgoal ändra sate till chopping state
-			# om agenten.goal är irongoal plocka upp iron och gå  till slottet
-			# om goal är kiln/smith/smelt changeState till start uppgrade
 			
 
 class FleeState(BaseState):
@@ -114,19 +112,19 @@ class UpgradeState(BaseState):
 			if agent.goal == enums.GoalEnum.SOLDIER_GOAL:
 				if overlord.overlord.swords >= statParser.getStat("soldierSwordCost"):
 					overlord.overlord.Takeswords(statParser.getStat("soldierSwordCost"))
-					agent.startTime = demo.getTime()
+					agent.startTime = demo.GetTime()
 				else:
 					agent.ChangeState(BaseState())
 			elif agent.goal == enums.GoalEnum.BUILD_KILNS_GOAL or agent.goal == enums.GoalEnum.BUILD_SMITH_GOAL or agent.goal == enums.GoalEnum.BUILD_SMELTER_GOAL or agent.goal == enums.GoalEnum.BUILD_TRAINING_CAMP_GOAL:
-				agent.startTime = demo.getTime()
+				agent.startTime = demo.GetTime()
 			elif agent.goal == enums.GoalEnum.KILN_GOAL:
-				agent.startTime = demo.getTime()
+				agent.startTime = demo.GetTime()
 			elif agent.goal == enums.GoalEnum.SMITH_GOAL:
-				agent.startTime = demo.getTime()
+				agent.startTime = demo.GetTime()
 			elif agent.goal == enums.GoalEnum.SMELT_GOAL:
-				agent.startTime = demo.getTime()
+				agent.startTime = demo.GetTime()
 			elif agent.goal == enums.GoalEnum.SCOUT_GOAL:
-				agent.startTime = demo.getTime()
+				agent.startTime = demo.GetTime()
 		else:
 			print("Agent can't be upgraded")
 
@@ -135,45 +133,61 @@ class UpgradeState(BaseState):
 		# när tinmern är klar change state to start production(kiln,smelt&smith)
 		# om timmern är clar soldat medela over lorde utbildad soldat.
 		if agent.goal == enums.GoalEnum.SOLDIER_GOAL:
-			if demo.getTime() - agent.startTime >= statParser.getStat("soldierUpgradeTime"):
+			if demo.GetTime() - agent.startTime >= statParser.getStat("soldierUpgradeTime"):
 				agent.setType(demo.agentType.SOLDIER)
 				overlord.overlord.AddSoldier(agent)
+				tc = overlord.overlord.GetBuildingAtPosition(agent.entityHandler.Agent.position)
+				overlord.overlord.AddAvailableTrainingCamp(tc)
 				agent.ChangeState(BaseState())
 
 
 		elif agent.goal == enums.GoalEnum.BUILD_KILNS_GOAL or agent.goal == enums.GoalEnum.BUILD_SMITH_GOAL or agent.goal == enums.GoalEnum.BUILD_SMELTER_GOAL or agent.goal == enums.GoalEnum.BUILD_TRAINING_CAMP_GOAL:
-			if demo.getTime() - agent.startTime >= statParser.getStat("builderUpgradeTime"):
+			if agent.entityHandler.Agent.agentType == demo.agentType.BUILDER:
+				agent.ChangeState(BuildState())
+				return
+			if demo.GetTime() - agent.startTime >= statParser.getStat("builderUpgradeTime"):
 				agent.setType(demo.agentType.BUILDER)
-				agent.ChangeState(BuildState)
+				agent.ChangeState(BuildState())
 
 		elif agent.goal == enums.GoalEnum.KILN_GOAL:
-			if demo.getTime() - agent.startTime >= statParser.getStat("kilnerUpgradeTime"):
+			if demo.GetTime() - agent.startTime >= statParser.getStat("kilnerUpgradeTime"):
 				agent.setType(demo.agentType.KILNER)
-				agent.ChangeState(StartProdusingState)
+				agent.ChangeState(StartProducingState())
 
 		elif agent.goal == enums.GoalEnum.SMITH_GOAL:
-			if demo.getTime() - agent.startTime >= statParser.getStat("smithUpgradeTime"):
+			if demo.GetTime() - agent.startTime >= statParser.getStat("smithUpgradeTime"):
 				agent.setType(demo.agentType.SMITH)
-				agent.ChangeState(StartProdusingState)
+				agent.ChangeState(StartProducingState())
 
 		elif agent.goal == enums.GoalEnum.SMELT_GOAL:
-			if demo.getTime() - agent.startTime >= statParser.getStat("smelterUpgradeTime"):
+			if demo.GetTime() - agent.startTime >= statParser.getStat("smelterUpgradeTime"):
 				agent.setType(demo.agentType.SMELTER)
-				agent.ChangeState(StartProdusingState)
+				agent.ChangeState(StartProducingState())
 
 		elif agent.goal == enums.GoalEnum.SCOUT_GOAL:
-			if demo.getTime() - agent.startTime >= statParser.getStat("scoutUpgradeTime"):
-				agent.setType(demo.agentType.SCOUT)
+			if demo.GetTime() - agent.startTime >= statParser.getStat("scoutUpgradeTime"):
+				agent.SetType(demo.agentType.SCOUT)
 				agent.ChangeState(ExploreState())
 
 # Scout Agents
 class ExploreState(BaseState):
 
-	def Enter(self, agent):
-		return
-
 	def Execute(self, agent):
-		return
+		if agent.entityHandle.Agent.position.z <= 0:
+			if agent.lane == enums.LaneEnum.LEFT:
+				agent.finalGoal = nmath.Point(-135, 0, 0)
+			elif agent.Lane == enums.LaneEnum.MIDDLE:
+				agent.finalGoal = nmath.Point(0, 0, 0)
+			elif agent.lane == enums.LaneEnum.RIGHT:
+				agent.finalGoal = nmath.Point(140, 0, 0)
+		else:
+			agent.finalGoal = nmath.Point(0, 0, 170)
+
+		agent.ChangeState(MoveState())
+		agent.Discover()
+
+
+
 
 		
 # artisan Agents
@@ -181,7 +195,7 @@ class BuildState(BaseState):
 	buildingType = None
 	
 	def Enter(self, agent):
-		if agent.entityHandle.agentType[6]:
+		if agent.entityHandle.agentType.BUILDER:
 			if agent.goal == enums.GoalEnum.BUILD_TRAINING_CAMP_GOAL:
 				if overlord.overlord.tree >= statParser.getStat("trainingCampWoodCost"):
 					agent.startTime = demo.GetTime()
@@ -211,6 +225,7 @@ class BuildState(BaseState):
 			if demo.GetTime() - agent.startTime >= statParser.getStat("kilnBuildTime"):
 				building = buildings.Building(demo.buildingType.KILN, agent)
 				overlord.overlord.AddBuilding(building)
+				overlord.overlord.AddAvailableBuilder(agent)
 			if demo.GetTime - agent.startTime >= statParser.getStat("kilnBuildTime") - statParser.getStat("kilnerUpgradeTime"):
 				agentprops = agent.entityHandle.Agent
 				overlord.overlord.RequestWorker(agentprops.pos,demo.buildingType.KILN)
@@ -218,6 +233,7 @@ class BuildState(BaseState):
 			if demo.GetTime() - agent.startTime >= statParser.getStat("smelteryBuildTime"):
 				building = buildings.Building(demo.buildingType.SMELTERY, agent)
 				overlord.overlord.AddBuilding(building)
+				overlord.overlord.AddAvailableBuilder(agent)
 			if demo.GetTime - agent.startTime >= statParser.getStat("smelteryBuildTime") - statParser.getStat("smelterUpgradeTime"):
 				agentprops = agent.entityHandle.Agent
 				overlord.overlord.RequestWorker(agentprops.pos,demo.buildingType.SMELTERY)
@@ -226,6 +242,7 @@ class BuildState(BaseState):
 			if demo.GetTime() - agent.startTime >= statParser.getStat("blacksmithBuildTime"):
 				building = buildings.Building(demo.buildingType.BLACKSMITH, agent)
 				overlord.overlord.AddBuilding(building)
+				overlord.overlord.AddAvailableBuilder(agent)
 			if demo.GetTime - agent.startTime >= statParser.getStat("blacksmithBuildTime") - statParser.getStat("smithUpgradeTime"):
 				agentprops = agent.entityHandle.Agent
 				overlord.overlord.RequestWorker(agentprops.pos,demo.buildingType.BLACKSMITH)
@@ -234,24 +251,45 @@ class BuildState(BaseState):
 			if demo.GetTime - agent.startTime >= statParser.getStat("trainingCampBuildTime"):
 				building = buildings.Building(demo.buildingType.TRAININGCAMP, agent)
 				overlord.overlord.AddBuilding(building)
+				overlord.overlord.AddAvailableBuilder(agent)
+				overlord.overlord.AddAvailableTrainingCamp(building)
 
 
 # Soldier Agents
-class AttackState(BaseState):
+class ChargeAndAttackState(BaseState):
 	def Enter(self, agent):
-		pass
-
-	def Execute(self, agent, enemy):
-		if agent.entityHandle.Agent.type == demo.agentType.SOLDIER:
-				agent.timeBusy = statParser.getStat("soldierAttackSpeed")
-				if ((agent.pos[0] - enemy.pos[0])**2 + (agent.pos[1] - enemy.pos[1])**2)**.5 < statParser.getStat("solider") and random.random() < statParser.getStat("hitChance"):
-					# sent message to enemy team
-					print("Attacking")
-					return
+		agent.pathToGoal = pathfinder.pf.AStar(agent.entityHandle.Agent.position, agent.finalGoal)
+		agent.pathToGoal.pop(0)
+		self.currentGoalFace = agent.pathToGoal.pop(0)
+		if type(self.currentGoalFace) == int:
+			agent.SetTargetPosition(navMesh.getCenterOfFace(self.currentGoalFace))
 		else:
-			print("Wrong type of agent")
+			agent.SetTargetPosition(self.currentGoalFace)
 
-class StartProdusingState(BaseState):
+	def Execute(self, agent):
+		if agent.entityHandle.Agent.type == demo.agentType.SOLDIER:
+			agent.Discover()
+			pos = agent.entityHandle.Agent.position
+			pos = nmath.Float2(pos.x, pos.z)
+			if navMesh.findInNavMesh(pos) == navMesh.findInNavMesh(nmath.Float2(agent.finalGoal.x, agent.finalGoal.z)):
+				agent.SetTargetPosition(agent.finalGoal)
+			elif navMesh.findInNavMesh(pos) == navMesh.findInNavMesh(
+					nmath.Float2(agent.entityHandle.Agent.targetPosition.x, agent.entityHandle.Agent.targetPosition.z)):
+				self.currentGoalFace = agent.pathToGoal.pop(0)
+				agent.SetTargetPosition(navMesh.getCenterOfFace(self.currentGoalFace))
+			if agent.entityHandle.Agent.position == agent.finalGoal:
+
+				pos = agent.entityHandle.Agent.position
+				enemy = overlord.overlord.GetEnemyCastle().Building.position
+
+				if ((pos.x - enemy.x)**2 + (pos.z - enemy.z)**2)**.5 < statParser.getStat("soldierAttackRange")\
+					and demo.GetTime() - agent.startTime < statParser.getStat("soldierAttackSpeed"):
+					if random.random() > statParser.getStat("hitChance"):
+						overlord.overlord.SendMsg(agent, enemy)
+					agent.startTime = demo.GetTime()
+
+
+class StartProducingState(BaseState):
 	def Enter(self, agent):
 		building = overlord.overlord.GetBuildingAtPosition(agent.finalGoal)
 		building.AddWorker()
