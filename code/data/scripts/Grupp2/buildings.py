@@ -61,3 +61,12 @@ class Building:
         buildingProperty = self.entityHandle.Building
         buildingProperty.hasWorker = True
         self.entityHandle.Building = buildingProperty
+
+    def buldingTakeDamage(self):
+        hp = self.entityHandle.Health
+        hp.hp = statParser.getStat("workerHealth")
+        if hp > 1:
+            hp -= 1
+            self.entityHandle.Health = hp
+        elif self.hp <= 1:
+            pass
