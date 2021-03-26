@@ -385,40 +385,23 @@ class Build(Goal):
         self.active = False
 
 
+
     def execute(self, agent):
-        if not self.working:
-            if self.canBuild():
-                self.timer = demo.GetTime()
-                self.working = True
-            else:
-                print("Not enough materials!")
-        elif self.working:
-            if demo.GetTime() - self.timer >= statParser.getStat(str(self.toBuild).split(".")[1].lower() + "BuildTime"):
-                if self.toBuild == demo.buildingType.KILN and canBuild():
-                    newBuilding = buildingManager.kiln(self.pos.x, self.pos.y)
+        if demo.GetTime() - self.timer >= statParser.getStat(str(self.toBuild).split(".")[1].lower() + "BuildTime"):
+            if self.toBuild == demo.buildingType.KILN:
+                newBuilding = buildings.kiln(self.pos.x, self.pos.y)
 
-                elif self.toBuild == demo.buildingType.SMELTERY:
-                    newBuilding = buildingManager.smelter(self.pos.x, self.pos.y)
+            elif self.toBuild == demo.buildingType.SMELTERY:
+                newBuilding = buildings.smelter(self.pos.x, self.pos.y)
 
-                elif self.toBuild == demo.buildingType.BLACKSMITH:
-                    newBuilding = buildingManager.blacksmith(self.pos.x, self.pos.y)
+            elif self.toBuild == demo.buildingType.BLACKSMITH:
+                newBuilding = buildings.blacksmith(self.pos.x, self.pos.y)
 
-                elif self.toBuild == demo.buildingType.TRAININGCAMP:
-                    newBuilding = buildingManager.trainingCamp(self.pos.x, self.pos.y)
+            elif self.toBuild == demo.buildingType.TRAININGCAMP:
+                newBuilding = buildings.trainingCamp(self.pos.x, self.pos.y)
 
-                entity_manager.instance.addBuildings(newBuilding.buildingEntity, newBuilding)
-
-    def canBuild(self):
-
-        if item_manager.instance.logs >= statParser.getStat(str(self.toBuild).split(".")[1].lower() + "WoodCost"):
-            if self.toBuild in (demo.buildingType.KILN, demo.buildingType.SMELTERY, demo.buildingType.TRAININGCAMP):
-                return True
-
-            elif self.toBuild == demo.buildingType.BLACKSMITH and \
-                    item_manager.instance.ironIngot >= statParser.getStat(str(self.toBuild).split(".")[1].lower() + "IronCost"):
-                return True
-
-            return False
+            entity_manager.instance.addBuildings(newBuilding.buildingEntity, newBuilding)
+            agent.popGoal()
 
 
 #--------------------------------------------------------------------#
@@ -450,3 +433,25 @@ class Upgrade(Goal):
             agent.popGoal()
 
 
+#--------------------------------------------------------------------#
+
+
+class EnterBuilding(Goal):
+    def __init__(self, building):
+        self.building = building
+
+
+    def enter(self, agent):
+        tp = self.building.Building.position
+        p = agent.entity.Agent.position - nmath.Vector(tp.x, tp.y, tp.z) 
+
+        if nmath.Vec4.length3(nmath.Vec4(p.x, p.y, p.z, 0)) > 0.001:
+            agent.addGoal(WalkToGoal(nmath.Float2(tp.x, tp.z)))
+        else:
+            b = entity_manager.instance.findBuilding(self.building)
+            b.consumeAgent(agent)
+            self.active = True
+
+
+    def pause(self):
+        self.active = False

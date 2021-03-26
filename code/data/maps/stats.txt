@@ -52,9 +52,9 @@ blacksmithIronCost:3
 blacksmithHealth:12
 
 #TrainingCamp
-trainingCampBuildTime:120
-trainingCampWoodCost:10
-trainingCampHealth:12
+trainingcampBuildTime:120
+trainingcampWoodCost:10
+trainingcampHealth:12
 
 #Castle
 castleHealth:25

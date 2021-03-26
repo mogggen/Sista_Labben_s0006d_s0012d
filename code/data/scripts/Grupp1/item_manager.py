@@ -2,9 +2,9 @@ import imgui
 
 class ItemManager:
     logs      = 0
-    charcoal  = 0
+    coal      = 0
     ironore   = 0
-    ironingot = 0
+    ironIngot = 0
     swords    = 0
 
     def drawGui(self):

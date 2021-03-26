@@ -38,7 +38,12 @@ for _ in range(50):
 tree_pos = None
 
 explorerManager.startup()
+entity_manager.instance.queueUpgrade(demo.agentType.BUILDER)
+build_manager.placing(demo.buildingType.KILN)
+build_manager.placing(demo.buildingType.SMELTERY)
 build_manager.placing(demo.buildingType.BLACKSMITH)
+build_manager.placing(demo.buildingType.TRAININGCAMP)
+
 
 def NebulaUpdate():
 
@@ -48,6 +53,7 @@ def NebulaUpdate():
     worker_manager.instance.update()
     explorerManager.update()
     soldierManager.update()
+    build_manager.update()
 
 
 
@@ -62,10 +68,10 @@ def NebulaUpdate():
 def NebulaDraw(p):
     global tree_pos, dummy_enemy
 
-    demo.DrawDot(nmath.Point(-21, 0, 125), 10, nmath.Vec4(1, 0, 0, 1))
-    demo.DrawDot(nmath.Point(21, 0, 125), 10, nmath.Vec4(1, 0, 0, 1))
-    demo.DrawDot(nmath.Point(21, 0, 150), 10, nmath.Vec4(1, 0, 0, 1))
-    demo.DrawDot(nmath.Point(-21, 0, 150), 10, nmath.Vec4(1, 0, 0, 1))
+    demo.DrawDot(nmath.Point(-30, 0, 125), 10, nmath.Vec4(1, 0, 0, 1))
+    demo.DrawDot(nmath.Point(30, 0, 125), 10, nmath.Vec4(1, 0, 0, 1))
+    demo.DrawDot(nmath.Point(30, 0, 160), 10, nmath.Vec4(1, 0, 0, 1))
+    demo.DrawDot(nmath.Point(-30, 0, 160), 10, nmath.Vec4(1, 0, 0, 1))
 
     if left_mouse.pressed():
         entity_manager.instance.selectAgent(p)

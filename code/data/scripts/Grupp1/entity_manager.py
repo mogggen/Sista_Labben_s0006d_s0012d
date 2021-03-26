@@ -1,3 +1,4 @@
+from Grupp1 import goals
 import demo, nmath, imgui
 import fog_of_war
 import enum
@@ -69,6 +70,12 @@ class EntityManager:
         self.incrementUpdateState.index  = 0
         self.new_trees = set()
 
+        self.upgrade_queue = []
+
+    def queueUpgrade(self, t: demo.agentType):
+        self.upgrade_queue.append(t)
+
+
     def addWorker(self, entity, agent):
         self.workers[entity.toInt()] = agent
     def addCraftsmen(self, entity, agent):
@@ -139,6 +146,28 @@ class EntityManager:
         for i in all_objects:
             i.update()
 
+        workers = list(self.workers.values())
+        for worker in workers:
+            if worker.isFree():
+                if len(self.upgrade_queue) <= 0:
+                    break
+
+                t = self.upgrade_queue.pop(0)
+                print(t)
+                if not t == demo.agentType.SOLDIER:
+                    self.stageForUpgrade(worker.entity)
+                    worker.addGoal(goals.Upgrade(t))
+                else:
+                    for building_i in self.buildings.keys():
+                        building = demo.Entity.fromInt(building_i)
+                        if building.Building.type == demo.buildingType.TRAININGCAMP and not building.Building.hasWorker:
+                            worker.addGoal(goals.EnterBuilding(building))
+                            break
+                    else:
+                        self.upgrade_queue.append(t)
+
+
+
 
     def findAgent(self, entity):
 
@@ -178,7 +207,7 @@ class EntityManager:
             self.soldiers[entity.toInt()] = obj
 
         elif t == demo.agentType.BUILDER:
-            self.soldiers[entity.toInt()] = obj
+            self.builders[entity.toInt()] = obj
 
         elif t == demo.agentType.WORKER:
             print("Dum FAAAAN")
@@ -194,25 +223,25 @@ class EntityManager:
         i_entity = entity.toInt()
         #managed
         if   i_entity in self.upgrading:
-            self.enemy_workers.pop(i_entity)
+            self.upgrading.pop(i_entity)
             return entity
         elif i_entity in self.workers:
-            self.enemy_workers.pop(i_entity)
+            self.workers.pop(i_entity)
             return entity
         elif i_entity in self.craftsmen:
-            self.enemy_workers.pop(i_entity)
+            self.craftsmen.pop(i_entity)
             return entity
         elif i_entity in self.explorers:
-            self.enemy_workers.pop(i_entity)
+            self.explorers.pop(i_entity)
             return entity
         elif i_entity in self.builders:
-            self.enemy_workers.pop(i_entity)
+            self.builders.pop(i_entity)
             return entity
         elif i_entity in self.soldiers:
-            self.enemy_workers.pop(i_entity)
+            self.soldiers.pop(i_entity)
             return entity
         elif i_entity in self.buildings:
-            self.enemy_workers.pop(i_entity)
+            self.buildings.pop(i_entity)
             return entity
 
         elif i_entity in self.enemy_workers:
@@ -380,10 +409,27 @@ class EntityManager:
             imgui.Text("enemy_buildings: " + str(len(self.enemy_buildings)))
             imgui.Text("trees: " + str(len(self.trees)))
             imgui.Text("ironore: " + str(len(self.ironore)))
+            imgui.Text("upgrades: " + str(self.upgrade_queue))
 
             imgui.End()
 
         except Exception as e:
             imgui.End()
             raise e
+
+        for b in self.buildings.values():
+            imgui.Begin("Building", None, 0)
+            try:
+                members = [(attr, getattr(b,attr)) for attr in dir(b) if not callable(getattr(b,attr)) and not attr.startswith("__")]
+                imgui.Text("----------" + str(b))
+                for member, value in members:
+                    imgui.Text(member + ": " + str(value))
+
+                imgui.End()
+
+            except Exception as e:
+                imgui.End()
+                raise e
+
+
 instance = EntityManager()
