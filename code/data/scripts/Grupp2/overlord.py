@@ -5,6 +5,7 @@ class Overlord:
     agents = []
     soldiers = []
     buildings = []
+    availableTrainingCamps = []
     castleEntity = 0
     enemyCastleEntity = None
     #resources
@@ -164,6 +165,14 @@ class Overlord:
         self.buildings.append(building)
         # do stuff
 
+    def AddAvailableTrainingCamp(self, building):
+        self.availableTrainingCamps.append(building)
+        # Call TrainSoldier
+
+    def RemoveAvailableTrainingCamp(self, building):
+        if building in self.availableTrainingCamps:
+            self.availableTrainingCamps.remove(building)
+
     def GetBuildingAtPosition(self, pos):
         for b in self.buildings:
             if b.entityHandle.Building.position == pos:
@@ -203,6 +212,8 @@ class Overlord:
         for x in range(n):
             self.tree = self.tree - n
 
+    def CheckBuildPossibilities(self):
+        pass
 
     def HandleMsg(self, msg):
         for a in self.agents:

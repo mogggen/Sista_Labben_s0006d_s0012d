@@ -37,7 +37,7 @@ for _ in range(50):
 
 tree_pos = None
 
-explorerManager.startup()
+
 build_manager.placing(demo.buildingType.BLACKSMITH)
 
 def NebulaUpdate():
