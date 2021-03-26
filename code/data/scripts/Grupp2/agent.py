@@ -101,12 +101,14 @@ class Agent:
 		if self.goal == enums.GoalEnum.WOOD_GOAL:
 			self.itemEntity = overlord.overlord.GetCloseTree(self)
 			if not self.itemEntity: return
+			# Need to check IsValid
 			self.finalGoal = self.itemEntity.Tree.position
 			self.ChangeState(fsm.MoveState())
 
 		elif self.goal == enums.GoalEnum.IRON_GOAL:
 			self.itemEntity = overlord.overlord.GetCloseIron(self)
 			if not self.itemEntity: return
+			# Need to check IsValid
 			self.finalGoal = self.itemEntity.Iron.position
 			self.ChangeState(fsm.MoveState())
 
