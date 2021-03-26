@@ -176,4 +176,7 @@ class AttackState(BaseState):
 		return
 
 class StartProdusingState(BaseState):
-	pass
+	def Enter(agent):
+		building = overlord.overlord.GetBuildingAtPosition(agent.finalGoal)
+		building.AddWorker()
+		overlord.overlord.KillAgent(agent)		
