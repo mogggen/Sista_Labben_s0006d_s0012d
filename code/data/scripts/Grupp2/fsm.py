@@ -45,7 +45,7 @@ class MoveState(BaseState):
 		if agent.entityHandle.Agent.position == agent.finalGoal:
 
 			if agent.goal in (enums.GoalEnum.KILN_GOAL, enums.GoalEnum.SMITH_GOAL, enums.GoalEnum.SMELT_GOAL):
-				if agent.entityHandle.agentType == demo.agentType.WORKER:
+				if agent.entityHandle.Agent.type == demo.agentType.WORKER:
 					agent.ChangeState(UpgradeState())
 
 			elif agent.goal == enums.GoalEnum.WOOD_GOAL:
@@ -56,13 +56,13 @@ class MoveState(BaseState):
 				agent.ChangeState(MoveState())
 
 			elif agent.goal == enums.GoalEnum.SOLDIER_GOAL:
-				if agent.entityHandle.agentType != demo.agentType.WORKER:
+				if agent.entityHandle.Agent.type != demo.agentType.WORKER:
 					pass # attack?
 				else:
 					agent.ChangeState(UpgradeState())
 
 			elif agent.goal in (enums.GoalEnum.BUILD_KILNS_GOAL, enums.GoalEnum.BUILD_SMITH_GOAL, enums.GoalEnum.BUILD_SMELTER_GOAL, enums.GoalEnum.BUILD_TRAINING_CAMP_GOAL):
-				if agent.entityHandle.agentType != demo.agentType.WORKER:
+				if agent.entityHandle.Agent.type != demo.agentType.WORKER:
 					agent.ChangeState(BuildState())
 				else:
 					agent.ChangeState(UpgradeState())
