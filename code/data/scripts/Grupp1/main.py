@@ -4,6 +4,7 @@ import Grupp1.item_manager as item_manager
 import Grupp1.agent as agent
 import Grupp1.goals as goals
 import Grupp1.worker_manager as worker_manager
+import Grupp1.explorerManager as explorerManager
 
 import nmath, demo
 import button_input
@@ -33,12 +34,15 @@ for _ in range(10):
 
 tree_pos = None
 
+explorerManager.startup()
+
 def NebulaUpdate():
 
     path_manager.instance.calc_paths(100)
 
     ## update managers
     worker_manager.instance.update()
+    explorerManager.update()
 
 
     entity_manager.instance.updateAll()
@@ -76,7 +80,6 @@ def NebulaDraw(p):
         entity_manager.instance.stageForUpgrade(a.entity)
         a.addGoal(goals.Upgrade(demo.agentType.SCOUT))
 
-        #tree = demo.Entity.fromInt(list(entity_manager.instance.trees)[0])
         #tree_property = tree.Tree
 
         #a = entity_manager.instance.getSelectedAgent()
