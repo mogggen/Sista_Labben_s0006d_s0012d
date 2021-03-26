@@ -87,3 +87,4 @@ class EntityManager():
             temp.append(i.fromInt())
         return temp
 
+entitymanger = EntityManager()
