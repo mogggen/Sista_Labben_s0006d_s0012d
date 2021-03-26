@@ -35,11 +35,7 @@ class Overlord:
             self.buildings[i].Run()
 
     def SpawnAgent(self):
-        a = agent.Agent(len(self.agents))
-        agentProperty = a.entityHandle.Agent
-        agentProperty.position = self.castleEntity.Building.position
-        agentProperty.targetPosition = self.castleEntity.Building.position
-        a.entityHandle.Agent = agentProperty
+        a = agent.Agent(len(self.agents), self.castleEntity.Building.position)
         self.agents.append(a)
 
     def SpawnAllAgents(self):
@@ -54,7 +50,7 @@ class Overlord:
         self.nrBuild = nrBuild
         for i in range(len(self.agents)):
             if i < nrDisc:
-                self.agents[i].SetGoal(enums.GoalEnum.DISCOVER_GOAL)
+                self.agents[i].SetGoal(enums.GoalEnum.SCOUT_GOAL)
             elif i < nrDisc + nrKiln:
                 self.agents[i].SetGoal(enums.GoalEnum.KILN_GOAL)
                 self.nrIdleKilners += 1

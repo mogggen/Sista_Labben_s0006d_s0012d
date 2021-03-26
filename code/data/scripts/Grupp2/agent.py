@@ -2,7 +2,7 @@ import demo, statParser, nmath, fog_of_war
 from Grupp2 import fsm, pathfinder, overlord, enums
 
 class Agent:
-	def __init__(self, ID):
+	def __init__(self, ID, spawnPos):
 		self.ID = ID
 		self.holding = None
 		self.itemEntity = None
@@ -13,11 +13,16 @@ class Agent:
 		self.state = fsm.BaseState()
 		self.startTime = 0
 		
-		self.entityHandle = demo.SpawnEntity("AgentEntity/agent")
+		self.entityHandle = demo.SpawnEntity("AgentEntity/redagent")
 		
 		self.healthProperty = self.entityHandle.Health
 		self.healthProperty.hp = int(statParser.getStat("workerHealth"))
 		self.entityHandle.Health = self.healthProperty
+
+		agentProperty = self.entityHandle.Agent
+		agentProperty.position = spawnPos
+		agentProperty.targetPosition = spawnPos
+		self.entityHandle.Agent = agentProperty
 
 		self.Discover()
 	
