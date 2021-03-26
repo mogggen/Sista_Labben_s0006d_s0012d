@@ -64,6 +64,7 @@ class Overlord:
         for i in range(len(self.agents)):
             if i < nrDisc:
                 self.agents[i].SetGoal(enums.GoalEnum.SCOUT_GOAL)
+                # add correct LaneEnum value to respective scout
             elif i < nrDisc + nrKiln:
                 self.agents[i].SetGoal(enums.GoalEnum.KILN_GOAL)
                 self.nrIdleKilners += 1

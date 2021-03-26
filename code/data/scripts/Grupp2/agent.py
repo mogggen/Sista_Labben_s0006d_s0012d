@@ -8,6 +8,7 @@ class Agent:
 		self.itemEntity = None
 		self.goal = enums.GoalEnum.WOOD_GOAL
 		self.type = demo.agentType.WORKER
+		self.lane = None
 		self.finalGoal = None
 		self.pathToGoal = []
 		self.state = fsm.BaseState()
@@ -89,6 +90,11 @@ class Agent:
 			healthProperty.hp = statParser.getStat("soldierHealth")
 			self.entityHandle.Health = healthProperty
 
+	def SetLane(self, lane):
+		if self.goal == enums.GoalEnum.SCOUT_GOAL:
+			self.lane = lane
+		else:
+			print("agent, SetLane: This agent is not a scout")
 
 	def GoalHandler(self):
 		if self.goal == enums.GoalEnum.WOOD_GOAL:
