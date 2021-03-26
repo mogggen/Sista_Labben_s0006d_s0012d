@@ -102,8 +102,7 @@ class Agent:
 			if not self.itemEntity: return
 			self.finalGoal = self.itemEntity.Iron.position
 			self.ChangeState(fsm.MoveState())
-		
-		# Soldier goal needs fix maybe
+
 		elif self.goal == enums.GoalEnum.SOLDIER_GOAL:
 			if self.entityHandle.Agent.type == demo.agentType.WORKER:
 				self.ChangeState(fsm.UpgradeState())

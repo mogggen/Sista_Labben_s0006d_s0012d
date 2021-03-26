@@ -67,7 +67,7 @@ class MoveState(BaseState):
 
 			elif agent.goal == enums.GoalEnum.SOLDIER_GOAL:
 				if agent.entityHandle.Agent.type != demo.agentType.WORKER:
-					pass # attack?
+					agent.ChangeState(BaseState())
 				else:
 					agent.ChangeState(UpgradeState())
 
@@ -76,9 +76,6 @@ class MoveState(BaseState):
 					agent.ChangeState(BuildState())
 				else:
 					agent.ChangeState(UpgradeState())
-			# om agent.goal är woodgoal ändra sate till chopping state
-			# om agenten.goal är irongoal plocka upp iron och gå  till slottet
-			# om goal är kiln/smith/smelt changeState till start uppgrade
 			
 
 class FleeState(BaseState):
@@ -149,17 +146,17 @@ class UpgradeState(BaseState):
 		elif agent.goal == enums.GoalEnum.KILN_GOAL:
 			if demo.getTime() - agent.startTime >= statParser.getStat("kilnerUpgradeTime"):
 				agent.setType(demo.agentType.KILNER)
-				agent.ChangeState(StartProdusingState)
+				agent.ChangeState(StartProducingState)
 
 		elif agent.goal == enums.GoalEnum.SMITH_GOAL:
 			if demo.getTime() - agent.startTime >= statParser.getStat("smithUpgradeTime"):
 				agent.setType(demo.agentType.SMITH)
-				agent.ChangeState(StartProdusingState)
+				agent.ChangeState(StartProducingState)
 
 		elif agent.goal == enums.GoalEnum.SMELT_GOAL:
 			if demo.getTime() - agent.startTime >= statParser.getStat("smelterUpgradeTime"):
 				agent.setType(demo.agentType.SMELTER)
-				agent.ChangeState(StartProdusingState)
+				agent.ChangeState(StartProducingState)
 
 		elif agent.goal == enums.GoalEnum.SCOUT_GOAL:
 			if demo.getTime() - agent.startTime >= statParser.getStat("scoutUpgradeTime"):
@@ -237,21 +234,21 @@ class BuildState(BaseState):
 
 
 # Soldier Agents
-class AttackState(BaseState):
+class ChargeAndAttackState(BaseState):
 	def Enter(self, agent):
 		pass
 
-	def Execute(self, agent, enemy):
+	def Execute(self, agent):
 		if agent.entityHandle.Agent.type == demo.agentType.SOLDIER:
 				agent.timeBusy = statParser.getStat("soldierAttackSpeed")
-				if ((agent.pos[0] - enemy.pos[0])**2 + (agent.pos[1] - enemy.pos[1])**2)**.5 < statParser.getStat("solider") and random.random() < statParser.getStat("hitChance"):
+				if ((agent.pos[0] - enemy.pos[0])**2 + (agent.pos[1] - enemy.pos[1])**2)**.5 < statParser.getStat("soldierAttackRange") and random.random() < statParser.getStat("hitChance"):
 					# sent message to enemy team
 					print("Attacking")
 					return
 		else:
 			print("Wrong type of agent")
 
-class StartProdusingState(BaseState):
+class StartProducingState(BaseState):
 	def Enter(self, agent):
 		building = overlord.overlord.GetBuildingAtPosition(agent.finalGoal)
 		building.AddWorker()

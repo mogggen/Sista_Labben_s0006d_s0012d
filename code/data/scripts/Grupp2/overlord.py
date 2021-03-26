@@ -6,19 +6,29 @@ class Overlord:
     soldiers = []
     buildings = []
     castleEntity = 0
-    #resorses
+    enemyCastleEntity = None
+    #resources
     charcoal = 0
     ironbar = 0
     ironore = 0
     sword = 0
     tree = 0
-    #agents
-    nrDisc = 0
-    nrKiln = 0
-    nrBuild = 0
-    nrIdleKilners = 0
+    # Amount of dudes we want for each goal
+    nrWoodGatherers = 31 # At least double amount of iron collectors, ratio is 2.5 times
+    nrIronGatherers = 14
+    nrScouts = 3
+    nrBuilder = 2
 
-    kilns = []
+    nrKiln = 2 # At least double the amount of smelters
+    nrSmelters = 1
+    nrSmithy = 2 # Should be same amount as training camps
+    nrTrainingCamp = 2 # Should be same amount as smithy
+    # This means 7 wood gatherers will turn into building workers
+    nrKilnWorkers = nrKiln
+    nrSmithWorkers = nrSmithy
+    nrSmelterWorkers = nrSmelters
+
+    amountOfSoldiersForAttack = 5
 
     scoutedWorkers = []
     scoutedSoldiers = []
@@ -88,6 +98,9 @@ class Overlord:
     def AddScoutedIron(self, iron):
         self.scoutedIron = iron
 
+    def AddEnemyCastle(self, castleEntity):
+        self.enemyCastleEntity = castleEntity
+
     def GetCastlePosition(self):
         return self.castleEntity.Building.position
 
@@ -139,7 +152,13 @@ class Overlord:
 
     def AddSoldier(self, agent):
         self.soldiers.append(agent)
-        # do stuff
+        if len(self.soldiers) < self.amountOfSoldiersForAttack:
+            agent.finalGoal = nmath.Point(0,0,0)
+            agent.ChangeState(fsm.MoveState())
+        elif self.enemyCastleEntity is not None:
+            for s in self.soldiers:
+                s.finalGoal = self.enemyCastleEntity.Building.position
+                s.ChangeState(fsm.ChargeAndAttackState())
 
     def AddBuilding(self, building):
         self.buildings.append(building)
