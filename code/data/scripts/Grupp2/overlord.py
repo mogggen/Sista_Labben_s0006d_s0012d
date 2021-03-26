@@ -20,6 +20,9 @@ class Overlord:
 
     kilns = []
 
+    scoutedWorkers = []
+    scoutedSoldiers = []
+    scoutedBuildings = []
     scoutedTrees = []
     scoutedIron = []
 
@@ -69,33 +72,32 @@ class Overlord:
         demo.Delete(building.entityHandle)
         del building
 
-# FSM requests or information
-    def AddScoutedTree(self, tree):
-        if tree in self.scoutedTrees:
-            print("overlord, AddScoutedTree: Tree has already been scouted")
-            return
-        self.scoutedTrees.append(tree)
+    # FSM requests or information
+    def AddScoutedWorkers(self, workers):
+        self.scoutedWorkers = workers
+
+    def AddScoutedSoldiers(self, soldiers):
+        self.scoutedSoldiers = soldiers
+
+    def AddScoutedBuildings(self, buildings):
+        self.scoutedBuildings = buildings
+
+    def AddScoutedTree(self, trees):
+        self.scoutedTrees = trees
+
     def AddScoutedIron(self, iron):
-        if iron in self.scoutedIron:
-            print("overlord, AddScoutedIron: Iron has already been scouted")
-            return
-        self.scoutedIron.append(iron)
+        self.scoutedIron = iron
 
-    # def RemoveScoutedTree(self, tree):
-    #     self.scoutedTrees.remove(tree)
-    # def RemoveScoutedIron(self, iron):
-    #     self.scoutedIron.remove(iron)
-
-    # A worker requests a tree or iron to gather
     def GetCastlePosition(self):
         return self.castleEntity.Building.position
 
+    # A worker requests a tree or iron to gather
     def GetCloseTree(self, agent):
-        # try catch
-        return self.scoutedTrees.pop(0)
+        if len(self.scoutedTrees) > 0:
+            return self.scoutedTrees.pop(0)
     def GetCloseIron(self, agent):
-        # try catch
-        return self.scoutedIron.pop(0)
+        if len(self.scoutedIron) > 0:
+            return self.scoutedIron.pop(0)
 
     def GetPosForBuilding(self, agent):
         while True:

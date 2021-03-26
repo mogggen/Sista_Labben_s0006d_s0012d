@@ -80,14 +80,26 @@ class Agent:
 		agentProperty.targetPosition = position
 		self.entityHandle.Agent = agentProperty
 
+	def SetType(self, newType):
+		agentProperty = self.entityHandle.Agent
+		agentProperty.type = newType
+		self.entityHandle.Agent = agentProperty
+		if newType == demo.agentType.SOLDIER:
+			healthProperty = self.entityHandle.Health
+			healthProperty.hp = statParser.getStat("soldierHealth")
+			self.entityHandle.Health = healthProperty
+
+
 	def GoalHandler(self):
 		if self.goal == enums.GoalEnum.WOOD_GOAL:
-			self.itemEntity = overlord.overlord.GetCloseTree()
+			self.itemEntity = overlord.overlord.GetCloseTree(self)
+			if not self.itemEntity: return
 			self.finalGoal = self.itemEntity.Tree.position
 			self.ChangeState(fsm.MoveState())
 
 		elif self.goal == enums.GoalEnum.IRON_GOAL:
-			self.itemEntity = overlord.overlord.GetCloseIron()
+			self.itemEntity = overlord.overlord.GetCloseIron(self)
+			if not self.itemEntity: return
 			self.finalGoal = self.itemEntity.Iron.position
 			self.ChangeState(fsm.MoveState())
 		
@@ -95,7 +107,12 @@ class Agent:
 		elif self.goal == enums.GoalEnum.SOLDIER_GOAL:
 			if self.entityHandle.Agent.type == demo.agentType.WORKER:
 				self.ChangeState(fsm.UpgradeState())
-
+			else:
+				self.ChangeState(fsm.BaseState())
+				
+		elif self.goal == enums.GoalEnum.SCOUT_GOAL:
+			if self.entityHandle.Agent.type == demo.agentType.WORKER:
+				self.ChangeState(fsm.UpgradeState())
 
 		elif self.goal == enums.GoalEnum.BUILD_SMELTER_GOAL or self.goal == enums.GoalEnum.BUILD_SMITH_GOAL or self.goal == enums.GoalEnum.BUILD_KILNS_GOAL or self.goal == enums.GoalEnum.BUILD_TRAINING_CAMP_GOAL:
 			if self.entityHandle.Agent.type == demo.agentType.WORKER or self.entityHandle.agentType == demo.agentType.BUILDER:
