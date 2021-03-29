@@ -1,6 +1,7 @@
 from Grupp2 import overlord, enums
 import fog_of_war, demo, enum
 
+
 class EntityManager():
     def __init__(self):
         self.updateState = 0
@@ -15,6 +16,7 @@ class EntityManager():
         self.incrementUpdateState.view_i = 0
         self.incrementUpdateState.index = 0
         self.new_trees = set()
+
     def updatetUnManageEntities(self):
         updateState = enums.updateOrder[self.updateState]
         if updateState == enums.UpdateState.TREES:
@@ -32,25 +34,27 @@ class EntityManager():
                 overlord.overlord.AddScoutedTree(self.setTolistOfEntetys(self.trees))
 
         elif updateState == enums.UpdateState.IRON:
-            #overlord.overlord.AddScoutedTree()
+            # overlord.overlord.AddScoutedTree()
             ownedIron = set()
+
             def updateIron(entity, iron):
                 nonlocal ownedIron
                 x = int(iron.position.x)
                 y = int(iron.position.z)
                 if fog_of_war.grupp2.is_discovered(x, y):
                     ownedIron.add(entity.toInt())
+
             demo.ForIron(updateIron)
             self.ironore = ownedIron
             overlord.overlord.AddScoutedIron(self.setTolistOfEntetys(self.ironore))
-            #send to overlord
+            # send to overlord
         elif updateState == enums.UpdateState.ENEMIES:
             workers = set()
             soldiers = set()
             buildings = set()
 
-            def updateEnemyAgents(entity,agent, team):
-                nonlocal workers,soldiers
+            def updateEnemyAgents(entity, agent, team):
+                nonlocal workers, soldiers
                 if team.team == demo.teamEnum.GRUPP_2:
                     return
                 x = int(agent.position.x)
@@ -84,12 +88,13 @@ class EntityManager():
             overlord.overlord.AddScoutedSoldiers(self.setTolistOfEntetys(self.enemy_soldiers))
             overlord.overlord.AddScoutedBuildings(self.setTolistOfEntetys(self.enemy_buildings))
 
-        self.updateState = (self.updateState+1) % len(enums.updateOrder)
+        self.updateState = (self.updateState + 1) % len(enums.updateOrder)
 
-    def setTolistOfEntetys(self,s:set()):
+    def setTolistOfEntetys(self, s: set()):
         temp = []
         for i in s:
             temp.append(demo.Entity.fromInt(i))
         return temp
+
 
 entitymanger = EntityManager()
