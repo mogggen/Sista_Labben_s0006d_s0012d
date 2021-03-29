@@ -1,8 +1,8 @@
 from Grupp2 import overlord
 import imgui
 
-def DrawHUD():
 
+def DrawHUD():
     imgui.Begin("Grupp2 (Red) Inventory", None, 0)
     imgui.Text("Agents: " + str(len(overlord.overlord.agents)))
     imgui.Text("Buildings: " + str(len(overlord.overlord.buildings)))
@@ -16,14 +16,3 @@ def DrawHUD():
     imgui.Text("Ironore: " + str(overlord.overlord.ironore))
     imgui.Text("Sword: " + str(overlord.overlord.sword))
     imgui.End()
-
-
-
-
-
-
-
-
-
-
-
