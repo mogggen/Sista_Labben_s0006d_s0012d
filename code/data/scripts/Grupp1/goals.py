@@ -9,6 +9,10 @@ class item(enum.Enum):
     ore = 2
 
 class Goal:
+    def __init__(self):
+        self.timer = 0
+        self.active = False
+
     def enter(self, agent):
         pass
     def execute(self, agent):
@@ -23,6 +27,7 @@ class Goal:
 
 class WalkToGoal(Goal):
     def __init__(self, goal):
+        super().__init__()
         self.goal = goal
         self.target = self.goal
 
@@ -71,6 +76,7 @@ class WalkToGoal(Goal):
 
 class Follow(Goal):
     def __init__(self, lead):
+        super().__init__()
         self.lead = lead
 
     def enter(self, agent):
@@ -99,6 +105,7 @@ class Follow(Goal):
 
 class CutTree(Goal):
     def __init__(self, tree):
+        super().__init__()
         self.tree = tree
 
 
@@ -137,6 +144,7 @@ class CutTree(Goal):
 
 class PickupOre(Goal):
     def __init__(self, ore):
+        super().__init__()
         self.ore = ore
 
 
@@ -172,7 +180,7 @@ class PickupOre(Goal):
 
 class EmptyInventory(Goal):
     def __init__(self):
-        pass
+        super().__init__()
 
 
     def enter(self, agent):
@@ -206,6 +214,7 @@ class EmptyInventory(Goal):
 
 class Attack(Goal):
     def __init__(self, enemy):
+        super().__init__()
         self.enemy = enemy
         self.onCooldown = False
         self.path = None
@@ -313,6 +322,7 @@ class Attack(Goal):
 
 class Flee(Goal):
     def __init__(self, enemy):
+        super().__init__()
         self.enemy = enemy
 
 
@@ -376,7 +386,8 @@ class Flee(Goal):
 
 
 class Build(Goal):
-    def __init__(self, type:demo.buildingType, pos:nmath.Float2):
+    def __init__(self, type: demo.buildingType, pos: nmath.Float2):
+        super().__init__()
         self.toBuild = type
         self.pos = pos
         self.working = False
@@ -414,7 +425,8 @@ class Build(Goal):
 
 
 class Upgrade(Goal):
-    def __init__(self, type:demo.agentType):
+    def __init__(self, type: demo.agentType):
+        super().__init__()
         self.type = type
         self.timer = 0
 
@@ -443,6 +455,7 @@ class Upgrade(Goal):
 
 class EnterBuilding(Goal):
     def __init__(self, building):
+        super().__init__()
         self.building = building
 
 
