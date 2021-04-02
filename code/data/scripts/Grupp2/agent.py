@@ -12,7 +12,7 @@ class Agent:
         self.lane = None
         self.finalGoal = None
         self.pathToGoal = []
-        self.state = fsm.BaseState()
+        self.state = fsm.IdleState()
         self.startTime = 0
 
         self.scoutDone = False
@@ -97,7 +97,7 @@ class Agent:
         self.entityHandle.Agent = agentProperty
         if newType == demo.agentType.SOLDIER:
             healthProperty = self.entityHandle.Health
-            healthProperty.hp = statParser.getStat("soldierHealth")
+            healthProperty.hp = int(statParser.getStat("soldierHealth"))
             self.entityHandle.Health = healthProperty
 
     def SetLane(self, lane):
@@ -135,7 +135,7 @@ class Agent:
             if self.entityHandle.Agent.type == demo.agentType.WORKER:
                 self.ChangeState(fsm.UpgradeState())
             else:
-                self.ChangeState(fsm.BaseState())
+                self.ChangeState(fsm.IdleState())
 
         elif self.goal == enums.GoalEnum.SCOUT_GOAL:
             if self.entityHandle.Agent.type == demo.agentType.WORKER:
