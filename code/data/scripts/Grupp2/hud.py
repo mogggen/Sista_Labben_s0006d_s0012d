@@ -4,10 +4,28 @@ import imgui,demo
 
 def DrawHUD():
     builders = 0
+    nonworker = 0
+
+    kilns =0
+    smelterys = 0
+    blacksmiths = 0
+    trainingcamps = 0
     for a in overlord.overlord.agents:
         if a.entityHandle.Agent.type == demo.agentType.BUILDER:
-            builders +=1
-
+            builders += 1
+        elif a.entityHandle.Agent.position == overlord.overlord.castleEntity.Building.position:
+            nonworker += 1
+    for b in overlord.overlord.buildings:
+        if b.entityHandle.Buildings.type == demo.buildingType.KILN:
+            kilns += 1
+        elif b.entityHandle.Buildings.type == demo.buildingType.SMELTERY:
+            smelterys += 1
+        elif b.entityHandle.Buildings.type == demo.buildingType.BLACKSMITH:
+            blacksmiths += 1
+        elif b.entityHandle.Buildings.type == demo.buildingType.TRAININGCAMP:
+            trainingcamps += 1
+        else:
+            pass
     imgui.Begin("Grupp2 (Red) Inventory", None, 0)
     try:
         imgui.Text("Resorses: ")
@@ -18,7 +36,15 @@ def DrawHUD():
         imgui.Text("Sword: " + str(overlord.overlord.sword))
         imgui.Text("  ")
         imgui.Text("  ")
-        imgui.Text("Builders: "+ str(builders))
+        imgui.Text("Builders: " + str(builders))
+        imgui.Text("non workers: " + str(nonworker))
+        imgui.Text("  ")
+        imgui.Text("  ")
+        imgui.Text("Total buildings: " + str(len(overlord.overlord.buildings)))
+        imgui.Text("KILN: " + str(kilns))
+        imgui.Text("SMELTERY: " + str(smelterys))
+        imgui.Text("BLACKSMITH: " + str(blacksmiths))
+        imgui.Text("TRAININGCAMP: " + str(trainingcamps))
         imgui.End()
     except Exception as e:
         imgui.End()
