@@ -138,7 +138,7 @@ class UpgradeState(BaseState):
         # om timmern är clar soldat medela over lorde utbildad soldat.
         if agent.goal == enums.GoalEnum.SOLDIER_GOAL:
             if demo.GetTime() - agent.startTime >= statParser.getStat("soldierUpgradeTime"):
-                agent.setType(demo.agentType.SOLDIER)
+                agent.SetType(demo.agentType.SOLDIER)
                 overlord.overlord.AddSoldier(agent)
                 tc = overlord.overlord.GetBuildingAtPosition(agent.entityHandler.Agent.position)
                 overlord.overlord.AddAvailableTrainingCamp(tc)
@@ -146,27 +146,27 @@ class UpgradeState(BaseState):
 
 
         elif agent.goal in (enums.GoalEnum.BUILD_KILNS_GOAL, enums.GoalEnum.BUILD_SMITH_GOAL, enums.GoalEnum.BUILD_SMELTER_GOAL, enums.GoalEnum.BUILD_TRAINING_CAMP_GOAL):
-            if agent.entityHandler.Agent.agentType == demo.agentType.BUILDER:
+            if agent.entityHandle.Agent.type == demo.agentType.BUILDER:
                 agent.ChangeState(BuildState())
                 return
             if demo.GetTime() - agent.startTime >= statParser.getStat("builderUpgradeTime"):
-                agent.setType(demo.agentType.BUILDER)
+                agent.SetType(demo.agentType.BUILDER)
                 print("fsm, Upgrade: Builder upgraded!")
                 agent.ChangeState(BuildState())
 
         elif agent.goal == enums.GoalEnum.KILN_GOAL:
             if demo.GetTime() - agent.startTime >= statParser.getStat("kilnerUpgradeTime"):
-                agent.setType(demo.agentType.KILNER)
+                agent.SetType(demo.agentType.KILNER)
                 agent.ChangeState(StartProducingState())
 
         elif agent.goal == enums.GoalEnum.SMITH_GOAL:
             if demo.GetTime() - agent.startTime >= statParser.getStat("smithUpgradeTime"):
-                agent.setType(demo.agentType.SMITH)
+                agent.SetType(demo.agentType.SMITH)
                 agent.ChangeState(StartProducingState())
 
         elif agent.goal == enums.GoalEnum.SMELT_GOAL:
             if demo.GetTime() - agent.startTime >= statParser.getStat("smelterUpgradeTime"):
-                agent.setType(demo.agentType.SMELTER)
+                agent.SetType(demo.agentType.SMELTER)
                 agent.ChangeState(StartProducingState())
 
         elif agent.goal == enums.GoalEnum.SCOUT_GOAL:
@@ -198,28 +198,32 @@ class BuildState(BaseState):
     buildingType = None
 
     def Enter(self, agent):
-        if agent.entityHandle.agentType.BUILDER:
+        if agent.entityHandle.Agent.type.BUILDER == demo.agentType.BUILDER:
             if agent.goal == enums.GoalEnum.BUILD_TRAINING_CAMP_GOAL:
                 if overlord.overlord.tree >= statParser.getStat("trainingCampWoodCost"):
                     agent.startTime = demo.GetTime()
                 else:
                     print("Not enough resources for a Trainingcamp")
+                    agent.ChangeState(BaseState())
             elif agent.goal == enums.GoalEnum.BUILD_KILNS_GOAL:
                 if overlord.overlord.tree >= statParser.getStat("kilnWoodCost"):
                     agent.startTime = demo.GetTime()
                 else:
                     print("Not enough resources for a Kiln")
+                    agent.ChangeState(BaseState())
             elif agent.goal == enums.GoalEnum.BUILD_SMELTER_GOAL:
                 if overlord.overlord.tree >= statParser.getStat("smelteryWoodCost"):
                     agent.startTime = demo.GetTime()
                 else:
                     print("Not enough resources for a Smeltery")
+                    agent.ChangeState(BaseState())
             elif agent.goal == enums.GoalEnum.BUILD_SMITH_GOAL:
                 if overlord.overlord.tree >= statParser.getStat(
                         "blacksmithWoodCost") and overlord.overlord.ironore >= statParser.getStat("blacksmithOreCost"):
                     agent.startTime = demo.GetTime()
                 else:
                     print("Not enough resources for a blacksmith")
+                    agent.ChangeState(BaseState())
 
         else:
             print("Agent is not a builder")
@@ -230,32 +234,31 @@ class BuildState(BaseState):
                 building = buildings.Building(demo.buildingType.KILN, agent)
                 overlord.overlord.AddBuilding(building)
                 overlord.overlord.AddAvailableBuilder(agent)
-            if demo.GetTime - agent.startTime >= statParser.getStat("kilnBuildTime") - statParser.getStat(
-                    "kilnerUpgradeTime"):
+            if demo.GetTime() - agent.startTime >= int(statParser.getStat("kilnBuildTime")) - int(statParser.getStat("kilnerUpgradeTime")):
                 agentprops = agent.entityHandle.Agent
-                overlord.overlord.RequestWorker(agentprops.pos, demo.buildingType.KILN)
+                overlord.overlord.RequestWorker(agentprops.position, demo.buildingType.KILN)
         elif agent.goal == enums.GoalEnum.BUILD_SMELTER_GOAL:
-            if demo.GetTime() - agent.startTime >= statParser.getStat("smelteryBuildTime"):
+            if demo.GetTime() - agent.startTime >= int(statParser.getStat("smelteryBuildTime")):
                 building = buildings.Building(demo.buildingType.SMELTERY, agent)
                 overlord.overlord.AddBuilding(building)
                 overlord.overlord.AddAvailableBuilder(agent)
-            if demo.GetTime - agent.startTime >= statParser.getStat("smelteryBuildTime") - statParser.getStat(
-                    "smelterUpgradeTime"):
+            if demo.GetTime() - agent.startTime >= int(statParser.getStat("smelteryBuildTime")) - int(statParser.getStat(
+                    "smelterUpgradeTime")):
                 agentprops = agent.entityHandle.Agent
-                overlord.overlord.RequestWorker(agentprops.pos, demo.buildingType.SMELTERY)
+                overlord.overlord.RequestWorker(agentprops.position, demo.buildingType.SMELTERY)
                 pass
         elif agent.goal == enums.GoalEnum.BUILD_SMITH_GOAL:
-            if demo.GetTime() - agent.startTime >= statParser.getStat("blacksmithBuildTime"):
+            if demo.GetTime() - agent.startTime >= int(statParser.getStat("blacksmithBuildTime")):
                 building = buildings.Building(demo.buildingType.BLACKSMITH, agent)
                 overlord.overlord.AddBuilding(building)
                 overlord.overlord.AddAvailableBuilder(agent)
-            if demo.GetTime - agent.startTime >= statParser.getStat("blacksmithBuildTime") - statParser.getStat(
-                    "smithUpgradeTime"):
+            if demo.GetTime() - agent.startTime >= int(statParser.getStat("blacksmithBuildTime")) - int(statParser.getStat(
+                    "smithUpgradeTime")):
                 agentprops = agent.entityHandle.Agent
-                overlord.overlord.RequestWorker(agentprops.pos, demo.buildingType.BLACKSMITH)
+                overlord.overlord.RequestWorker(agentprops.position, demo.buildingType.BLACKSMITH)
 
         elif agent.goal == enums.GoalEnum.BUILD_TRAINING_CAMP_GOAL:
-            if demo.GetTime - agent.startTime >= statParser.getStat("trainingCampBuildTime"):
+            if demo.GetTime() - agent.startTime >= int(statParser.getStat("trainingcampBuildTime")):
                 building = buildings.Building(demo.buildingType.TRAININGCAMP, agent)
                 overlord.overlord.AddBuilding(building)
                 overlord.overlord.AddAvailableBuilder(agent)

@@ -8,7 +8,7 @@ class Building:
         self.startTime = 0
         self.working = False
 
-        self.entityHandle = buildings.spawnBuilding(self.type, builder.posX, builder.posY, 0, demo.teamEnum.GRUPP_2)
+        self.entityHandle = buildings.spawnBuilding(self.type, builder.entityHandle.Agent.position.x, builder.entityHandle.Agent.position.z, 0, demo.teamEnum.GRUPP_2)
 
     def Run(self):
         if self.entityHandle.Building.hasWorker:
@@ -24,6 +24,7 @@ class Building:
         elif self.type == demo.buildingType.TRAININGCAMP:
             # We will handle soldier production on the agent side
             pass
+        self.working = False
 
     def Execute(self):
         if self.type == demo.buildingType.KILN:

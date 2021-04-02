@@ -1,4 +1,4 @@
-import random, statParser, demo, msgManager, navMesh, nmath
+import random, statParser, demo, msgManager, navMesh, nmath, math
 from Grupp2 import agent, fsm, pathfinder, enums
 
 
@@ -140,9 +140,9 @@ class Overlord:
                 for b in self.buildings:
                     vec3Pos = b.entityHandle.Building.position
                     float2Pos = nmath.Float2(vec3Pos.x, vec3Pos.z)
-                    distanceFloat2 = point - float2Pos
-                    absDistance = distanceFloat2.abs
-                    if absDistance.length > self.distanceFromBuildingRadius:
+                    distance = p - vec3Pos
+                    absDistance = distance.abs
+                    if distance.length > self.distanceFromBuildingRadius:
                         return p
                 return p
 
@@ -255,7 +255,7 @@ class Overlord:
             b.SetGoal(enums.GoalEnum.BUILD_SMITH_GOAL)
         elif self.GetBuiltBuildingsOfType(
                 demo.buildingType.TRAININGCAMP) < self.nrTrainingCamp and self.tree >= statParser.getStat(
-            "trainingCampWoodCost"):
+            "trainingcampWoodCost"):
             b.SetGoal(enums.GoalEnum.BUILD_TRAINING_CAMP_GOAL)
         elif self.GetBuiltBuildingsOfType(
                 demo.buildingType.SMELTERY) < self.nrSmelters and self.tree >= statParser.getStat("smelteryWoodCost"):
