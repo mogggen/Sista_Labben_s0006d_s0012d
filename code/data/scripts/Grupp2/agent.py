@@ -12,7 +12,7 @@ class Agent:
         self.lane = None
         self.finalGoal = None
         self.pathToGoal = []
-        self.state = fsm.BaseState()
+        self.state = fsm.IdleState()
         self.startTime = 0
 
         self.entityHandle = demo.SpawnEntity("AgentEntity/redagent")
@@ -132,7 +132,7 @@ class Agent:
             if self.entityHandle.Agent.type == demo.agentType.WORKER:
                 self.ChangeState(fsm.UpgradeState())
             else:
-                self.ChangeState(fsm.BaseState())
+                self.ChangeState(fsm.IdleState())
 
         elif self.goal == enums.GoalEnum.SCOUT_GOAL:
             if self.entityHandle.Agent.type == demo.agentType.WORKER:

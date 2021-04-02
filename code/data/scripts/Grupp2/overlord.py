@@ -37,7 +37,9 @@ class Overlord:
     scoutedSoldiers = []
     scoutedBuildings = []
     scoutedTrees = []
+    targetedScoutedTrees = []
     scoutedIron = []
+    targetedScoutedIron = []
 
     # Where to place buildings
     minRadius = 20  # This should be at least half the size of castle
@@ -97,9 +99,15 @@ class Overlord:
         self.scoutedBuildings = buildings
 
     def AddScoutedTree(self, trees):
+        for t in self.targetedScoutedTrees:
+            if t in trees:
+                trees.remove(t)
         self.scoutedTrees = trees
 
     def AddScoutedIron(self, iron):
+        for i in self.targetedScoutedIron:
+            if i in iron:
+                iron.remove(i)
         self.scoutedIron = iron
 
     def AddScoutedEnemyCastle(self, castleEntity):
@@ -115,11 +123,15 @@ class Overlord:
     # A worker requests a tree or iron to gather
     def GetCloseTree(self):
         if len(self.scoutedTrees) > 0:
-            return self.scoutedTrees.pop(0)
+            t = self.scoutedTrees.pop(0)
+            self.targetedScoutedTrees.append(t)
+            return t
 
     def GetCloseIron(self):
         if len(self.scoutedIron) > 0:
-            return self.scoutedIron.pop(0)
+            i = self.scoutedIron.pop(0)
+            self.targetedScoutedIron.append(i)
+            return i
 
     # This is bugged, buildings are being placed too close to each other
     def GetPosForBuilding(self):
@@ -157,6 +169,7 @@ class Overlord:
                         a.SetGoal(enums.GoalEnum.SMITH_GOAL)
                     a.finalGoal = buildingPos
                     a.ChangeState(fsm.MoveState())
+                    print("overlord, RequestWorker: worker requested at", buildingType)
                     return
             else:
                 print("Worker requested but there are no more workers!")
@@ -167,7 +180,7 @@ class Overlord:
                 if a.type == demo.agentType.WORKER:
                     if a.goal == enums.GoalEnum.WOOD_GOAL:
                         a.SetGoal(enums.GoalEnum.SOLDIER_GOAL)
-                        a.finalGoal = self.availableTrainingCamps.pop()
+                        a.finalGoal = self.availableTrainingCamps.pop().entityHandle.Building.position
                         a.ChangeState(fsm.MoveState())
 
     def AddSoldier(self, agent):
@@ -264,8 +277,9 @@ class Overlord:
             b.SetGoal(enums.GoalEnum.BUILD_KILNS_GOAL)
         else:
             b.SetGoal(enums.GoalEnum.IDLE_GOAL)
+            self.availableBuilders.append(b)
 
-        self.RemoveAvailableBuilder(b)
+        #self.RemoveAvailableBuilder(b)
         b.finalGoal = self.GetPosForBuilding()
         b.ChangeState(fsm.MoveState())
 
