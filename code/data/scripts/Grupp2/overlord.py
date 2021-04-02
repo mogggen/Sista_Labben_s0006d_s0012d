@@ -10,6 +10,7 @@ class Overlord:
     availableTrainingCamps = []
     castleEntity = 0
     enemyCastleEntity = None
+    scouts = []
     # resources
     charcoal = 0
     ironbar = 0
@@ -69,10 +70,13 @@ class Overlord:
                 self.agents[i].SetGoal(enums.GoalEnum.SCOUT_GOAL)
                 if i == 0:
                     self.agents[i].SetLane(enums.LaneEnum.LEFT)
+                    self.scouts.append(self.agents[i])
                 if i == 1:
                     self.agents[i].SetLane(enums.LaneEnum.MIDDLE)
+                    self.scouts.append(self.agents[i])
                 if i == 2:
                     self.agents[i].SetLane(enums.LaneEnum.RIGHT)
+                    self.scouts.append(self.agents[i])
             elif i < self.nrScouts + self.nrIronGatherers:
                 self.agents[i].SetGoal(enums.GoalEnum.IRON_GOAL)
             elif i < self.nrScouts + self.nrIronGatherers + 1:
@@ -134,6 +138,9 @@ class Overlord:
             i = self.scoutedIron.pop(0)
             self.targetedScoutedIron.append(i)
             return i
+        else:
+
+            self.SwitchIronForTree()
 
     # This is bugged, buildings are being placed too close to each other
     def GetPosForBuilding(self):
@@ -221,7 +228,6 @@ class Overlord:
         for b in self.buildings:
             if b.entityHandle.Building.position == pos:
                 return b
-        print("There is no building at this location!")
 
     # add resources
     def AddCharcoal(self, n):
@@ -292,6 +298,18 @@ class Overlord:
         #self.RemoveAvailableBuilder(b)
         b.finalGoal = self.GetPosForBuilding()
         b.ChangeState(fsm.MoveState())
+
+
+    def SwitchIronForTree(self):
+        i = 0
+        for s in self.scouts:
+            if s.scoutDone:
+                i += 1
+        if i == 3 and len(self.scoutedIron) == 0:
+            for a in self.agents:
+                if a.goal == enums.GoalEnum.IRON_GOAL:
+                    a.SetGoal(enums.GoalEnum.WOOD_GOAL)
+
 
     def GetBuiltBuildingsOfType(self, type):
         i = 0

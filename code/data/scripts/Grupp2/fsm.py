@@ -48,8 +48,14 @@ class MoveState(BaseState):
 
         if agent.entityHandle.Agent.position == agent.finalGoal:
             if agent.entityHandle.Agent.type == demo.agentType.SCOUT:
-                agent.finalGoal = nmath.Point(0, 0, 170)
-                agent.ChangeState(MoveState())
+                print("scout pos: " + str(agent.entityHandle.Agent.position))
+                if agent.entityHandle.Agent.position.z <= 0:
+                    agent.finalGoal = nmath.Point(0, 0, 170)
+                    agent.ChangeState(MoveState())
+                elif agent.entityHandle.Agent.position == nmath.Point(0, 0, 170):
+                    agent.scoutDone = True
+                    print("scout is done")
+                    agent.ChangeState(IdleState())
 
             if agent.goal in (enums.GoalEnum.KILN_GOAL, enums.GoalEnum.SMITH_GOAL, enums.GoalEnum.SMELT_GOAL):
                 if agent.entityHandle.Agent.type == demo.agentType.WORKER:

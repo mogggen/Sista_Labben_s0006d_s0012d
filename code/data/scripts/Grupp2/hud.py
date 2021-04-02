@@ -5,6 +5,7 @@ import imgui,demo
 def DrawHUD():
     builders = 0
     scouts = 0
+    dScouts =0
     soldiers = 0
     nonworker = 0
 

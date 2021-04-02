@@ -15,6 +15,9 @@ class Agent:
         self.state = fsm.IdleState()
         self.startTime = 0
 
+        self.scoutDone = False
+
+
         self.entityHandle = demo.SpawnEntity("AgentEntity/redagent")
 
         self.healthProperty = self.entityHandle.Health
