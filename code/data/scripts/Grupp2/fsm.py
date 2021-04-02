@@ -195,24 +195,26 @@ class ExploreState(BaseState):
 
 # artisan Agents
 class BuildState(BaseState):
-    buildingType = None
 
     def Enter(self, agent):
         if agent.entityHandle.Agent.type.BUILDER == demo.agentType.BUILDER:
             if agent.goal == enums.GoalEnum.BUILD_TRAINING_CAMP_GOAL:
                 if overlord.overlord.tree >= statParser.getStat("trainingcampWoodCost"):
+                    overlord.overlord.tree = overlord.overlord.tree - statParser.getStat("trainingcampWoodCost")
                     agent.startTime = demo.GetTime()
                 else:
                     print("Not enough resources for a Trainingcamp")
                     agent.ChangeState(BaseState())
             elif agent.goal == enums.GoalEnum.BUILD_KILNS_GOAL:
                 if overlord.overlord.tree >= statParser.getStat("kilnWoodCost"):
+                    overlord.overlord.tree = overlord.overlord.tree - statParser.getStat("kilnWoodCost")
                     agent.startTime = demo.GetTime()
                 else:
                     print("Not enough resources for a Kiln")
                     agent.ChangeState(BaseState())
             elif agent.goal == enums.GoalEnum.BUILD_SMELTER_GOAL:
                 if overlord.overlord.tree >= statParser.getStat("smelteryWoodCost"):
+                    overlord.overlord.tree = overlord.overlord.tree - statParser.getStat("smelteryWoodCost")
                     agent.startTime = demo.GetTime()
                 else:
                     print("Not enough resources for a Smeltery")
@@ -220,6 +222,8 @@ class BuildState(BaseState):
             elif agent.goal == enums.GoalEnum.BUILD_SMITH_GOAL:
                 if overlord.overlord.tree >= statParser.getStat(
                         "blacksmithWoodCost") and overlord.overlord.ironore >= statParser.getStat("blacksmithOreCost"):
+                    overlord.overlord.tree = overlord.overlord.tree - statParser.getStat("blacksmithWoodCost")
+                    overlord.overlord.ironore = overlord.overlord.ironore - statParser.getStat("blacksmithOreCost")
                     agent.startTime = demo.GetTime()
                 else:
                     print("Not enough resources for a blacksmith")
@@ -234,14 +238,18 @@ class BuildState(BaseState):
                 building = buildings.Building(demo.buildingType.KILN, agent)
                 overlord.overlord.AddBuilding(building)
                 overlord.overlord.AddAvailableBuilder(agent)
+                agent.ChangeState(BaseState())
             if demo.GetTime() - agent.startTime >= int(statParser.getStat("kilnBuildTime")) - int(statParser.getStat("kilnerUpgradeTime")):
                 agentprops = agent.entityHandle.Agent
                 overlord.overlord.RequestWorker(agentprops.position, demo.buildingType.KILN)
+
         elif agent.goal == enums.GoalEnum.BUILD_SMELTER_GOAL:
             if demo.GetTime() - agent.startTime >= int(statParser.getStat("smelteryBuildTime")):
                 building = buildings.Building(demo.buildingType.SMELTERY, agent)
                 overlord.overlord.AddBuilding(building)
                 overlord.overlord.AddAvailableBuilder(agent)
+                agent.ChangeState(BaseState())
+
             if demo.GetTime() - agent.startTime >= int(statParser.getStat("smelteryBuildTime")) - int(statParser.getStat(
                     "smelterUpgradeTime")):
                 agentprops = agent.entityHandle.Agent
@@ -252,6 +260,7 @@ class BuildState(BaseState):
                 building = buildings.Building(demo.buildingType.BLACKSMITH, agent)
                 overlord.overlord.AddBuilding(building)
                 overlord.overlord.AddAvailableBuilder(agent)
+                agent.ChangeState(BaseState())
             if demo.GetTime() - agent.startTime >= int(statParser.getStat("blacksmithBuildTime")) - int(statParser.getStat(
                     "smithUpgradeTime")):
                 agentprops = agent.entityHandle.Agent
@@ -263,6 +272,7 @@ class BuildState(BaseState):
                 overlord.overlord.AddBuilding(building)
                 overlord.overlord.AddAvailableBuilder(agent)
                 overlord.overlord.AddAvailableTrainingCamp(building)
+                agent.ChangeState(BaseState())
 
 
 # Soldier Agents
