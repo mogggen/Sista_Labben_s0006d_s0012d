@@ -139,8 +139,8 @@ class Agent:
                 self.ChangeState(fsm.UpgradeState())
 
         elif self.goal == enums.GoalEnum.BUILD_SMELTER_GOAL or self.goal == enums.GoalEnum.BUILD_SMITH_GOAL or self.goal == enums.GoalEnum.BUILD_KILNS_GOAL or self.goal == enums.GoalEnum.BUILD_TRAINING_CAMP_GOAL:
-            print("agent, GoalHandler: goal check successful")
+            #print("agent, GoalHandler: goal check successful")
             if self.entityHandle.Agent.type == demo.agentType.WORKER or self.entityHandle.Agent.type == demo.agentType.BUILDER:
                 self.finalGoal = overlord.overlord.GetPosForBuilding()
-                print("agent, GoalHandler: got pos for building", self.finalGoal)
+                #print("agent, GoalHandler: got pos for building", self.finalGoal)
                 self.ChangeState(fsm.MoveState())

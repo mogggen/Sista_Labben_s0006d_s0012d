@@ -16,6 +16,8 @@ class Overlord:
     ironore = 0
     sword = 0
     tree = 0
+    houseTrees = 0
+    treeCount = 0
     # Amount of dudes we want for each goal
     nrWoodGatherers = 31  # At least double amount of iron collectors, ratio is 2.5 times
     nrIronGatherers = 14
@@ -74,7 +76,7 @@ class Overlord:
             elif i < self.nrScouts + self.nrIronGatherers:
                 self.agents[i].SetGoal(enums.GoalEnum.IRON_GOAL)
             elif i < self.nrScouts + self.nrIronGatherers + 1:
-                self.agents[i].SetGoal(enums.GoalEnum.BUILD_SMELTER_GOAL)
+                self.agents[i].SetGoal(enums.GoalEnum.BUILD_KILNS_GOAL)
             else:
                 return
 
@@ -148,7 +150,7 @@ class Overlord:
             p = nmath.Point(point.x, 0, point.y)
             # Check if the point is on the navmesh
             if navMesh.isOnNavMesh(point):
-                print("overlord, GetPosForBuilding: point on navmesh", point)
+                #print("overlord, GetPosForBuilding: point on navmesh", point)
                 # Check if the point is too close to any other building
                 for b in self.buildings:
                     vec3Pos = b.entityHandle.Building.position
@@ -169,7 +171,7 @@ class Overlord:
                         a.SetGoal(enums.GoalEnum.SMITH_GOAL)
                     a.finalGoal = buildingPos
                     a.ChangeState(fsm.MoveState())
-                    print("overlord, RequestWorker: worker requested at", buildingType)
+                    #print("overlord, RequestWorker: worker requested at", buildingType)
                     return
             else:
                 print("Worker requested but there are no more workers!")
@@ -239,8 +241,12 @@ class Overlord:
         self.TrainSoldier()
 
     def Addtree(self, n):
-        self.tree += n
-        self.CheckBuildPossibilities()
+        if self.treeCount < 10 * (self.nrKiln + self.nrSmelters + self.nrSmithy + self.nrTrainingCamp):
+            self.houseTrees += n
+            self.CheckBuildPossibilities()
+        else:
+            self.tree += n
+        self.treeCount += n
 
     # take resources
     def Takecharcoal(self, n):
@@ -258,25 +264,27 @@ class Overlord:
     def Taketree(self, n):
         self.tree -= n
 
+    def TakeHouseTrees(self, n):
+        self.houseTrees -= n
+
     def CheckBuildPossibilities(self):
-        if len(self.availableBuilders) < 1 or self.tree < 10:
+        if len(self.availableBuilders) < 1 or self.houseTrees < 10:
             return
         b = self.availableBuilders.pop()
-
-        if self.GetBuiltBuildingsOfType(
-                demo.buildingType.BLACKSMITH) < self.nrSmithy and self.tree >= statParser.getStat(
-            "blacksmithWoodCost") and self.ironbar >= statParser.getStat("blacksmithIronCost"):
-            b.SetGoal(enums.GoalEnum.BUILD_SMITH_GOAL)
+        if self.GetBuiltBuildingsOfType(demo.buildingType.KILN) < self.nrKiln and self.houseTrees >= statParser.getStat(
+                "kilnWoodCost"):
+            b.SetGoal(enums.GoalEnum.BUILD_KILNS_GOAL)
         elif self.GetBuiltBuildingsOfType(
-                demo.buildingType.TRAININGCAMP) < self.nrTrainingCamp and self.tree >= statParser.getStat(
+                demo.buildingType.SMELTERY) < self.nrSmelters and self.houseTrees >= statParser.getStat("smelteryWoodCost"):
+            b.SetGoal(enums.GoalEnum.BUILD_SMELTER_GOAL)
+        elif self.GetBuiltBuildingsOfType(
+                demo.buildingType.TRAININGCAMP) < self.nrTrainingCamp and self.houseTrees >= statParser.getStat(
             "trainingcampWoodCost"):
             b.SetGoal(enums.GoalEnum.BUILD_TRAINING_CAMP_GOAL)
         elif self.GetBuiltBuildingsOfType(
-                demo.buildingType.SMELTERY) < self.nrSmelters and self.tree >= statParser.getStat("smelteryWoodCost"):
-            b.SetGoal(enums.GoalEnum.BUILD_SMELTER_GOAL)
-        elif self.GetBuiltBuildingsOfType(demo.buildingType.KILN) < self.nrKiln and self.tree >= statParser.getStat(
-                "kilnWoodCost"):
-            b.SetGoal(enums.GoalEnum.BUILD_KILNS_GOAL)
+                demo.buildingType.BLACKSMITH) < self.nrSmithy and self.houseTrees >= statParser.getStat(
+            "blacksmithWoodCost") and self.ironbar >= statParser.getStat("blacksmithIronCost"):
+            b.SetGoal(enums.GoalEnum.BUILD_SMITH_GOAL)
         else:
             b.SetGoal(enums.GoalEnum.IDLE_GOAL)
             self.availableBuilders.append(b)

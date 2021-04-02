@@ -35,7 +35,7 @@ def DrawHUD():
     imgui.Begin("Grupp2 (Red) Inventory", None, 0)
     try:
         imgui.Text("Resources: ")
-        imgui.Text("Tree: " + str(overlord.overlord.tree))
+        imgui.Text("Tree: " + str(overlord.overlord.tree + overlord.overlord.houseTrees))
         imgui.Text("Charcoal: " + str(overlord.overlord.charcoal))
         imgui.Text("Ironbar: " + str(overlord.overlord.ironbar))
         imgui.Text("Ironore: " + str(overlord.overlord.ironore))

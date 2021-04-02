@@ -204,30 +204,30 @@ class BuildState(BaseState):
     def Enter(self, agent):
         if agent.entityHandle.Agent.type.BUILDER == demo.agentType.BUILDER:
             if agent.goal == enums.GoalEnum.BUILD_TRAINING_CAMP_GOAL:
-                if overlord.overlord.tree >= statParser.getStat("trainingcampWoodCost"):
-                    overlord.overlord.tree = overlord.overlord.tree - statParser.getStat("trainingcampWoodCost")
+                if overlord.overlord.houseTrees >= statParser.getStat("trainingcampWoodCost"):
+                    overlord.overlord.TakeHouseTrees(statParser.getStat("trainingcampWoodCost"))
                     agent.startTime = demo.GetTime()
                 else:
                     print("Not enough resources for a Trainingcamp")
                     agent.ChangeState(IdleState())
             elif agent.goal == enums.GoalEnum.BUILD_KILNS_GOAL:
-                if overlord.overlord.tree >= statParser.getStat("kilnWoodCost"):
-                    overlord.overlord.tree = overlord.overlord.tree - statParser.getStat("kilnWoodCost")
+                if overlord.overlord.houseTrees >= statParser.getStat("kilnWoodCost"):
+                    overlord.overlord.TakeHouseTrees(statParser.getStat("kilnWoodCost"))
                     agent.startTime = demo.GetTime()
                 else:
                     print("Not enough resources for a Kiln")
                     agent.ChangeState(IdleState())
             elif agent.goal == enums.GoalEnum.BUILD_SMELTER_GOAL:
-                if overlord.overlord.tree >= statParser.getStat("smelteryWoodCost"):
-                    overlord.overlord.tree = overlord.overlord.tree - statParser.getStat("smelteryWoodCost")
+                if overlord.overlord.houseTrees >= statParser.getStat("smelteryWoodCost"):
+                    overlord.overlord.TakeHouseTrees(statParser.getStat("smelteryWoodCost"))
                     agent.startTime = demo.GetTime()
                 else:
                     print("Not enough resources for a Smeltery")
                     agent.ChangeState(IdleState())
             elif agent.goal == enums.GoalEnum.BUILD_SMITH_GOAL:
-                if overlord.overlord.tree >= statParser.getStat(
+                if overlord.overlord.houseTrees >= statParser.getStat(
                         "blacksmithWoodCost") and overlord.overlord.ironore >= statParser.getStat("blacksmithIronCost"):
-                    overlord.overlord.tree = overlord.overlord.tree - statParser.getStat("blacksmithWoodCost")
+                    overlord.overlord.TakeHouseTrees(statParser.getStat("blacksmithWoodCost"))
                     overlord.overlord.Takeironbar(statParser.getStat("blacksmithIronCost"))
                     agent.startTime = demo.GetTime()
                 else:
