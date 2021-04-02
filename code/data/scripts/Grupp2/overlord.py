@@ -59,7 +59,6 @@ class Overlord:
         for i in range(maxAgents):
             self.SpawnAgent()
 
-    # LEGACY
     def OperationKILL(self):
         for i in range(len(self.agents)):
             if i < self.nrScouts:
@@ -72,6 +71,8 @@ class Overlord:
                     self.agents[i].SetLane(enums.LaneEnum.RIGHT)
             elif i < self.nrScouts + self.nrIronGatherers:
                 self.agents[i].SetGoal(enums.GoalEnum.IRON_GOAL)
+            elif i < self.nrScouts + self.nrIronGatherers + 1:
+                self.agents[i].SetGoal(enums.GoalEnum.BUILD_KILNS_GOAL)
             else:
                 return
 
@@ -131,8 +132,10 @@ class Overlord:
             x = random.randrange(minX, maxX)
             z = random.randrange(minZ, maxZ)
             point = nmath.Float2(x, z)
+            p = nmath.Point(point.x, 0, point.y)
             # Check if the point is on the navmesh
             if navMesh.isOnNavMesh(point):
+                print("overlord, GetPosForBuilding: point on navmesh", point)
                 # Check if the point is too close to any other building
                 for b in self.buildings:
                     vec3Pos = b.entityHandle.Building.position
@@ -140,7 +143,8 @@ class Overlord:
                     distanceFloat2 = point - float2Pos
                     absDistance = distanceFloat2.abs
                     if absDistance.length > self.distanceFromBuildingRadius:
-                        return point
+                        return p
+                return p
 
     def RequestWorker(self, buildingPos, buildingType):
         for a in self.agents:
@@ -261,7 +265,7 @@ class Overlord:
             b.SetGoal(enums.GoalEnum.BUILD_KILNS_GOAL)
 
         self.RemoveAvailableBuilder(b)
-        b.finalGoal = overlord.GetPosForBuilding()
+        b.finalGoal = self.GetPosForBuilding()
         b.ChangeState(fsm.MoveState())
 
     def GetBuiltBuildingsOfType(self, type):

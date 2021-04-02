@@ -151,6 +151,7 @@ class UpgradeState(BaseState):
                 return
             if demo.GetTime() - agent.startTime >= statParser.getStat("builderUpgradeTime"):
                 agent.setType(demo.agentType.BUILDER)
+                print("fsm, Upgrade: Builder upgraded!")
                 agent.ChangeState(BuildState())
 
         elif agent.goal == enums.GoalEnum.KILN_GOAL:
