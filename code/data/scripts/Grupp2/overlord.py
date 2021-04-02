@@ -262,6 +262,8 @@ class Overlord:
         elif self.GetBuiltBuildingsOfType(demo.buildingType.KILN) < self.nrKiln and self.tree >= statParser.getStat(
                 "kilnWoodCost"):
             b.SetGoal(enums.GoalEnum.BUILD_KILNS_GOAL)
+        else:
+            b.SetGoal(enums.GoalEnum.IDLE_GOAL)
 
         self.RemoveAvailableBuilder(b)
         b.finalGoal = self.GetPosForBuilding()

@@ -19,6 +19,7 @@ class GoalEnum(Enum):
     BUILD_SMITH_GOAL = 8
     BUILD_SMELTER_GOAL = 9
     BUILD_TRAINING_CAMP_GOAL = 10
+    IDLE_GOAL = 11
 
 
 class LaneEnum(Enum):
