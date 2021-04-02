@@ -10,6 +10,7 @@ class Overlord:
     availableTrainingCamps = []
     castleEntity = 0
     enemyCastleEntity = None
+    scouts = []
     # resources
     charcoal = 0
     ironbar = 0
@@ -65,10 +66,13 @@ class Overlord:
                 self.agents[i].SetGoal(enums.GoalEnum.SCOUT_GOAL)
                 if i == 0:
                     self.agents[i].SetLane(enums.LaneEnum.LEFT)
+                    self.scouts.append(self.agents[i])
                 if i == 1:
                     self.agents[i].SetLane(enums.LaneEnum.MIDDLE)
+                    self.scouts.append(self.agents[i])
                 if i == 2:
                     self.agents[i].SetLane(enums.LaneEnum.RIGHT)
+                    self.scouts.append(self.agents[i])
             elif i < self.nrScouts + self.nrIronGatherers:
                 self.agents[i].SetGoal(enums.GoalEnum.IRON_GOAL)
             elif i < self.nrScouts + self.nrIronGatherers + 1:
@@ -136,7 +140,6 @@ class Overlord:
             p = nmath.Point(point.x, 0, point.y)
             # Check if the point is on the navmesh
             if navMesh.isOnNavMesh(point):
-                print("overlord, GetPosForBuilding: point on navmesh", point)
                 # Check if the point is too close to any other building
                 for b in self.buildings:
                     vec3Pos = b.entityHandle.Building.position
@@ -268,6 +271,17 @@ class Overlord:
         self.RemoveAvailableBuilder(b)
         b.finalGoal = self.GetPosForBuilding()
         b.ChangeState(fsm.MoveState())
+
+
+    def switchIronForTree(self):
+        i = 0
+        for s in self.scouts:
+            if s.scoutDone:
+                i += 1
+        if i == 3 and len(self.scoutedIron) == 0:
+            for a in self.agents:
+                if a.goal == enums.GoalEnum.IRON_GOAL:
+                    a.SetGoal(enums.GoalEnum.WOOD_GOAL)
 
     def GetBuiltBuildingsOfType(self, type):
         i = 0
