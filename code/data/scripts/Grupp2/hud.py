@@ -4,6 +4,7 @@ import imgui,demo
 
 def DrawHUD():
     builders = 0
+    scouts = 0
     nonworker = 0
 
     kilns =0
@@ -13,6 +14,8 @@ def DrawHUD():
     for a in overlord.overlord.agents:
         if a.entityHandle.Agent.type == demo.agentType.BUILDER:
             builders += 1
+        elif a.entityHandle.Agent.type == demo.agentType.SCOUT:
+            scouts += 1
         elif a.entityHandle.Agent.position == overlord.overlord.castleEntity.Building.position:
             nonworker += 1
     for b in overlord.overlord.buildings:
@@ -37,6 +40,7 @@ def DrawHUD():
         imgui.Text("  ")
         imgui.Text("  ")
         imgui.Text("Builders: " + str(builders))
+        imgui.Text("Scouts: " + str(scouts))
         imgui.Text("non workers: " + str(nonworker))
         imgui.Text("  ")
         imgui.Text("  ")
