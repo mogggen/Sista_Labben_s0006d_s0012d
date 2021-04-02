@@ -6,7 +6,7 @@ def DrawHUD():
     builders = 0
     nonworker = 0
 
-    kilns =0
+    kilns = 0
     smelterys = 0
     blacksmiths = 0
     trainingcamps = 0
@@ -16,13 +16,13 @@ def DrawHUD():
         elif a.entityHandle.Agent.position == overlord.overlord.castleEntity.Building.position:
             nonworker += 1
     for b in overlord.overlord.buildings:
-        if b.entityHandle.Buildings.type == demo.buildingType.KILN:
+        if b.entityHandle.Building.type == demo.buildingType.KILN:
             kilns += 1
-        elif b.entityHandle.Buildings.type == demo.buildingType.SMELTERY:
+        elif b.entityHandle.Building.type == demo.buildingType.SMELTERY:
             smelterys += 1
-        elif b.entityHandle.Buildings.type == demo.buildingType.BLACKSMITH:
+        elif b.entityHandle.Building.type == demo.buildingType.BLACKSMITH:
             blacksmiths += 1
-        elif b.entityHandle.Buildings.type == demo.buildingType.TRAININGCAMP:
+        elif b.entityHandle.Building.type == demo.buildingType.TRAININGCAMP:
             trainingcamps += 1
         else:
             pass

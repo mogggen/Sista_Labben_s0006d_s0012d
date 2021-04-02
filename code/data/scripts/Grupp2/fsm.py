@@ -200,7 +200,7 @@ class BuildState(BaseState):
     def Enter(self, agent):
         if agent.entityHandle.Agent.type.BUILDER == demo.agentType.BUILDER:
             if agent.goal == enums.GoalEnum.BUILD_TRAINING_CAMP_GOAL:
-                if overlord.overlord.tree >= statParser.getStat("trainingCampWoodCost"):
+                if overlord.overlord.tree >= statParser.getStat("trainingcampWoodCost"):
                     agent.startTime = demo.GetTime()
                 else:
                     print("Not enough resources for a Trainingcamp")

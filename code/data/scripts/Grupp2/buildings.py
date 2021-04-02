@@ -51,7 +51,7 @@ class Building:
                 self.startTime = demo.GetTime()
                 self.working = True
         elif self.type == demo.buildingType.SMELTERY:
-            if overlord.overlord.ironOre >= statParser.getStat(
+            if overlord.overlord.ironore >= statParser.getStat(
                     "ironOreCost") and overlord.overlord.charcoal >= statParser.getStat("ironCoalCost"):
                 overlord.overlord.Takeironore(statParser.getStat("ironOreCost"))
                 overlord.overlord.Takecharcoal(statParser.getStat("ironCoalCost"))

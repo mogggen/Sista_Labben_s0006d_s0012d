@@ -42,7 +42,7 @@ class Overlord:
     # Where to place buildings
     minRadius = 20  # This should be at least half the size of castle
     maxRadius = 100  # This should not be more than half of the map
-    distanceFromBuildingRadius = 10  # This needs to be at least half the size of a building
+    distanceFromBuildingRadius = 20  # This needs to be at least half the size of a building
 
     def UpdateActors(self):
         for i in self.agents:
@@ -72,7 +72,7 @@ class Overlord:
             elif i < self.nrScouts + self.nrIronGatherers:
                 self.agents[i].SetGoal(enums.GoalEnum.IRON_GOAL)
             elif i < self.nrScouts + self.nrIronGatherers + 1:
-                self.agents[i].SetGoal(enums.GoalEnum.BUILD_KILNS_GOAL)
+                self.agents[i].SetGoal(enums.GoalEnum.BUILD_SMELTER_GOAL)
             else:
                 return
 
@@ -121,6 +121,7 @@ class Overlord:
         if len(self.scoutedIron) > 0:
             return self.scoutedIron.pop(0)
 
+    # This is bugged, buildings are being placed too close to each other
     def GetPosForBuilding(self):
         while True:
             # Figure out the max and min values for x and z
@@ -139,10 +140,8 @@ class Overlord:
                 # Check if the point is too close to any other building
                 for b in self.buildings:
                     vec3Pos = b.entityHandle.Building.position
-                    float2Pos = nmath.Float2(vec3Pos.x, vec3Pos.z)
-                    distance = p - vec3Pos
-                    absDistance = distance.abs
-                    if distance.length > self.distanceFromBuildingRadius:
+                    distance = ((p.x - vec3Pos.x)**2 + (p.z - vec3Pos.z)**2)**.5
+                    if distance > self.distanceFromBuildingRadius:
                         return p
                 return p
 
