@@ -145,5 +145,4 @@ class Agent:
             print("agent, GoalHandler: goal check successful")
             if self.entityHandle.Agent.type == demo.agentType.WORKER or self.entityHandle.Agent.type == demo.agentType.BUILDER:
                 self.finalGoal = overlord.overlord.GetPosForBuilding()
-                print("agent, GoalHandler: got pos for building", self.finalGoal)
                 self.ChangeState(fsm.MoveState())

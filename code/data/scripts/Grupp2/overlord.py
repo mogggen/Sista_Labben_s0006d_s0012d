@@ -136,6 +136,9 @@ class Overlord:
             i = self.scoutedIron.pop(0)
             self.targetedScoutedIron.append(i)
             return i
+        else:
+
+            self.SwitchIronForTree()
 
     # This is bugged, buildings are being placed too close to each other
     def GetPosForBuilding(self):
@@ -222,7 +225,6 @@ class Overlord:
         for b in self.buildings:
             if b.entityHandle.Building.position == pos:
                 return b
-        print("There is no building at this location!")
 
     # add resources
     def AddCharcoal(self, n):
@@ -289,7 +291,7 @@ class Overlord:
         b.ChangeState(fsm.MoveState())
 
 
-    def switchIronForTree(self):
+    def SwitchIronForTree(self):
         i = 0
         for s in self.scouts:
             if s.scoutDone:
@@ -298,6 +300,7 @@ class Overlord:
             for a in self.agents:
                 if a.goal == enums.GoalEnum.IRON_GOAL:
                     a.SetGoal(enums.GoalEnum.WOOD_GOAL)
+
 
     def GetBuiltBuildingsOfType(self, type):
         i = 0
