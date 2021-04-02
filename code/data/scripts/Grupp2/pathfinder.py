@@ -1,6 +1,8 @@
 import time, math, random, navMesh, demo, nmath
 from Grupp2 import hud
+
 path = []
+
 
 class PathFinder:
 
@@ -36,17 +38,18 @@ class PathFinder:
             for neighbourFace in neighbouringFaces:
                 skip = False
 
-                if (neighbourFace == goalFace):
+                if neighbourFace == goalFace:
                     path.append(goalPosition)
                     path.append(neighbourFace)
                     path.append(q)
                     prevFace = backtrack.get(q)
-                    while (prevFace != -1):
+                    while prevFace != -1:
                         path.append(prevFace)
                         prevFace = backtrack.get(prevFace, -1)
                     return path[::-1]
 
-                g = ghfValues.get(q)[0] + 1 # g value addition should not be one but instead distance from this and previous center
+                g = ghfValues.get(q)[
+                        0] + 1  # g value addition should not be one but instead distance from this and previous center
                 h = self.Euclidean(neighbourFace, goalFace)
                 f = g + h
                 ghf = (g, h, f)
@@ -100,13 +103,14 @@ class PathFinder:
         return neighbouringFaces
 
     def DrawAStar(self):
-        for i in range(1, len(path)-1):
+        for i in range(1, len(path) - 1):
             point = navMesh.getCenterOfFace(path[i])
-            startPoint = point + nmath.Vector(0,3,0)
-            point2 = navMesh.getCenterOfFace(path[i+1])
-            endPoint = point2 + nmath.Vector(0,3,0)
+            startPoint = point + nmath.Vector(0, 3, 0)
+            point2 = navMesh.getCenterOfFace(path[i + 1])
+            endPoint = point2 + nmath.Vector(0, 3, 0)
             demo.DrawDot(startPoint, 8, nmath.Vec4(0, 1, 0, 1))
             demo.DrawDot(endPoint, 8, nmath.Vec4(0, 0, 1, 1))
             demo.DrawLine(startPoint, endPoint, 1, nmath.Vec4(1, 0, 0, 1))
+
 
 pf = PathFinder()

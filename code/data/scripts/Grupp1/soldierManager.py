@@ -54,6 +54,8 @@ def defendMode():
 
     for enemy_i in entity_manager.instance.enemy_workers:
         enemy = demo.Entity.fromInt(enemy_i)
+        if not demo.IsValid(enemy):
+            continue
         ep = enemy.Agent.position
         cp = entity_manager.instance.getCastlePos()
         dist_sq = (cp.x - ep.x)**2 + (cp.y - ep.z)**2

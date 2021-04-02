@@ -1,9 +1,11 @@
 from enum import Enum
 
+
 class ItemEnum(Enum):
     NONE = 0
     WOOD = 1
     IRON_ORE = 2
+
 
 class GoalEnum(Enum):
     WOOD_GOAL = 0
@@ -18,26 +20,29 @@ class GoalEnum(Enum):
     BUILD_SMELTER_GOAL = 9
     BUILD_TRAINING_CAMP_GOAL = 10
 
+
 class LaneEnum(Enum):
     LEFT = 0
     MIDDLE = 1
     RIGHT = 2
+
 
 class UpdateState(Enum):
     TREES = 0
     IRON = 1
     ENEMIES = 2
 
+
 updateOrder = [
-        UpdateState.IRON,\
-        UpdateState.ENEMIES,\
-        UpdateState.TREES,\
-        UpdateState.TREES,\
-        UpdateState.TREES,\
-        UpdateState.TREES,\
-        UpdateState.TREES,\
-        UpdateState.TREES,\
-        UpdateState.TREES,\
-        UpdateState.TREES,\
-        UpdateState.TREES,\
-        UpdateState.TREES]
+    UpdateState.IRON,
+    UpdateState.ENEMIES,
+    UpdateState.TREES,
+    UpdateState.TREES,
+    UpdateState.TREES,
+    UpdateState.TREES,
+    UpdateState.TREES,
+    UpdateState.TREES,
+    UpdateState.TREES,
+    UpdateState.TREES,
+    UpdateState.TREES,
+    UpdateState.TREES]

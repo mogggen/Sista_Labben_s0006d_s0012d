@@ -1,20 +1,18 @@
 import demo, statParser, buildings
 from Grupp2 import overlord
 
+
 class Building:
-    def __init__(self, type, builder ):
+    def __init__(self, type, builder):
         self.type = type
         self.startTime = 0
         self.working = False
 
-        self.entityHandle = buildings.spawnBuilding(self.type,builder.posX,builder.posY,0,demo.teamEnum.GRUPP_2)
+        self.entityHandle = buildings.spawnBuilding(self.type, builder.posX, builder.posY, 0, demo.teamEnum.GRUPP_2)
 
     def Run(self):
         if self.entityHandle.Building.hasWorker:
-            if not self.working:
-                self.Start()
-            else:
-                self.Execute()
+            self.Execute() if self.working else self.Start()
 
     def Produce(self):
         if self.type == demo.buildingType.KILN:
@@ -45,13 +43,15 @@ class Building:
                 self.startTime = demo.GetTime()
                 self.working = True
         elif self.type == demo.buildingType.BLACKSMITH:
-            if overlord.overlord.ironbar >= statParser.getStat("swordIronCost") and overlord.charcoal >= statParser.getStat("swordCoalCost"):
+            if overlord.overlord.ironbar >= statParser.getStat(
+                    "swordIronCost") and overlord.overlord.charcoal >= statParser.getStat("swordCoalCost"):
                 overlord.overlord.Takeironbar(statParser.getStat("swordIronCost"))
                 overlord.overlord.Takecharcoal(statParser.getStat("swordCoalCost"))
                 self.startTime = demo.GetTime()
                 self.working = True
         elif self.type == demo.buildingType.SMELTERY:
-            if overlord.overlord.ironOre >= statParser.getStat("ironOreCost") and overlord.charcoal >= statParser.getStat("ironCoalCost"):
+            if overlord.overlord.ironOre >= statParser.getStat(
+                    "ironOreCost") and overlord.overlord.charcoal >= statParser.getStat("ironCoalCost"):
                 overlord.overlord.Takeironore(statParser.getStat("ironOreCost"))
                 overlord.overlord.Takecharcoal(statParser.getStat("ironCoalCost"))
                 self.startTime = demo.GetTime()
@@ -62,11 +62,10 @@ class Building:
         buildingProperty.hasWorker = True
         self.entityHandle.Building = buildingProperty
 
-    def buldingTakeDamage(self):
-        hp = self.entityHandle.Health
-        hp.hp = statParser.getStat("workerHealth")
-        if hp > 1:
-            hp -= 1
-            self.entityHandle.Health = hp
-        elif self.hp <= 1:
+    def buildingTakeDamage(self):
+        healthProperty = self.entityHandle.Health
+        if healthProperty.hp > 1:
+            healthProperty.hp -= 1
+            self.entityHandle.Health = healthProperty
+        elif healthProperty.hp <= 1:
             overlord.overlord.KillBuilding(self)

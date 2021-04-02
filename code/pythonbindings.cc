@@ -36,12 +36,16 @@
 
 #define defPropertyAccessor(type, name) def_property(#name,\
         [](Game::Entity& e){\
+               if (!Game::IsValid(e))\
+                        throw pybind11::value_error("This entity does not have a '" #name "' property."); \
             if(Game::HasProperty(e, Game::GetPropertyId(#name))) {\
                 return py::cast(Game::GetProperty<type>(e, Game::GetPropertyId(#name)));\
             } else {\
                 throw pybind11::value_error("This entity does not have a '" #name "' property.");\
             }\
         }, [](Game::Entity& e, pybind11::object obj) {\
+               if (!Game::IsValid(e))\
+                        throw pybind11::value_error("This entity does not have a '" #name "' property."); \
             if(Game::HasProperty(e, Game::GetPropertyId(#name))) {\
                 Game::SetProperty<type>(e, Game::GetPropertyId(#name), pybind11::cast<type>(obj));\
             } else {\

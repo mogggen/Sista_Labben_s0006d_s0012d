@@ -51,7 +51,8 @@ class WorkerManager:
         self.free_trees = []
         for tree in entity_manager.instance.trees:
             if not tree in self.assigned_trees:
-                self.free_trees.append(demo.Entity.fromInt(tree))
+                if demo.IsValid(demo.Entity.fromInt(tree)):
+                    self.free_trees.append(demo.Entity.fromInt(tree))
 
         self.free_trees.sort(key=treeKeyFunc)
 
@@ -59,7 +60,8 @@ class WorkerManager:
         self.free_iron = []
         for iron in entity_manager.instance.ironore:
             if not iron in self.assigned_iron:
-                self.free_iron.append(demo.Entity.fromInt(iron))
+                if demo.IsValid(demo.Entity.fromInt(iron)):
+                    self.free_iron.append(demo.Entity.fromInt(iron))
 
         self.free_iron.sort(key=ironKeyFunc)
 
