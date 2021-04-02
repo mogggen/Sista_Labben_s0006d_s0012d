@@ -44,10 +44,10 @@ class Agent:
     def TakeDamage(self, msg):
         healthProperty = self.entityHandle.Health
         print("agent, TakeDamage:", healthProperty.hp)
-        if healthProperty.hp > 1:
+        if healthProperty.hp > 0:
             healthProperty.hp -= 1
             self.entityHandle.Health = healthProperty
-        elif healthProperty.hp <= 1:
+        else:
             overlord.overlord.KillAgent(self)
 
     def DealDamage(self, targetEntity):
@@ -115,7 +115,7 @@ class Agent:
             try:
                 self.finalGoal = self.itemEntity.Tree.position
                 self.ChangeState(fsm.MoveState())
-            except Exception:
+            except ValueError:
                 print("agent, GoalHandler: Already claimed!")
                 return
 
@@ -127,7 +127,7 @@ class Agent:
             try:
                 self.finalGoal = self.itemEntity.Iron.position
                 self.ChangeState(fsm.MoveState())
-            except Exception:
+            except ValueError:
                 print("agent, GoalHandler: Already claimed!")
                 return
 

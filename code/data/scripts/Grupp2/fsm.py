@@ -214,21 +214,21 @@ class BuildState(BaseState):
                     overlord.overlord.TakeHouseTrees(statParser.getStat("trainingcampWoodCost"))
                     agent.startTime = demo.GetTime()
                 else:
-                    print("Not enough resources for a Trainingcamp")
+                    # print("Not enough resources for a Trainingcamp")
                     agent.ChangeState(IdleState())
             elif agent.goal == enums.GoalEnum.BUILD_KILNS_GOAL:
                 if overlord.overlord.houseTrees >= statParser.getStat("kilnWoodCost"):
                     overlord.overlord.TakeHouseTrees(statParser.getStat("kilnWoodCost"))
                     agent.startTime = demo.GetTime()
                 else:
-                    print("Not enough resources for a Kiln")
+                    # print("Not enough resources for a Kiln")
                     agent.ChangeState(IdleState())
             elif agent.goal == enums.GoalEnum.BUILD_SMELTER_GOAL:
                 if overlord.overlord.houseTrees >= statParser.getStat("smelteryWoodCost"):
                     overlord.overlord.TakeHouseTrees(statParser.getStat("smelteryWoodCost"))
                     agent.startTime = demo.GetTime()
                 else:
-                    print("Not enough resources for a Smeltery")
+                    # print("Not enough resources for a Smeltery")
                     agent.ChangeState(IdleState())
             elif agent.goal == enums.GoalEnum.BUILD_SMITH_GOAL:
                 if overlord.overlord.houseTrees >= statParser.getStat(
@@ -237,9 +237,8 @@ class BuildState(BaseState):
                     overlord.overlord.Takeironbar(statParser.getStat("blacksmithIronCost"))
                     agent.startTime = demo.GetTime()
                 else:
-                    print("Not enough resources for a blacksmith")
+                    # print("Not enough resources for a blacksmith")
                     agent.ChangeState(IdleState())
-
         else:
             print("Agent is not a builder")
 
