@@ -37,7 +37,7 @@ class MoveState(BaseState):
         agent.Discover()
         pos = agent.entityHandle.Agent.position
         pos = nmath.Float2(pos.x, pos.z)
-        print("fsm, MoveState:", agent, agent.finalGoal, agent.entityHandle.Agent.type, agent.goal)
+        #print("fsm, MoveState:", agent, agent.finalGoal, agent.entityHandle.Agent.type, agent.goal)
         if navMesh.findInNavMesh(pos) == navMesh.findInNavMesh(nmath.Float2(agent.finalGoal.x, agent.finalGoal.z)):
             agent.SetTargetPosition(agent.finalGoal)
 
@@ -117,7 +117,7 @@ class UpgradeState(BaseState):
         if agent.entityHandle.Agent.type == demo.agentType.WORKER:
             # goalEnum to agentType
             if agent.goal == enums.GoalEnum.SOLDIER_GOAL:
-                if overlord.overlord.swords >= statParser.getStat("soldierSwordCost"):
+                if overlord.overlord.sword >= statParser.getStat("soldierSwordCost"):
                     overlord.overlord.Takeswords(statParser.getStat("soldierSwordCost"))
                     agent.startTime = demo.GetTime()
                 else:
@@ -143,7 +143,7 @@ class UpgradeState(BaseState):
             if demo.GetTime() - agent.startTime >= statParser.getStat("soldierUpgradeTime"):
                 agent.SetType(demo.agentType.SOLDIER)
                 overlord.overlord.AddSoldier(agent)
-                tc = overlord.overlord.GetBuildingAtPosition(agent.entityHandler.Agent.position)
+                tc = overlord.overlord.GetBuildingAtPosition(agent.entityHandle.Agent.position)
                 overlord.overlord.AddAvailableTrainingCamp(tc)
                 agent.ChangeState(IdleState())
 
@@ -198,6 +198,7 @@ class ExploreState(BaseState):
 
 # artisan Agents
 class BuildState(BaseState):
+    buildingType = None
     workerRequested = False
 
     def Enter(self, agent):
@@ -242,7 +243,7 @@ class BuildState(BaseState):
                 building = buildings.Building(demo.buildingType.KILN, agent)
                 overlord.overlord.AddBuilding(building)
                 overlord.overlord.AddAvailableBuilder(agent)
-                agent.ChangeState(BaseState())
+                agent.ChangeState(IdleState())
             if demo.GetTime() - agent.startTime >= int(statParser.getStat("kilnBuildTime")) - int(statParser.getStat("kilnerUpgradeTime")) and self.workerRequested == False:
                 agentprops = agent.entityHandle.Agent
                 overlord.overlord.RequestWorker(agentprops.position, demo.buildingType.KILN)
@@ -253,7 +254,7 @@ class BuildState(BaseState):
                 building = buildings.Building(demo.buildingType.SMELTERY, agent)
                 overlord.overlord.AddBuilding(building)
                 overlord.overlord.AddAvailableBuilder(agent)
-                agent.ChangeState(BaseState())
+                agent.ChangeState(IdleState())
             if demo.GetTime() - agent.startTime >= int(statParser.getStat("smelteryBuildTime")) - int(statParser.getStat(
                     "smelterUpgradeTime")) and self.workerRequested == False:
                 agentprops = agent.entityHandle.Agent
@@ -265,7 +266,7 @@ class BuildState(BaseState):
                 building = buildings.Building(demo.buildingType.BLACKSMITH, agent)
                 overlord.overlord.AddBuilding(building)
                 overlord.overlord.AddAvailableBuilder(agent)
-                agent.ChangeState(BaseState())
+                agent.ChangeState(IdleState())
             if demo.GetTime() - agent.startTime >= int(statParser.getStat("blacksmithBuildTime")) - int(statParser.getStat(
                     "smithUpgradeTime")) and self.workerRequested == False:
                 agentprops = agent.entityHandle.Agent
@@ -278,7 +279,7 @@ class BuildState(BaseState):
                 overlord.overlord.AddBuilding(building)
                 overlord.overlord.AddAvailableBuilder(agent)
                 overlord.overlord.AddAvailableTrainingCamp(building)
-                agent.ChangeState(BaseState())
+                agent.ChangeState(IdleState())
 
 
 # Soldier Agents

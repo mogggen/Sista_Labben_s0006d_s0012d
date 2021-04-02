@@ -69,14 +69,14 @@ class EntityManager():
                 nonlocal buildings
                 if team.team == demo.teamEnum.GRUPP_2:
                     return
-                if building.type == demo.buildingType.CASTLE:
-                    overlord.overlord.AddScoutedEnemyCastle(building)
 
                 x = int(building.position.x)
                 y = int(building.position.z)
 
                 if fog_of_war.grupp2.is_discovered(x, y):
                     buildings.add(entity.toInt())
+                    if building.type == demo.buildingType.CASTLE:
+                        overlord.overlord.AddScoutedEnemyCastle(entity)
 
             demo.ForAgentTeam(updateEnemyAgents)
             demo.ForBuildingTeam(updateEnemyBuildings)

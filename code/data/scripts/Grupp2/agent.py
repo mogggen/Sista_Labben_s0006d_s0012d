@@ -94,7 +94,7 @@ class Agent:
         self.entityHandle.Agent = agentProperty
         if newType == demo.agentType.SOLDIER:
             healthProperty = self.entityHandle.Health
-            healthProperty.hp = statParser.getStat("soldierHealth")
+            healthProperty.hp = int(statParser.getStat("soldierHealth"))
             self.entityHandle.Health = healthProperty
 
     def SetLane(self, lane):

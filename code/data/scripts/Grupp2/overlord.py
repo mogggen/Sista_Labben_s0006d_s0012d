@@ -179,9 +179,10 @@ class Overlord:
             for a in self.agents:
                 if a.type == demo.agentType.WORKER:
                     if a.goal == enums.GoalEnum.WOOD_GOAL:
-                        a.SetGoal(enums.GoalEnum.SOLDIER_GOAL)
-                        a.finalGoal = self.availableTrainingCamps.pop().entityHandle.Building.position
-                        a.ChangeState(fsm.MoveState())
+                        if len(self.availableTrainingCamps) > 0 and self.sword > 0:
+                            a.SetGoal(enums.GoalEnum.SOLDIER_GOAL)
+                            a.finalGoal = self.availableTrainingCamps.pop().entityHandle.Building.position
+                            a.ChangeState(fsm.MoveState())
 
     def AddSoldier(self, agent):
         self.soldiers.append(agent)
@@ -204,6 +205,7 @@ class Overlord:
     def RemoveAvailableTrainingCamp(self, building):
         if building in self.availableTrainingCamps:
             self.availableTrainingCamps.remove(building)
+            return building
 
     def AddAvailableBuilder(self, builder):
         self.availableBuilders.append(builder)
