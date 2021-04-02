@@ -137,6 +137,8 @@ def assultMode():
 
     for enemy_i in entity_manager.instance.enemy_workers:
         enemy = demo.Entity.fromInt(enemy_i)
+        if not demo.IsValid(enemy):
+            print("NOT VALIDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD")
 
         if enemy.Agent.type != demo.agentType.WORKER:
             continue

@@ -239,6 +239,9 @@ class Attack(Goal):
 
 
     def execute(self, agent):
+        if not demo.IsValid(self.enemy):
+            agent.popGoal()
+            return
         enemyTransform = self.enemy.WorldTransform
         enemyPos = nmath.Vector(enemyTransform[3][0], enemyTransform[3][1], enemyTransform[3][2])
         p = agent.entity.Agent.position - enemyPos

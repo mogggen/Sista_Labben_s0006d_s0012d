@@ -51,9 +51,9 @@ class Agent:
             return None
 
     def popGoal(self):
-        popped = self.goals.pop()
+        self.goals.pop()
         if len(self.goals) > 0:
-            popped.enter(self)
+            self.goals[-1].enter(self)
 
     def isFree(self):
         return len(self.goals) <= 0
