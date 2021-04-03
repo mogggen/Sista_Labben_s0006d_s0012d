@@ -133,7 +133,7 @@ class Agent:
 
         elif self.goal == enums.GoalEnum.SOLDIER_GOAL:
             if self.entityHandle.Agent.type == demo.agentType.WORKER:
-                self.ChangeState(fsm.UpgradeState())
+                self.ChangeState(fsm.UpgradeState()) # This does not really make sense
             else:
                 self.ChangeState(fsm.IdleState())
 
