@@ -65,8 +65,8 @@ class Building:
 
     def buildingTakeDamage(self):
         healthProperty = self.entityHandle.Health
-        if healthProperty.hp > 1:
+        if healthProperty.hp > 0:
             healthProperty.hp -= 1
             self.entityHandle.Health = healthProperty
-        elif healthProperty.hp <= 1:
+        else:
             overlord.overlord.KillBuilding(self)

@@ -55,7 +55,7 @@ def NebulaUpdate():
             print("Unpaused")
             demo.SetTimeFactor(time_speeds[selected_time])
 
-    if not paused and speed_up.pressed() and selected_time < len(time_speeds) -1:
+    if not paused and speed_up.pressed() and selected_time < len(time_speeds) - 1:
         selected_time += 1
         print("Time: " + str(time_speeds[selected_time]) + "x")
         demo.SetTimeFactor(time_speeds[selected_time])
