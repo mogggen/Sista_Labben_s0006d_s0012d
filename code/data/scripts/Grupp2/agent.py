@@ -43,7 +43,7 @@ class Agent:
     # Take Damage - Method
     def TakeDamage(self, msg):
         healthProperty = self.entityHandle.Health
-        print("agent, TakeDamage:", healthProperty.hp)
+        #print("agent, TakeDamage:", healthProperty.hp)
         if healthProperty.hp > 0:
             healthProperty.hp -= 1
             self.entityHandle.Health = healthProperty

@@ -48,13 +48,13 @@ class MoveState(BaseState):
 
         if agent.entityHandle.Agent.position == agent.finalGoal:
             if agent.entityHandle.Agent.type == demo.agentType.SCOUT:
-                print("scout pos: " + str(agent.entityHandle.Agent.position))
+                #print("scout pos: " + str(agent.entityHandle.Agent.position))
                 if agent.entityHandle.Agent.position.z <= 0:
                     agent.finalGoal = nmath.Point(0, 0, 170)
                     agent.ChangeState(MoveState())
                 elif agent.entityHandle.Agent.position == nmath.Point(0, 0, 170):
                     agent.scoutDone = True
-                    print("scout is done")
+                    #print("scout is done")
                     agent.ChangeState(IdleState())
 
             if agent.goal in (enums.GoalEnum.KILN_GOAL, enums.GoalEnum.SMITH_GOAL, enums.GoalEnum.SMELT_GOAL):
@@ -160,7 +160,7 @@ class UpgradeState(BaseState):
                 return
             if demo.GetTime() - agent.startTime >= statParser.getStat("builderUpgradeTime"):
                 agent.SetType(demo.agentType.BUILDER)
-                print("fsm, Upgrade: Builder upgraded!")
+                #print("fsm, Upgrade: Builder upgraded!")
                 agent.ChangeState(BuildState())
 
         elif agent.goal == enums.GoalEnum.KILN_GOAL:
@@ -312,9 +312,10 @@ class ChargeAndAttackState(BaseState):
             if agent.entityHandle.Agent.position == agent.finalGoal:
 
                 pos = agent.entityHandle.Agent.position
-                enemy = overlord.overlord.GetEnemyCastle().Building.position
+                enemy = overlord.overlord.GetEnemyCastle()
+                enemyPos = enemy.Building.position
 
-                if ((pos.x - enemy.x) ** 2 + (pos.z - enemy.z) ** 2) ** .5 < statParser.getStat("soldierAttackRange") \
+                if ((pos.x - enemyPos.x) ** 2 + (pos.z - enemyPos.z) ** 2) ** .5 < statParser.getStat("soldierAttackRange") \
                         and demo.GetTime() - agent.startTime < statParser.getStat("soldierAttackSpeed"):
                     if random.random() > statParser.getStat("hitChance"):
                         overlord.overlord.SendMsg(agent, enemy)
