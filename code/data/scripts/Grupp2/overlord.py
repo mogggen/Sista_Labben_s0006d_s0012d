@@ -79,12 +79,15 @@ class Overlord:
                     self.scouts.append(self.agents[i])
             elif i < self.nrScouts + self.nrIronGatherers:
                 self.agents[i].SetGoal(enums.GoalEnum.IRON_GOAL)
-            elif i < self.nrScouts + self.nrIronGatherers + 1:
+            elif i < self.nrScouts + self.nrIronGatherers + self.nrBuilder:
                 self.agents[i].SetGoal(enums.GoalEnum.BUILD_KILNS_GOAL)
             else:
                 return
 
     def KillAgent(self, agent):
+        if agent in self.availableBuilders:
+            self.availableBuilders.remove(agent)
+
         self.agents.remove(agent)
         demo.Delete(agent.entityHandle)
         del agent
@@ -278,7 +281,7 @@ class Overlord:
             return
         b = self.availableBuilders.pop()
         if self.GetBuiltBuildingsOfType(demo.buildingType.KILN) < self.nrKiln and self.houseTrees >= statParser.getStat(
-                "kilnWoodCost"):
+                "kilnWoodCost") :
             b.SetGoal(enums.GoalEnum.BUILD_KILNS_GOAL)
         elif self.GetBuiltBuildingsOfType(
                 demo.buildingType.SMELTERY) < self.nrSmelters and self.houseTrees >= statParser.getStat("smelteryWoodCost"):

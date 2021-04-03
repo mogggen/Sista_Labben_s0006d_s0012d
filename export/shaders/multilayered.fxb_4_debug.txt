@@ -358,12 +358,12 @@ layout(std140, set=3, binding=13) uniform MLPTextures
 /* Offset:28 */	uint DisplacementMap3;
 };
 
-layout(std430, set=1, binding=6) buffer ClusterAABBs
+layout(std430, set=1, binding=6)  buffer ClusterAABBs
 {
 /* Offset:0 */	ClusterAABB AABBs[];
 };
 
-layout(std430, set=1, binding=7) buffer LightIndexLists
+layout(std430, set=1, binding=7)  buffer LightIndexLists
 {
 /* Offset:0 */	uint PointLightCountList[16384];
 /* Offset:65536 */	uint PointLightIndexList[2097152];
@@ -371,7 +371,7 @@ layout(std430, set=1, binding=7) buffer LightIndexLists
 /* Offset:8519680 */	uint SpotLightIndexList[2097152];
 };
 
-layout(std430, set=1, binding=8) buffer LightLists
+layout(std430, set=1, binding=8)  buffer LightLists
 {
 /* Offset:0 */	SpotLight SpotLights[1024];
 /* Offset:81920 */	SpotLightProjectionExtension SpotLightProjection[256];
@@ -379,7 +379,7 @@ layout(std430, set=1, binding=8) buffer LightLists
 /* Offset:103680 */	PointLight PointLights[1024];
 };
 
-layout(std430, set=1, binding=9) buffer DecalIndexLists
+layout(std430, set=1, binding=9)  buffer DecalIndexLists
 {
 /* Offset:0 */	uint EmissiveDecalCountList[16384];
 /* Offset:65536 */	uint EmissiveDecalIndexList[2097152];
@@ -387,13 +387,13 @@ layout(std430, set=1, binding=9) buffer DecalIndexLists
 /* Offset:8519680 */	uint PBRDecalIndexList[2097152];
 };
 
-layout(std430, set=1, binding=10) buffer DecalLists
+layout(std430, set=1, binding=10)  buffer DecalLists
 {
 /* Offset:0 */	EmissiveDecal EmissiveDecals[128];
 /* Offset:14336 */	PBRDecal PBRDecals[128];
 };
 
-layout(std430, set=1, binding=11) buffer FogIndexLists
+layout(std430, set=1, binding=11)  buffer FogIndexLists
 {
 /* Offset:0 */	uint FogSphereCountList[16384];
 /* Offset:65536 */	uint FogSphereIndexList[2097152];
@@ -401,7 +401,7 @@ layout(std430, set=1, binding=11) buffer FogIndexLists
 /* Offset:8519680 */	uint FogBoxIndexList[2097152];
 };
 
-layout(std430, set=1, binding=12) buffer FogLists
+layout(std430, set=1, binding=12)  buffer FogLists
 {
 /* Offset:0 */	FogSphere FogSpheres[128];
 /* Offset:6144 */	FogBox FogBoxes[128];
@@ -455,68 +455,68 @@ const float CascadeBlendArea = float(0.200000003);
 const vec2 sampleOffsets[12] = vec2[12](vec2(-0.326000005, -0.405999988), vec2(-0.839999974, -0.074000001), vec2(-0.69599998, 0.456999987), vec2(-0.202999994, 0.620999992), vec2(0.962000012, -0.194999993), vec2(0.47299999, -0.479999989), vec2(0.518999994, 0.76700002), vec2(0.185000002, -0.893000007), vec2(0.507000029, 0.064000003), vec2(0.896000028, 0.412), vec2(-0.321999997, -0.933000028), vec2(-0.791999996, -0.59799999));
 const uint USE_SHADOW_BITFLAG = uint(1);
 const uint USE_PROJECTION_TEX_BITFLAG = uint(2);
-#line 67 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/std.fxh"
+#line 67 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/std.fxh"
 void
 sincos(float angle, out float sinus, out float cosinus)
 {
-#line 69 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/std.fxh"
+#line 69 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/std.fxh"
 sinus = sin(angle);
 	cosinus = cos(angle);
 }
 
-#line 18 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 18 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec4
 Encode2(vec2 inVals)
 {
-#line 21 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 21 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 return vec4(inVals.x, fract(inVals.x * 256.0), inVals.y, fract(inVals.y * 256.0));
 }
 
-#line 28 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 28 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec2
 Decode2(vec4 inVals)
 {
-#line 31 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 31 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 return vec2(inVals.x + (inVals.y / 256.0), inVals.z + (inVals.w / 256.0));
 }
 
-#line 38 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 38 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec3
 UnpackNormal(vec3 packedDataNormal)
 {
-#line 41 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 41 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 return (packedDataNormal * 2.0) - 1.0;
 }
 
-#line 48 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 48 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec4
 UnpackNormal4(vec4 packedDataNormal)
 {
-#line 51 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 51 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 return vec4((packedDataNormal.xyz * 2.0) - 1.0, 1.0f);
 }
 
-#line 58 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 58 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec2
 UnpackUv(vec2 packedDataUv)
 {
-#line 61 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 61 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 return (packedDataUv / 8192.0);
 }
 
-#line 69 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 69 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec4
 UnpackWeights(vec4 weights)
 {
-#line 72 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 72 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 return (weights / dot(weights, vec4(1.0, 1.0, 1.0, 1.0)));
 }
 
-#line 134 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 134 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec4
 ToneMap(vec4 vColor, vec4 lumAvg, float maxLum)
 {
-#line 146 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 146 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 float L = dot(vColor, Luminance);
 	float Lp = L * Key / lumAvg.x;
 	float nL = (Lp * (1.0f + Lp / (MiddleGrey))) / (1.0f + Lp);
@@ -531,77 +531,77 @@ float L = dot(vColor, Luminance);
 	return vec4(color, 1.0f);
 }
 
-#line 165 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 165 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 float
 linstep(float min, float max, float v)
 {
-#line 167 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 167 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 return clamp((v - min) / (max - min), 0.0f, 1.0f);
 }
 
-#line 179 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 179 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 void
 pack_u16(in float depth, out float byte_a, out float byte_b)
 {
-#line 181 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 181 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 float tmp = depth / 256.0f;
     byte_a = floor(tmp) / 256.0f;
     byte_b = fract(tmp);
 }
 
-#line 191 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 191 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 float
 unpack_u16(in float byte_a, in float byte_b)
 {
-#line 193 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 193 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 return ((byte_a * 256.0f) * 256.0f) + (byte_b * 256.0f);
 }
 
-#line 203 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 203 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 void
 pack_16bit_normal_component(in float n, out float byte_a, out float byte_b)
 {
-#line 205 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 205 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 n = ((n * 0.5f) + 0.5f) * 65535.0f;
 
     pack_u16(n, byte_a, byte_b);
 }
 
-#line 214 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 214 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 float
 unpack_16bit_normal_component(in float byte_a, in float byte_b)
 {
-#line 216 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 216 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 return ((unpack_u16(byte_a, byte_b) / 65535.0f) - 0.5f) * 2.0f;
 }
 
-#line 223 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 223 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec4
 pack_normalxy_into_rgba8(in float normal_x, in float normal_y)
 {
-#line 225 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 225 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec4 ret;
     pack_16bit_normal_component(normal_x, ret.x, ret.y);
     pack_16bit_normal_component(normal_y, ret.z, ret.w);
     return ret;
 }
 
-#line 235 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 235 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec4
 unpack_normalxy_from_rgba8(in vec4 packedData)
 {
-#line 237 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 237 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 return vec4( unpack_16bit_normal_component(packedData.x, packedData.y),
                     unpack_16bit_normal_component(packedData.z, packedData.w),
                     0.0f,
                     0.0f);
 }
 
-#line 249 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 249 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec4
 PackViewSpaceNormal(in vec3 viewSpaceNormal)
 {
-#line 252 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 252 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 viewSpaceNormal = normalize(viewSpaceNormal);
 
 
@@ -616,11 +616,11 @@ viewSpaceNormal = normalize(viewSpaceNormal);
     return normal;
 }
 
-#line 270 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 270 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec3
 UnpackViewSpaceNormal(in vec4 packedDataValue)
 {
-#line 274 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 274 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec4 unpackedData = unpack_normalxy_from_rgba8(packedDataValue);
 
 
@@ -633,11 +633,11 @@ vec4 unpackedData = unpack_normalxy_from_rgba8(packedDataValue);
     return outViewSpaceNormal;
 }
 
-#line 295 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 295 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec4
 PackObjectDepth(in float ObjectId, in float NormalGroupId, in float depth)
 {
-#line 297 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 297 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec4 packedData;
     packedData.x = ObjectId;
     packedData.y = NormalGroupId;
@@ -648,19 +648,19 @@ vec4 packedData;
     return packedData;
 }
 
-#line 316 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 316 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 float
 UnpackDepth(in vec4 packedData)
 {
-#line 318 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 318 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 return unpack_u16(packedData.z, packedData.w) / depthScale;
 }
 
-#line 326 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 326 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec4
 psLightMaterial(in vec4 lightValues, in vec4 diffColor, in vec3 emsvColor, in float emsvIntensity, in vec3 specColor, in float specIntensity)
 {
-#line 334 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 334 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 lightValues = lightValues;
     vec4 color = diffColor;
 
@@ -676,145 +676,145 @@ lightValues = lightValues;
     return color;
 }
 
-#line 358 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 358 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 float
 log_conv(float x0, float x, float y0, float y)
 {
-#line 360 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 360 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 return (x + log(x0 + (y0 * exp(y - x))));
 }
 
-#line 367 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 367 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec2
 GetPixelSize(in sampler2D tex)
 {
-#line 370 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 370 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec2 size = textureSize(tex, 0);
 	size = vec2(1.0f) / size;
 	return size;
 }
 
-#line 379 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 379 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec2
 GetScaledUVs(in vec2 uvs, in sampler2D tex, in vec2 dimensions)
 {
-#line 382 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 382 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec2 texSize = textureSize(tex, 0);
 	uvs = uvs * (dimensions / texSize);
 	return uvs;
 }
 
-#line 391 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 391 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec2
 GetUV(in ivec2 pixel, in sampler2D tex)
 {
-#line 394 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 394 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec2 size = textureSize(tex, 0);
 	size = pixel / size;
 	return size;
 }
 
-#line 403 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 403 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 ivec2
 GetPixel(in vec2 uv, in sampler2D tex)
 {
-#line 406 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 406 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 ivec2 size = textureSize(tex, 0);
 	size = ivec2(uv * size);
 	return size;
 }
 
-#line 415 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 415 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec2
 GetTextureRatio(in sampler2D tex, vec2 pixelSize)
 {
-#line 418 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 418 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 ivec2 size = textureSize(tex, 0);
 	vec2 currentTextureSize = vec2(1.0f) / size;
 	return size / currentTextureSize;
 }
 
-#line 427 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 427 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec2
 FlipY(vec2 uv)
 {
-#line 430 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 430 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 return vec2(uv.x, 1.0f - uv.y);
 }
 
-#line 436 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 436 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 float
 LinearizeDepth(float depth)
 {
-#line 439 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 439 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 return (FocalLengthNearFar.z * FocalLengthNearFar.w) / (depth * (FocalLengthNearFar.z - FocalLengthNearFar.w) + FocalLengthNearFar.w);
 }
 
-#line 445 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 445 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 float
 DelinearizeDepth(float depth)
 {
-#line 448 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 448 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 return -((FocalLengthNearFar.z + FocalLengthNearFar.w) * depth - (2 * FocalLengthNearFar.z)) / ((FocalLengthNearFar.z - FocalLengthNearFar.w) * depth);
 }
 
-#line 455 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 455 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec2
 PixelToNormalized(in vec2 screenCoord, in vec2 pixelSize)
 {
-#line 458 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 458 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 return screenCoord.xy * pixelSize.xy;
 }
 
-#line 465 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 465 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec4
 PixelToProjection(vec2 screenCoord, float depth)
 {
-#line 469 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 469 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 return vec4(screenCoord * 2.0f - 1.0f, depth, 1.0f);
 }
 
-#line 476 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 476 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec4
 PixelToView(vec2 screenCoord, float depth)
 {
-#line 479 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 479 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec4 projectionSpace = PixelToProjection(screenCoord, depth);
     vec4 viewSpace = InvProjection * projectionSpace;
     viewSpace /= viewSpace.w;
 	return viewSpace;
 }
 
-#line 489 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 489 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec4
 PixelToWorld(vec2 screenCoord, float depth)
 {
-#line 492 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 492 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec4 viewSpace = PixelToView(screenCoord, depth);
 	return InvView * viewSpace;
 }
 
-#line 500 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 500 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec4
 ViewToWorld(const vec4 viewSpace)
 {
-#line 503 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 503 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 return InvView * viewSpace;
 }
 
-#line 510 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 510 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec3
 GetPosition(mat4x4 transform)
 {
-#line 513 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 513 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 return transform[2].xyz;
 }
 
-#line 521 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 521 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 uvec3
 Unpack1DTo3D(uint index1D, uint width, uint height)
 {
-#line 524 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 524 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 uint i = index1D % width;
     uint j = index1D % (width * height) / width;
     uint k = index1D / (width * height);
@@ -822,19 +822,19 @@ uint i = index1D % width;
     return uvec3(i, j, k);
 }
 
-#line 535 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 535 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 uint
 Pack3DTo1D(uvec3 index3D, uint width, uint height)
 {
-#line 538 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 538 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 return index3D.x + (width * (index3D.y + height * index3D.z));
 }
 
-#line 544 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 544 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 bool
 IntersectLineWithPlane(vec3 lineStart, vec3 lineEnd, vec4 plane, out vec3 intersect)
 {
-#line 546 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 546 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec3 ab = lineEnd - lineStart;
     float t = (plane.w - dot(plane.xyz, lineStart)) / dot(plane.xyz, ab);
     bool ret = (t >= 0.0f && t <= 1.0f);
@@ -847,41 +847,41 @@ vec3 ab = lineEnd - lineStart;
     return ret;
 }
 
-#line 568 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 568 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 float
 hash11(float p)
 {
-#line 571 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 571 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec3 p3 = fract(vec3(p) * vec3(443.8975,397.2973, 491.1871));
     p3 += dot(p3, p3.yzx + 19.19);
     return fract((p3.x + p3.y) * p3.z);
 }
 
-#line 579 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 579 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 float
 hash12(vec2 p)
 {
-#line 582 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 582 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec3 p3 = fract(vec3(p.xyx) * vec3(443.8975,397.2973, 491.1871));
     p3 += dot(p3, p3.yzx + 19.19);
     return fract((p3.x + p3.y) * p3.z);
 }
 
-#line 590 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 590 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec3
 hash32(vec2 p)
 {
-#line 593 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 593 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec3 p3 = fract(vec3(p.xyx) * vec3(443.8975,397.2973, 491.1871));
     p3 += dot(p3, p3.yxz + 19.19);
     return fract(vec3((p3.x + p3.y) * p3.z, (p3.x + p3.z) * p3.y, (p3.y + p3.z) * p3.x));
 }
 
-#line 603 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 603 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 float
 murmur(int k)
 {
-#line 605 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 605 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 int h = k ^ 1;
 
     k *= m;
@@ -894,11 +894,11 @@ int h = k ^ 1;
     return float(h);
 }
 
-#line 621 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 621 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec3
 random3(vec3 c)
 {
-#line 624 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 624 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec3 r;
     float c1 = dot(c, vec3(17.0f, 59.4f, 15.0f));
     r.x = fract(murmur(int(c.x * c1)) / 512.0f);
@@ -907,11 +907,11 @@ vec3 r;
     return r - 0.5f;
 }
 
-#line 641 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 641 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 float
 simplex3D(vec3 p)
 {
-#line 648 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 648 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec3 s = floor(p + dot(p, vec3(F3)));
     vec3 x = p - s + dot(s, vec3(G3));
 
@@ -952,31 +952,31 @@ vec3 s = floor(p + dot(p, vec3(F3)));
     return dot(d, vec4(52.0f));
 }
 
-#line 694 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 694 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 float
 simplex3D_fractal(vec3 m)
 {
-#line 697 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 697 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 return 0.5333333f * simplex3D(m * rot1)
         + 0.2666667f * simplex3D(2.0f * m * rot2)
         + 0.1333333f * simplex3D(4.0f * m * rot3)
         + 0.0666667f * simplex3D(8.0f * m);
 }
 
-#line 707 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 707 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 vec2
 hash(vec2 p)
 {
-#line 710 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 710 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 p = vec2(dot(p, vec2(127.1, 311.7)), dot(p, vec2(269.5, 183.3)));
     return -1.0 + 2.0 * fract(sin(p) * 43758.5453123);
 }
 
-#line 718 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 718 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 float
 noise(in vec2 p)
 {
-#line 721 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/util.fxh"
+#line 721 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/util.fxh"
 const float K1 = 0.366025404;
     const float K2 = 0.211324865;
 
@@ -991,31 +991,31 @@ const float K1 = 0.366025404;
     return dot(n, vec3(70.0));
 }
 
-#line 22 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/pbr.fxh"
+#line 22 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/pbr.fxh"
 vec3
 FresnelSchlick(vec3 spec, float dotprod)
 {
-#line 25 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/pbr.fxh"
+#line 25 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/pbr.fxh"
 float base = 1.0 - clamp(dotprod, 0.0f, 1.0f);
 	float exponent = pow(base, 5);
 	return spec + (1 - spec) * exponent;
 }
 
-#line 34 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/pbr.fxh"
+#line 34 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/pbr.fxh"
 vec3
 FresnelSchlickGloss(vec3 spec, float dotprod, float roughness)
 {
-#line 37 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/pbr.fxh"
+#line 37 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/pbr.fxh"
 float base = 1.0 - clamp(dotprod, 0.0f, 1.0f);
 	float exponent = pow(base, 5);
 	return spec + (max(vec3(1 - roughness), spec) - spec) * exponent;
 }
 
-#line 47 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/pbr.fxh"
+#line 47 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/pbr.fxh"
 float
 NormalDistributionGGX(in float NdotH, in float roughness)
 {
-#line 50 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/pbr.fxh"
+#line 50 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/pbr.fxh"
 float a = pow(roughness, 4);
 	float NdotH2 = NdotH * NdotH;
 
@@ -1025,20 +1025,20 @@ float a = pow(roughness, 4);
 	return (a / (denom + 0.00001f));
 }
 
-#line 64 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/pbr.fxh"
+#line 64 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/pbr.fxh"
 float
 GeometrySchlickGGX(in float NdotV, in float k)
 {
-#line 67 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/pbr.fxh"
+#line 67 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/pbr.fxh"
 float denom = fma(NdotV,1.0f - k,k);
 	return NdotV / denom;
 }
 
-#line 74 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/pbr.fxh"
+#line 74 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/pbr.fxh"
 float
 GeometrySmith(in float NdotV, in float NdotL, in float roughness)
 {
-#line 77 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/pbr.fxh"
+#line 77 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/pbr.fxh"
 float r = roughness + 1.0f;
 	float k = (r*r) * 0.125f;
 	float ggxNV = GeometrySchlickGGX(NdotV, k);
@@ -1046,38 +1046,38 @@ float r = roughness + 1.0f;
 	return ggxNV * ggxNL;
 }
 
-#line 87 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/pbr.fxh"
+#line 87 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/pbr.fxh"
 vec3
 CalculateF0(in vec3 color, in float metallic, const vec3 def)
 {
-#line 93 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/pbr.fxh"
+#line 93 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/pbr.fxh"
 return mix(def, color.rgb, metallic);
 }
 
-#line 100 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/pbr.fxh"
+#line 100 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/pbr.fxh"
 vec3
 DiffuseLobe(vec3 diffuseColor, float roughness, float NdotV, float NdotL, float LdotH)
 {
-#line 104 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/pbr.fxh"
+#line 104 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/pbr.fxh"
 return diffuseColor / 3.14159265;
 }
 
-#line 110 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/pbr.fxh"
+#line 110 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/pbr.fxh"
 vec3
 SpecularLobe(vec4 material, vec3 F0, vec3 H, float NdotV, float NdotL, float NdotH, float LdotH)
 {
-#line 113 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/pbr.fxh"
+#line 113 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/pbr.fxh"
 float D = NormalDistributionGGX(NdotH, material[1]);
 	float G = GeometrySmith(NdotV, NdotL, material[1]);
 	vec3 F = FresnelSchlickGloss(F0, max(LdotH, 0.0), material[1]);
 	return (D * G) * F;
 }
 
-#line 122 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/pbr.fxh"
+#line 122 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/pbr.fxh"
 vec3
 EvaluateBRDF(vec3 diffuseColor, vec4 material, vec3 F0, vec3 H, float NdotV, float NdotL, float NdotH, float LdotH)
 {
-#line 125 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/pbr.fxh"
+#line 125 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/pbr.fxh"
 vec3 diffuseContrib = (diffuseColor * (1.0f - material[0]));
 	vec3 diffuseTerm = DiffuseLobe(diffuseContrib, material[1], NdotV, NdotL, LdotH);
 	vec3 specularTerm = SpecularLobe(material, F0, H, NdotV, NdotL, NdotH, LdotH);
@@ -1085,11 +1085,11 @@ vec3 diffuseContrib = (diffuseColor * (1.0f - material[0]));
 	return brdf;
 }
 
-#line 136 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/pbr.fxh"
+#line 136 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/pbr.fxh"
 vec4
 ConvertOSM(in vec4 material)
 {
-#line 139 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/pbr.fxh"
+#line 139 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/pbr.fxh"
 vec4 ret;
 	ret[0] = material.b;
 	ret[1] = 1 - material.g;
@@ -1098,11 +1098,11 @@ vec4 ret;
 	return ret;
 }
 
-#line 17 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/skinning.fxh"
+#line 17 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/skinning.fxh"
 vec4
 SkinnedPosition(const vec3 inPos, const vec4 weights, const uvec4 indices)
 {
-#line 21 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/skinning.fxh"
+#line 21 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/skinning.fxh"
 vec4 normWeights = weights / dot(weights, vec4(1.0));
 
 
@@ -1113,11 +1113,11 @@ vec4 normWeights = weights / dot(weights, vec4(1.0));
 	return joint * vec4(inPos, 1);
 }
 
-#line 35 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/skinning.fxh"
+#line 35 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/skinning.fxh"
 vec4
 SkinnedPositionInstanced(const vec3 inPos, const vec4 weights, const uvec4 indices, const uint ID)
 {
-#line 39 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/skinning.fxh"
+#line 39 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/skinning.fxh"
 vec4 normWeights = weights / dot(weights, vec4(1.0));
 	mat4x4 joint = JointPalette[indices[0]] * normWeights[0] +
 				   JointPalette[indices[1]] * normWeights[1] +
@@ -1126,11 +1126,11 @@ vec4 normWeights = weights / dot(weights, vec4(1.0));
 	return joint * vec4(inPos, 1);
 }
 
-#line 51 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/skinning.fxh"
+#line 51 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/skinning.fxh"
 vec4
 SkinnedNormal(const vec3 inNormal, const vec4 weights, const uvec4 indices)
 {
-#line 55 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/skinning.fxh"
+#line 55 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/skinning.fxh"
 mat4x4 joint = JointPalette[indices[0]] * weights[0] +
 				   JointPalette[indices[1]] * weights[1] +
 				   JointPalette[indices[2]] * weights[2] +
@@ -1138,11 +1138,11 @@ mat4x4 joint = JointPalette[indices[0]] * weights[0] +
 	return joint * vec4(inNormal, 0);
 }
 
-#line 66 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/skinning.fxh"
+#line 66 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/skinning.fxh"
 vec4
 SkinnedNormalInstanced(const vec3 inNormal, const vec4 weights, const uvec4 indices, const uint ID)
 {
-#line 69 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/skinning.fxh"
+#line 69 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/skinning.fxh"
 mat4x4 joint = JointPalette[indices[0]] * weights[0] +
 				   JointPalette[indices[1]] * weights[1] +
 				   JointPalette[indices[2]] * weights[2] +
@@ -1150,11 +1150,11 @@ mat4x4 joint = JointPalette[indices[0]] * weights[0] +
 	return joint * vec4(inNormal, 0);
 }
 
-#line 15 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/clustering.fxh"
+#line 15 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/clustering.fxh"
 uvec3
 CalculateClusterIndex(vec2 screenPos, float depth, float scale, float bias)
 {
-#line 17 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/clustering.fxh"
+#line 17 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/clustering.fxh"
 uint i = uint(screenPos.x);
 	uint j = uint(screenPos.y);
 	uint k = uint(log2(-depth) * scale + bias);
@@ -1162,19 +1162,19 @@ uint i = uint(screenPos.x);
 	return uvec3(i, j, k);
 }
 
-#line 27 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/clustering.fxh"
+#line 27 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/clustering.fxh"
 bool
 TestAABBAABB(ClusterAABB aabb, vec3 bboxMin, vec3 bboxMax)
 {
-#line 35 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/clustering.fxh"
+#line 35 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/clustering.fxh"
 return all(equal(lessThan(aabb.minPoint.xyz, bboxMax), greaterThan(aabb.maxPoint.xyz, bboxMin)));
 }
 
-#line 41 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/clustering.fxh"
+#line 41 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/clustering.fxh"
 bool
 TestAABBSphere(ClusterAABB aabb, vec3 pos, float radius)
 {
-#line 44 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/clustering.fxh"
+#line 44 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/clustering.fxh"
 float sqDist = 0.0f;
 	for (int i = 0; i < 3; i++)
 	{
@@ -1186,11 +1186,11 @@ float sqDist = 0.0f;
 	return sqDist <= radius * radius;
 }
 
-#line 61 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/clustering.fxh"
+#line 61 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/clustering.fxh"
 bool
 TestAABBCone(ClusterAABB aabb, vec3 pos, vec3 forward, float radius, vec2 sinCosAngles)
 {
-#line 64 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/clustering.fxh"
+#line 64 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/clustering.fxh"
 vec3 aabbExtents = (aabb.maxPoint.xyz - aabb.minPoint.xyz) * 0.5f;
 	vec3 aabbCenter = aabb.minPoint.xyz + aabbExtents;
 	float aabbRadius = aabb.maxPoint.w;
@@ -1206,11 +1206,11 @@ vec3 aabbExtents = (aabb.maxPoint.xyz - aabb.minPoint.xyz) * 0.5f;
 	return !(angleCull || backCull || frontCull);
 }
 
-#line 378 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/shadowbase.fxh"
+#line 378 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/shadowbase.fxh"
 float
 Variance(vec2 shadowSample, float lightSpaceDepth, float tolerance)
 {
-#line 384 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/shadowbase.fxh"
+#line 384 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/shadowbase.fxh"
 float avgZ = shadowSample.x;
 	float avgZ2 = shadowSample.y;
 
@@ -1233,11 +1233,11 @@ float avgZ = shadowSample.x;
 	}
 }
 
-#line 410 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/shadowbase.fxh"
+#line 410 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/shadowbase.fxh"
 float
 ChebyshevUpperBound(vec2 Moments, float t, float tolerance)
 {
-#line 414 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/shadowbase.fxh"
+#line 414 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/shadowbase.fxh"
 if (t <= Moments.x) return 1.0f;
 
 
@@ -1251,11 +1251,11 @@ if (t <= Moments.x) return 1.0f;
 	return p_max;
 }
 
-#line 430 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/shadowbase.fxh"
+#line 430 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/shadowbase.fxh"
 float
 ExponentialShadowSample(float mapDepth, float depth, float bias)
 {
-#line 433 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/shadowbase.fxh"
+#line 433 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/shadowbase.fxh"
 float receiverDepth = DepthScaling * depth - bias;
     float occluderReceiverDistance = mapDepth - receiverDepth;
 	float occlusion = clamp(exp(DarkeningFactor * occluderReceiverDistance), 0.0f, 1.0f);
@@ -1263,27 +1263,27 @@ float receiverDepth = DepthScaling * depth - bias;
     return occlusion;
 }
 
-#line 47 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/CSM.fxh"
+#line 47 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/CSM.fxh"
 vec4
 ConvertViewRayToWorldPos(vec3 viewRay, float length, vec3 cameraPosition)
 {
-#line 49 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/CSM.fxh"
+#line 49 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/CSM.fxh"
 return vec4(cameraPosition + viewRay * length, 1);
 }
 
-#line 56 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/CSM.fxh"
+#line 56 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/CSM.fxh"
 void
 CSMConvert(in vec4 worldPosition, out vec4 texShadow)
 {
-#line 60 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/CSM.fxh"
+#line 60 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/CSM.fxh"
 texShadow = CSMShadowMatrix * worldPosition;
 }
 
-#line 81 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/CSM.fxh"
+#line 81 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/CSM.fxh"
 void
 CalculateBlendAmountForMap(in vec4 texCoord, out float blendBandLocation, out float blendAmount)
 {
-#line 87 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/CSM.fxh"
+#line 87 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/CSM.fxh"
 vec2 distanceToOne = vec2(1.0f - texCoord.x, 1.0f - texCoord.y);
     blendBandLocation = min(texCoord.x, texCoord.y);
     float blendBandLocation2 = min(distanceToOne.x, distanceToOne.y);
@@ -1291,11 +1291,11 @@ vec2 distanceToOne = vec2(1.0f - texCoord.x, 1.0f - texCoord.y);
     blendAmount = blendBandLocation / CascadeBlendArea;
 }
 
-#line 98 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/CSM.fxh"
+#line 98 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/CSM.fxh"
 float
 CSMPS(in vec4 TexShadow, in uint Texture)
 {
-#line 107 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/CSM.fxh"
+#line 107 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/CSM.fxh"
 vec4 texCoordShadow = vec4(0.0f);
 	bool cascadeFound = false;
 	float bias = GlobalLightShadowBias;
@@ -1327,7 +1327,7 @@ vec4 texCoordShadow = vec4(0.0f);
 	float blendAmount = 0;
 	float blendBandLocation = 0;
 	CalculateBlendAmountForMap ( texCoordShadow, blendBandLocation, blendAmount );
-                                                                                         
+                                                                                               
 	if (!cascadeFound)
 	{
 		return 1.0f;
@@ -1362,11 +1362,11 @@ vec4 texCoordShadow = vec4(0.0f);
 	return occlusion;
 }
 
-#line 181 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/CSM.fxh"
+#line 181 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/CSM.fxh"
 float
 SampleShadowCascade(vec4 position, vec3 ddx, vec3 ddy, uint cascadeIndex)
 {
-#line 186 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/CSM.fxh"
+#line 186 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/CSM.fxh"
 vec3 shadowPosition = position.xyz;
 	shadowPosition += CascadeOffset[cascadeIndex].xyz;
 	shadowPosition *= CascadeScale[cascadeIndex].xyz;
@@ -1381,11 +1381,11 @@ vec3 shadowPosition = position.xyz;
 	return ChebyshevUpperBound(samp, lightDepth, 0.0001f);
 }
 
-#line 203 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/CSM.fxh"
+#line 203 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/CSM.fxh"
 float
 CSMPS2(in float Depth, in vec4 PositionShadowSpace, in float NL, in vec3 Normal, out vec4 Debug)
 {
-#line 211 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/CSM.fxh"
+#line 211 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/CSM.fxh"
 int cascadeIndex = 4;
 	for (int i = 4 - 1; i >= 0; --i)
 	{
@@ -1414,11 +1414,11 @@ int cascadeIndex = 4;
 	return shadowVisibility;
 }
 
-#line 35 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/lights_clustered.fxh"
+#line 35 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/lights_clustered.fxh"
 float
 GetInvertedOcclusionSpotLight(float receiverDepthInLightSpace, vec2 lightSpaceUv, uint Index, uint Texture)
 {
-#line 43 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/lights_clustered.fxh"
+#line 43 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/lights_clustered.fxh"
 vec3 shadowUv = vec3(lightSpaceUv, Index);
 
 
@@ -1428,11 +1428,11 @@ vec3 shadowUv = vec3(lightSpaceUv, Index);
 	return ChebyshevUpperBound(shadowSample, receiverDepthInLightSpace, 0.000001f);
 }
 
-#line 56 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/lights_clustered.fxh"
+#line 56 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/lights_clustered.fxh"
 float
 GetInvertedOcclusionPointLight(float receiverDepthInLightSpace, vec3 lightSpaceUv, uint Texture)
 {
-#line 64 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/lights_clustered.fxh"
+#line 64 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/lights_clustered.fxh"
 vec3 shadowUv = lightSpaceUv;
 
 
@@ -1442,11 +1442,11 @@ vec3 shadowUv = lightSpaceUv;
 	return ChebyshevUpperBound(shadowSample, receiverDepthInLightSpace, 0.00000001f);
 }
 
-#line 77 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/lights_clustered.fxh"
+#line 77 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/lights_clustered.fxh"
 vec3
 CalculatePointLight(in PointLight light, in PointLightShadowExtension ext, in vec3 viewPos, in vec3 viewVec, in vec3 viewSpaceNormal, in float depth, in vec4 material, in vec3 diffuseColor, in vec3 F0)
 {
-#line 89 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/lights_clustered.fxh"
+#line 89 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/lights_clustered.fxh"
 vec3 lightDir = (light.position.xyz - viewPos);
 	float lightDirLen = length(lightDir);
 
@@ -1480,11 +1480,11 @@ vec3 lightDir = (light.position.xyz - viewPos);
 	return irradiance * shadowFactor;
 }
 
-#line 125 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/lights_clustered.fxh"
+#line 125 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/lights_clustered.fxh"
 vec3
 CalculateSpotLight(in SpotLight light, in SpotLightProjectionExtension projExt, in SpotLightShadowExtension shadowExt, in vec3 viewPos, in vec3 viewVec, in vec3 viewSpaceNormal, in float depth, in vec4 material, in vec3 diffuseColor, in vec3 F0)
 {
-#line 138 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/lights_clustered.fxh"
+#line 138 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/lights_clustered.fxh"
 vec3 lightDir = (light.position.xyz - viewPos);
 
 	float lightDirLen = length(lightDir);
@@ -1551,11 +1551,11 @@ vec3 lightDir = (light.position.xyz - viewPos);
 	return irradiance * shadowFactor * lightModColor.rgb;
 }
 
-#line 212 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/lights_clustered.fxh"
+#line 212 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/lights_clustered.fxh"
 vec3
 CalculateGlobalLight(vec3 diffuseColor, vec4 material, vec3 F0, vec3 viewVec, vec3 worldSpaceNormal, vec4 viewSpacePos)
 {
-#line 215 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/lights_clustered.fxh"
+#line 215 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/lights_clustered.fxh"
 float NL = clamp(dot(GlobalLightDirWorldspace.xyz, worldSpaceNormal), 0.0f, 1.0f);
 	if (NL <= 0) { return vec3(0); }
 
@@ -1579,11 +1579,11 @@ float NL = clamp(dot(GlobalLightDirWorldspace.xyz, worldSpaceNormal), 0.0f, 1.0f
 	return irradiance * shadowFactor;
 }
 
-#line 248 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/lights_clustered.fxh"
+#line 248 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/lights_clustered.fxh"
 vec3
 LocalLights(uint clusterIndex, vec3 diffuseColor, vec4 material, vec3 F0, vec4 viewPos, vec3 viewSpaceNormal, float depth)
 {
-#line 251 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/lights_clustered.fxh"
+#line 251 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/lights_clustered.fxh"
 vec3 light = vec3(0, 0, 0);
 	uint flag = AABBs[clusterIndex].featureFlags;
 	vec3 viewVec = -normalize(viewPos.xyz);
@@ -1642,11 +1642,11 @@ vec3 light = vec3(0, 0, 0);
 	return light;
 }
 
-#line 312 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/lights_clustered.fxh"
+#line 312 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/lights_clustered.fxh"
 vec3
 CalculatePointLightAmbientTransmission(in PointLight light, in PointLightShadowExtension ext, in vec3 viewPos, in vec3 viewVec, in vec3 normal, in float depth, in vec4 material, in vec4 albedo, in float transmission)
 {
-#line 324 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/lights_clustered.fxh"
+#line 324 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/lights_clustered.fxh"
 vec3 lightDir = (light.position.xyz - viewPos);
 	float lightDirLen = length(lightDir);
 
@@ -1671,11 +1671,11 @@ vec3 lightDir = (light.position.xyz - viewPos);
 	return radiance * shadowFactor;
 }
 
-#line 351 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/lights_clustered.fxh"
+#line 351 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/lights_clustered.fxh"
 vec3
 CalculateSpotLightAmbientTransmission(in SpotLight light, in SpotLightProjectionExtension projExt, in SpotLightShadowExtension shadowExt, in vec3 viewPos, in vec3 viewVec, in vec3 normal, in float depth, in vec4 material, in vec4 albedo, in float transmission)
 {
-#line 364 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/lights_clustered.fxh"
+#line 364 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/lights_clustered.fxh"
 vec3 lightDir = (light.position.xyz - viewPos);
 
 	float lightDirLen = length(lightDir);
@@ -1733,11 +1733,11 @@ vec3 lightDir = (light.position.xyz - viewPos);
 	return radiance * shadowFactor * lightModColor.rgb;
 }
 
-#line 424 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/lights_clustered.fxh"
+#line 424 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/lights_clustered.fxh"
 vec3
 CalculateGlobalLightAmbientTransmission(vec4 viewPos, vec3 viewVec, vec3 normal, float depth, vec4 material, vec4 albedo, in float transmission)
 {
-#line 427 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/lights_clustered.fxh"
+#line 427 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/lights_clustered.fxh"
 float NL = clamp(dot(GlobalLightDirWorldspace.xyz, normal), 0.0f, 1.0f);
 	float TNL = clamp(dot(-GlobalLightDirWorldspace.xyz, normal), 0.0f, 1.0f) * transmission;
 
@@ -1756,11 +1756,11 @@ float NL = clamp(dot(GlobalLightDirWorldspace.xyz, normal), 0.0f, 1.0f);
 	return radiance * shadowFactor * albedo.rgb;
 }
 
-#line 448 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/lights_clustered.fxh"
+#line 448 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/lights_clustered.fxh"
 vec3
 LocalLightsAmbientTransmission(uint idx, vec4 viewPos, vec3 viewVec, vec3 normal, float depth, vec4 material, vec4 albedo, float transmission)
 {
-#line 459 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/lights_clustered.fxh"
+#line 459 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/lights_clustered.fxh"
 vec3 light = vec3(0, 0, 0);
 	uint flag = AABBs[idx].featureFlags;
 	if (((flag & CLUSTER_POINTLIGHT_BIT) == CLUSTER_POINTLIGHT_BIT))
@@ -1818,43 +1818,43 @@ vec3 light = vec3(0, 0, 0);
 	return light;
 }
 
-#line 93 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/geometrybase.fxh"
+#line 93 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/geometrybase.fxh"
 vec4
 SimpleColor(in vec4 albedoColor)
 {
-#line 96 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/geometrybase.fxh"
+#line 96 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/geometrybase.fxh"
 return vec4(albedoColor.rgb, 1.0f);
 }
 
-#line 99 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/geometrybase.fxh"
+#line 99 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/geometrybase.fxh"
 vec4
 AlphaColor(in vec4 albedoColor)
 {
-#line 102 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/geometrybase.fxh"
+#line 102 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/geometrybase.fxh"
 return albedoColor;
 }
 
-#line 105 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/geometrybase.fxh"
+#line 105 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/geometrybase.fxh"
 vec4
 AlphaMaskSimpleColor(in vec4 color)
 {
-#line 113 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/geometrybase.fxh"
+#line 113 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/geometrybase.fxh"
 return vec4(color.rgb, 1.0f);
 }
 
-#line 116 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/geometrybase.fxh"
+#line 116 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/geometrybase.fxh"
 vec4
 AlphaMaskAlphaColor(in vec4 color)
 {
-#line 124 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/geometrybase.fxh"
+#line 124 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/geometrybase.fxh"
 return color;
 }
 
-#line 134 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/geometrybase.fxh"
+#line 134 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/geometrybase.fxh"
 vec3
 NormalMapFunctorDXT5NM(in vec3 tangent, in vec3 binormal, in vec3 normal, in vec4 bumpData)
 {
-#line 140 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/geometrybase.fxh"
+#line 140 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/geometrybase.fxh"
 mat3 tangentViewMatrix = mat3(normalize(tangent.xyz), normalize(binormal.xyz), normalize(normal.xyz));
 	vec3 tNormal = vec3(0,0,0);
 	tNormal.xy = (bumpData.ag * 2.0f) - 1.0f;
@@ -1862,11 +1862,11 @@ mat3 tangentViewMatrix = mat3(normalize(tangent.xyz), normalize(binormal.xyz), n
 	return tangentViewMatrix * tNormal;
 }
 
-#line 147 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/geometrybase.fxh"
+#line 147 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/geometrybase.fxh"
 vec3
 NormalMapFunctor(in vec3 tangent, in vec3 binormal, in vec3 normal, in vec4 bumpData)
 {
-#line 153 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/geometrybase.fxh"
+#line 153 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/geometrybase.fxh"
 mat3 tangentViewMatrix = mat3(normalize(tangent.xyz), normalize(binormal.xyz), normalize(normal.xyz));
 	vec3 tNormal = vec3(0,0,0);
 	tNormal.xy = (bumpData.xy * 2.0f) - 1.0f;
@@ -1874,35 +1874,35 @@ mat3 tangentViewMatrix = mat3(normalize(tangent.xyz), normalize(binormal.xyz), n
 	return tangentViewMatrix * tNormal;
 }
 
-#line 160 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/geometrybase.fxh"
+#line 160 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/geometrybase.fxh"
 vec3
 FlatNormalFunctor(in vec3 tangent, in vec3 binormal, in vec3 normal, in vec4 bumpData)
 {
-#line 166 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/geometrybase.fxh"
+#line 166 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/geometrybase.fxh"
 return normal;
 }
 
-#line 176 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/geometrybase.fxh"
+#line 176 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/geometrybase.fxh"
 vec4
 DefaultMaterialFunctor(in vec4 material)
 {
-#line 178 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/geometrybase.fxh"
+#line 178 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/geometrybase.fxh"
 return material;
 }
 
-#line 182 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/geometrybase.fxh"
+#line 182 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/geometrybase.fxh"
 vec4
 OSMMaterialFunctor(in vec4 material)
 {
-#line 184 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/geometrybase.fxh"
+#line 184 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/geometrybase.fxh"
 return ConvertOSM(material);
 }
 
-#line 194 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/geometrybase.fxh"
+#line 194 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/geometrybase.fxh"
 vec3
 IBL(in vec4 albedo, in vec3 F0, in vec3 worldNormal, in vec3 worldViewVec, in vec4 material)
 {
-#line 201 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/geometrybase.fxh"
+#line 201 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/geometrybase.fxh"
 vec3 reflectVec = reflect(-worldViewVec, worldNormal);
     float NdotV = clamp(dot(worldNormal, worldViewVec), 0.0f, 1.0f);
     vec3 F = FresnelSchlickGloss(F0, NdotV, material[1]);
@@ -1915,11 +1915,11 @@ vec3 reflectVec = reflect(-worldViewVec, worldNormal);
     return (ambientTerm + reflection * F) * material[2];
 }
 
-#line 213 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/geometrybase.fxh"
+#line 213 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/geometrybase.fxh"
 vec3
 ReflectionOnly(in vec4 albedo, in vec3 F0, in vec3 worldNormal, in vec3 worldViewVec, in vec4 material)
 {
-#line 220 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/geometrybase.fxh"
+#line 220 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/geometrybase.fxh"
 vec3 reflectVec = reflect(-worldViewVec, worldNormal);
     float NdotV = clamp(dot(worldNormal, worldViewVec), 0.0f, 1.0f);
     vec3 F = FresnelSchlickGloss(F0, NdotV, material[1]);
@@ -1927,11 +1927,11 @@ vec3 reflectVec = reflect(-worldViewVec, worldNormal);
     return (reflection * F);
 }
 
-#line 227 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/geometrybase.fxh"
+#line 227 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/geometrybase.fxh"
 vec3
 IrradianceOnly(in vec4 albedo, in vec3 F0, in vec3 worldNormal, in vec3 worldViewVec, in vec4 material)
 {
-#line 234 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/geometrybase.fxh"
+#line 234 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/geometrybase.fxh"
 float NdotV = clamp(dot(worldNormal, worldViewVec), 0.0f, 1.0f);
     vec3 F = FresnelSchlickGloss(F0, NdotV, material[1]);
     vec3 irradiance = textureLod(samplerCube(TexturesCube[IrradianceMap], CubeSampler), worldNormal, 0).rgb;
@@ -1941,27 +1941,27 @@ float NdotV = clamp(dot(worldNormal, worldViewVec), 0.0f, 1.0f);
     return ambientTerm * material[2];
 }
 
-#line 243 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/geometrybase.fxh"
+#line 243 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/geometrybase.fxh"
 vec3
 NoEnvironment(in vec4 albedo, in vec3 F0, in vec3 worldNormal, in vec3 worldViewVec, in vec4 material)
 {
-#line 250 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/geometrybase.fxh"
+#line 250 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/geometrybase.fxh"
 return vec3(0);
 }
 
-#line 24 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/standard_shading.fxh"
+#line 24 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/standard_shading.fxh"
 vec4
 FinalizeOpaque(in vec3 color, in float alpha)
 {
-#line 28 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/standard_shading.fxh"
+#line 28 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/standard_shading.fxh"
 return vec4(color, 1.0f);
 }
 
-#line 31 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/standard_shading.fxh"
+#line 31 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/standard_shading.fxh"
 vec4
 FinalizeAlpha(in vec3 color, in float alpha)
 {
-#line 35 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/lib/standard_shading.fxh"
+#line 35 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/lib/standard_shading.fxh"
 return vec4(color, alpha);
 }
 
@@ -1974,7 +1974,7 @@ return vec4(color, alpha);
 	layout(location = 0) out vec2 UV;
 	layout(location = 1) out vec4 ProjPos;
 	layout(location = 2) out int Instance;
-#line 97 "C:/Users/robwid-9-local/source/repos/group/nebula/work/shaders/vk/multilayered.fx"
+#line 97 "C:/Users/clahul-9-local/source/repos/Last_nebula/nebula/work/shaders/vk/multilayered.fx"
 void
 main()
 {

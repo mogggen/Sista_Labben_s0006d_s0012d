@@ -106,7 +106,7 @@ def NebulaUpdate():
             face = he.nextEdge
 
     if not paused:
-        #Grupp1main.NebulaUpdate()
+        Grupp1main.NebulaUpdate()
         Grupp2main.NebulaUpdate()
         msgManager.instance.distributeMsg()
 
