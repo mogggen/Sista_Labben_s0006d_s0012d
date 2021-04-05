@@ -35,40 +35,40 @@ class WalkToGoal(Goal):
     def enter(self, agent):
         self.path = path_manager.instance.create_path(agent.getPos(), self.goal, lambda: self.path_is_done_callback(agent))
 
-        face = self.path.algorithm.start_face
-        vertices = []
+        #face = self.path.algorithm.start_face
+        #vertices = []
 
-        he = navMesh.getHalfEdge(face)
-        v = navMesh.getVertex(he.vertIdx)
-        vF2 = nmath.Float2(v.x, v.z)
-        distance = (self.target - vF2).length_sq()
+        #he = navMesh.getHalfEdge(face)
+        #v = navMesh.getVertex(he.vertIdx)
+        #vF2 = nmath.Float2(v.x, v.z)
+        #distance = (self.target - vF2).length_sq()
 
-        best_distance = distance
-        best_v = vF2
+        #best_distance = distance
+        #best_v = vF2
 
-        he = navMesh.getHalfEdge(he.nextEdge)
-        v = navMesh.getVertex(he.vertIdx)
-        vF2 = nmath.Float2(v.x, v.z)
-        distance = (self.target - vF2).length_sq()
+        #he = navMesh.getHalfEdge(he.nextEdge)
+        #v = navMesh.getVertex(he.vertIdx)
+        #vF2 = nmath.Float2(v.x, v.z)
+        #distance = (self.target - vF2).length_sq()
 
-        if distance < best_distance:
-            best_distance = distance
-            best_v = vF2
+        #if distance < best_distance:
+        #    best_distance = distance
+        #    best_v = vF2
 
-        he = navMesh.getHalfEdge(he.nextEdge)
-        v = navMesh.getVertex(he.vertIdx)
-        vF2 = nmath.Float2(v.x, v.z)
-        distance = (self.target - vF2).length_sq()
-        
-        if distance < best_distance:
-            best_distance = distance
-            best_v = vF2
+        #he = navMesh.getHalfEdge(he.nextEdge)
+        #v = navMesh.getVertex(he.vertIdx)
+        #vF2 = nmath.Float2(v.x, v.z)
+        #distance = (self.target - vF2).length_sq()
+        #
+        #if distance < best_distance:
+        #    best_distance = distance
+        #    best_v = vF2
 
 
-        v = best_v - self.target
-        v = nmath.Float2.normalize(v) * v.length()*0.9
+        #v = best_v - self.target
+        #v = nmath.Float2.normalize(v) * v.length()*0.9
 
-        p = self.target + v
+        #p = self.target + v
 
         #agent.setTarget( nmath.Point(p.x, 0, p.y) )
         self.active = True
@@ -84,6 +84,8 @@ class WalkToGoal(Goal):
             self.target = nmath.Float2(p.x, p.z)
             if self.active:
                 agent.setTarget(p)
+        else:
+            agent.setTarget( nmath.Point(self.target.x, 0, self.target.y) )
 
     
     def execute(self, agent):
@@ -110,7 +112,6 @@ class WalkToGoal(Goal):
             self.path.algorithm.visualize(self.path)
 
         demo.DrawDot(nmath.Point(self.path.goal_pos.x, 0, self.path.goal_pos.y), 20, nmath.Vec4(0,1,1,1))
-
 
         imgui.Begin("WalkToGoal goal", None, 0)
         try:
@@ -344,23 +345,50 @@ class Attack(Goal):
         if demo.GetTime() - self.timer >= statParser.getStat("soldierAttackSpeed"):
             self.onCooldown = False
 
-        if distance >= 100:
+        if distance > pow(statParser.getStat("soldierAttackRange"), 2):
             target = nmath.Float2(enemyPos.x, enemyPos.z)
             self.path = path_manager.instance.create_path(agent.getPos(), target, lambda: self.path_is_done_callback(agent))
             if self.path == None:
                 raise ValueError("Path with wrong start_pos")
-            agent.setTarget(nmath.Point(enemyPos.x, enemyPos.y, enemyPos.z))
+
+            #face = self.path.algorithm.start_face
+
+            #target = nmath.Float2(enemyPos.x, enemyPos.z)
+
+            #he = navMesh.getHalfEdge(face)
+            #v = navMesh.getVertex(he.vertIdx)
+            #vF2 = nmath.Float2(v.x, v.z)
+            #distance = (target - vF2).length_sq()
+
+            #best_distance = distance
+            #best_v = vF2
+
+            #he = navMesh.getHalfEdge(he.nextEdge)
+            #v = navMesh.getVertex(he.vertIdx)
+            #vF2 = nmath.Float2(v.x, v.z)
+            #distance = (target - vF2).length_sq()
+
+            #if distance < best_distance:
+            #    best_distance = distance
+            #    best_v = vF2
+
+            #he = navMesh.getHalfEdge(he.nextEdge)
+            #v = navMesh.getVertex(he.vertIdx)
+            #vF2 = nmath.Float2(v.x, v.z)
+            #distance = (target - vF2).length_sq()
+            #
+            #if distance < best_distance:
+            #    best_distance = distance
+            #    best_v = vF2
 
 
-        elif distance > pow(statParser.getStat("soldierAttackRange"), 2):
-            
-            enemyPosF2 = nmath.Float2(enemyPos.x, enemyPos.z)
-            if not navMesh.isInFace(enemyPosF2, self.current_face):
-                self.current_face = navMesh.findInNavMesh(enemyPosF2)
-                if self.current_face < 0:
-                    raise ValueError("Enemy is not on navmesh.")
+            #v = best_v - target
+            #v = nmath.Float2.normalize(v) * v.length()*0.9
 
-            agent.setTarget(nmath.Point(0,0,0) + enemyPos)
+            #p = target + v
+            #agent.setTarget( nmath.Point(p.x, 0, p.y) )
+
+            #agent.setTarget(nmath.Point(0,0,0) + enemyPos)
         elif not self.onCooldown:
             if random.uniform(0, 1) <= statParser.getStat("hitChance"):
                 msgManager.instance.sendMsg(msgManager.message(demo.teamEnum.GRUPP_2, agent, self.enemy, "attacked"))
