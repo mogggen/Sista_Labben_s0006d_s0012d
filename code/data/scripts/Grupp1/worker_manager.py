@@ -69,7 +69,7 @@ class WorkerManager:
 
     def beginScout(self):
         workers = list(entity_manager.instance.workers.values())
-        for i in range(len(scoutPos)):
+        for i in range(min(len(scoutPos), len(workers))):
             workers[i].addGoal(goals.WalkToGoal(scoutPos[i]))
 
         self.first = False
