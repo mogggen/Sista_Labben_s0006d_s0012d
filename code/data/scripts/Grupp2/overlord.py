@@ -90,7 +90,6 @@ class Overlord:
 
         self.agents.remove(agent)
         demo.Delete(agent.entityHandle)
-        print("red agent is dead")
         del agent
 
     def KillBuilding(self, building):

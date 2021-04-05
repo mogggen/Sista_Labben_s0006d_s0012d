@@ -48,6 +48,7 @@ class Agent:
             healthProperty.hp -= 1
             self.entityHandle.Health = healthProperty
         else:
+            print("agent, TakeDamage: red agent is dead")
             overlord.overlord.KillAgent(self)
 
     def DealDamage(self, targetEntity):
