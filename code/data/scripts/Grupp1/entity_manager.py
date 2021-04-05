@@ -27,14 +27,21 @@ updateOrder = [
 def validateUnmanagedEntity(entity_dict, entity):
     if not demo.IsValid(entity):
         entity_dict.pop(entity)
+        return True
 
-    p = key.Agent.position
-    if fog_of_war.Grupp1.is_discovered(round(p.y), round(p.z)):
+    p = entity.Agent.position
+    if fog_of_war.grupp1.is_discovered(round(p.y), round(p.z)):
         entity_dict.pop(entity)
+        return True
+
+    return False
 
 def validateUnmanagedStaticEntity(entity_dict, entity):
     if not demo.IsValid(entity):
         entity_dict.pop(entity)
+        return True
+
+    return False
 
 class EntityManager:
     def __init__(self):
