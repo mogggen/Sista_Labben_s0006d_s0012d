@@ -19,9 +19,13 @@ class PathManager:
     def create_path(self, start_pos: nmath.Float2, goal_pos: nmath.Float2, callback):
         path = Path(start_pos, goal_pos, callback)
         path.algorithm = pathFinder.AStar()
-        path.algorithm.start(path)
-        self.current_paths.append(path)
+        if path.algorithm.start(path):
+            self.current_paths.append(path)
+
+        else:
+            return None
         return path
+
 
 
     def step_path(self, path):

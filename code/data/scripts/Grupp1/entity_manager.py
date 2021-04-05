@@ -109,8 +109,8 @@ class EntityManager:
             func(demo.Entity.fromInt(i))
         for i in self.soldiers.keys():
             func(demo.Entity.fromInt(i))
-        for i in self.buildings.keys():
-            func(demo.Entity.fromInt(i))
+        #for i in self.buildings.keys():
+        #    func(demo.Entity.fromInt(i))
     
     def forAllUnmanaged(self, func):
         for i in self.enemy_workers:

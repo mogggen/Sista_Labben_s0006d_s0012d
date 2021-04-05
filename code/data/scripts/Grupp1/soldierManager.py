@@ -16,7 +16,7 @@ def defendMode():
     non_free_soldiers = []
 
     for soldier in entity_manager.instance.soldiers.values():
-        if soldier.isFree() or not isinstance(soldier.getGoal(), goals.Attack): 
+        if soldier.isFree() or not soldier.hasAttackGoal(): 
             free_soldiers.append(soldier)
         else:
             non_free_soldiers.append(soldier)
@@ -93,7 +93,7 @@ def assultMode():
     non_free_soldiers = []
 
     for soldier in entity_manager.instance.soldiers.values():
-        if soldier.isFree() or not isinstance(soldier.getGoal(), goals.Attack): 
+        if soldier.isFree() or not soldier.hasAttackGoal():
             free_soldiers.append(soldier)
         else:
             non_free_soldiers.append(soldier)
@@ -167,6 +167,7 @@ def assultMode():
         for soldier in free_soldiers:
             soldier.addGoal(goals.Attack(castle))
     else:
+        print("attacking nothing")
         soldier.addGoal(goals.WalkToGoal(nmath.Float2(0,-170)))
 
 

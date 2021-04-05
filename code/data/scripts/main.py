@@ -6,6 +6,8 @@ import math
 import nmath
 import enum
 
+import cProfile
+
 time = 0
 time_speeds = [0.1, 0.25, 0.5, 1, 2, 4, 7, 10, 25, 50, 100, 150, 200]
 selected_time = 3
@@ -40,6 +42,10 @@ from Grupp1 import main as Grupp1main
 from Grupp2 import main as Grupp2main
 import msgManager
 
+def pauseNow():
+    global paused, selected_time
+    paused = True         
+    demo.SetTimeFactor(0)
 
 # Runs once every frame
 def NebulaUpdate():
@@ -106,7 +112,13 @@ def NebulaUpdate():
             face = he.nextEdge
 
     if not paused:
-        Grupp1main.NebulaUpdate()
+
+        try:
+            Grupp1main.NebulaUpdate()
+        except Exception as e:
+            pauseNow()
+            raise e
+
         Grupp2main.NebulaUpdate()
         msgManager.instance.distributeMsg()
 
@@ -141,7 +153,3 @@ def NebulaDraw():
     imgui.Text("X: " + str(p.x))
     imgui.Text("Z: " + str(p.z))
     imgui.Text(str(selected_group))
-    imgui.End()
-
-
-
