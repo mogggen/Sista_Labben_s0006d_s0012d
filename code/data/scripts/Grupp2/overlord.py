@@ -23,7 +23,7 @@ class Overlord:
     nrWoodGatherers = 31  # At least double amount of iron collectors, ratio is 2.5 times
     nrIronGatherers = 14
     nrScouts = 3
-    nrBuilder = 2
+    nrBuilder = 1
 
     nrKiln = 2  # At least double the amount of smelters
     nrSmelters = 1

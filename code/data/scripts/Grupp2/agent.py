@@ -43,7 +43,7 @@ class Agent:
     # Take Damage - Method
     def TakeDamage(self, msg):
         healthProperty = self.entityHandle.Health
-        print("agent, TakeDamage:", healthProperty.hp)
+        #print("agent, TakeDamage:", healthProperty.hp)
         if healthProperty.hp > 0:
             healthProperty.hp -= 1
             self.entityHandle.Health = healthProperty
@@ -133,7 +133,7 @@ class Agent:
 
         elif self.goal == enums.GoalEnum.SOLDIER_GOAL:
             if self.entityHandle.Agent.type == demo.agentType.WORKER:
-                self.ChangeState(fsm.UpgradeState())
+                self.ChangeState(fsm.UpgradeState()) # This does not really make sense
             else:
                 self.ChangeState(fsm.IdleState())
 

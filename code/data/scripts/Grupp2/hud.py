@@ -43,6 +43,7 @@ def DrawHUD():
         imgui.Text("Sword: " + str(overlord.overlord.sword))
         imgui.Text("  ")
         imgui.Text("  ")
+        imgui.Text("Agents: " + str(len(overlord.overlord.agents)))
         imgui.Text("Builders: " + str(builders))
         imgui.Text("Available Builders: " + str(len(overlord.overlord.availableBuilders)))
         imgui.Text("Scouts: " + str(scouts))
