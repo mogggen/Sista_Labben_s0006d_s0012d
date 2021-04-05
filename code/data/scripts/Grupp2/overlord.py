@@ -202,7 +202,7 @@ class Overlord:
 
     def AddSoldier(self, agent):
         self.soldiers.append(agent)
-        agent.ChangeState(fsm.ChargeAndAttackState(self.scoutedWorkers[0]))
+        agent.ChangeState(fsm.ChargeAndAttackState(self.scoutedWorkers[random.randrange(0,len(self.scoutedWorkers))]))
         # if len(self.soldiers) < self.amountOfSoldiersForAttack:
         #     agent.finalGoal = nmath.Point(0, 0, 0)
         #     agent.ChangeState(fsm.MoveState())
