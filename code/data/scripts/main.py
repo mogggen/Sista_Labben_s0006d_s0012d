@@ -6,6 +6,8 @@ import math
 import nmath
 import enum
 
+import cProfile
+
 time = 0
 time_speeds = [0.1, 0.25, 0.5, 1, 2, 4, 7, 10, 25, 50, 100, 150, 200]
 selected_time = 3
@@ -141,7 +143,3 @@ def NebulaDraw():
     imgui.Text("X: " + str(p.x))
     imgui.Text("Z: " + str(p.z))
     imgui.Text(str(selected_group))
-    imgui.End()
-
-
-

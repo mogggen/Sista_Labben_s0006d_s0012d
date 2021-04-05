@@ -8,6 +8,7 @@ import Grupp1.explorerManager as explorerManager
 import Grupp1.build_manager as build_manager
 import Grupp1.soldierManager as soldierManager
 import Grupp1.godManager as godManager
+import Grupp1.pathFinder as pathFinder
 
 
 import nmath, demo
@@ -108,6 +109,10 @@ def NebulaDraw(p):
     item_manager.instance.drawGui()
 
     godManager.dbgDraw()
+
+    for point in pathFinder.invalid_points:
+        demo.DrawDot(nmath.Point(point.x, 0, point.y), 10, nmath.Vec4(1,0,0.5,1))
+
 
 
 def HandleMessage(msg):

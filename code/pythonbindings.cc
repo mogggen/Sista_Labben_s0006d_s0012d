@@ -577,7 +577,12 @@ PYBIND11_EMBEDDED_MODULE(navMesh, m)
             return Math::point(vertex);
         });
     m.def("isInTriangle", &Demo::NavMesh::isInTriangle);
-    m.def("isInFace", &Demo::NavMesh::isInFace);
+    m.def("isInFace", [](Math::vec2 p, int face){
+            if (face <= -1)
+                throw pybind11::value_error("Face is invalid.");
+            else
+                return Demo::NavMesh::isInFace(p, face);
+            });
     m.def("isOnNavMesh", &Demo::NavMesh::isOnNavMesh);
     m.def("findInNavMesh", &Demo::NavMesh::findInNavMesh);
     m.def("findInNavMeshIndex", &Demo::NavMesh::findInNavMeshIndex);

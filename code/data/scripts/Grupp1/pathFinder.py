@@ -2,6 +2,8 @@ import navMesh
 import demo, nmath
 import math
 
+invalid_points = []
+
 def Point2Vec4(p):
     return nmath.Vec4(p.x, p.y, p.z, 0)
 
@@ -35,6 +37,9 @@ class AStar:
         self.nodes = {}
 
         start_face = navMesh.findInNavMesh(path.start_pos)
+        if start_face < 0:
+            print("invalid start face ", start_face)
+            invalid_points.append(path.start_pos)
         start_node = Node(start_face, -1)
 
         self.nodes[start_face] = start_node

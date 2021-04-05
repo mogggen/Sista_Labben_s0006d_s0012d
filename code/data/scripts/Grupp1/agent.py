@@ -1,5 +1,6 @@
 import demo, nmath, imgui
 import statParser, fog_of_war
+from Grupp1 import goals
 
 
 class Agent:
@@ -49,6 +50,13 @@ class Agent:
             return self.goals[-1]
         else:
             return None
+
+    def hasAttackGoal(self):
+        for g in self.goals:
+            if isinstance(g, goals.Attack): 
+                return True
+
+        return False
 
     def popGoal(self):
         self.goals.pop()

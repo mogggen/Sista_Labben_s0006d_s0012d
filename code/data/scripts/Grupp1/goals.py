@@ -69,7 +69,24 @@ class WalkToGoal(Goal):
                 agent.setTarget(navMesh.getCenterOfFace(self.path.reverse_points[-1]))
 
     def dbgDraw(self):
-        self.path.algorithm.visualize(self.path)
+
+        if self.path:
+            self.path.algorithm.visualize(self.path)
+
+        demo.DrawDot(nmath.Point(self.path.goal_pos.x, 0, self.path.goal_pos.z), 20, nmath.Vec4(0,1,1,1))
+
+
+        imgui.Begin("WalkToGoal goal", None, 0)
+        try:
+            members = [(attr, getattr(self,attr)) for attr in dir(self) if not callable(getattr(self,attr)) and not attr.startswith("__") ]
+            for member, value in members:
+                imgui.Text(member + ": " + str(value))
+            
+            imgui.End()
+
+        except Exception as e:
+            imgui.End()
+            raise e
 
 #--------------------------------------------------------------------#
 
@@ -240,7 +257,9 @@ class Attack(Goal):
 
     def execute(self, agent):
         if not demo.IsValid(self.enemy):
-            agent.popGoal()
+            print("attack execute not valid")
+            agent.clearGoals()
+            agent.addGoal(WalkToGoal(nmath.Float2(0,150)))
             return
         enemyTransform = self.enemy.WorldTransform
         enemyPos = nmath.Vector(enemyTransform[3][0], enemyTransform[3][1], enemyTransform[3][2])
@@ -305,9 +324,11 @@ class Attack(Goal):
         if self.path:
             self.path.algorithm.visualize(self.path)
 
-        enemyTransform = self.enemy.WorldTransform
-        enemyPos = nmath.Point(enemyTransform[0][3], enemyTransform[1][3], enemyTransform[2][3])
-        demo.DrawDot(enemyPos, 20, nmath.Vec4(0,1,0,1))
+        if demo.IsValid(self.enemy):
+            enemyTransform = self.enemy.WorldTransform
+            enemyPos = nmath.Point(enemyTransform[0][3], enemyTransform[1][3], enemyTransform[2][3])
+            demo.DrawDot(enemyPos, 20, nmath.Vec4(0,1,0,1))
+
         imgui.Begin("Attack goal", None, 0)
         try:
             members = [(attr, getattr(self,attr)) for attr in dir(self) if not callable(getattr(self,attr)) and not attr.startswith("__") ]
