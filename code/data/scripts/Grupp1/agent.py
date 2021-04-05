@@ -20,6 +20,7 @@ class Agent:
         self.entity.Health = h
 
         self.goals = []
+        self.goal_history = []
 
         self.setDiscoverRadius(int(statParser.getStat("normalExploreRadius")))
 
@@ -51,6 +52,8 @@ class Agent:
         self.goals[-1].enter(self)
 
     def clearGoals(self):
+        if self.goals:
+            self.goal_history.append(self.goals[-1])
         self.goals.clear()
 
     def getGoal(self):
@@ -67,7 +70,7 @@ class Agent:
         return False
 
     def popGoal(self):
-        self.goals.pop()
+        self.goal_history.append(self.goals.pop())
         if len(self.goals) > 0:
             self.goals[-1].enter(self)
 
@@ -128,6 +131,10 @@ class Agent:
 
             imgui.Text("-- GOALS --")
             for goal in self.goals:
+                imgui.Text(" " * 4 + str(goal))
+            
+            imgui.Text("-- GOAL HISTORY --")
+            for goal in self.goal_history:
                 imgui.Text(" " * 4 + str(goal))
 
             imgui.End()
