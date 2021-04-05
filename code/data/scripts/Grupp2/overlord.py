@@ -346,7 +346,7 @@ class Overlord:
         # Reaction
 
     def SendMsg(self, agent, target: demo.Entity):
-        msg = msgManager.message(demo.teamEnum.GRUPP_1, agent.enityHandle, target, "attack")
+        msg = msgManager.message(demo.teamEnum.GRUPP_1, agent.entityHandle, target, "attack")
         msgManager.instance.sendMsg(msg)
 
 

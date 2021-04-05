@@ -325,7 +325,8 @@ class ChargeAndAttackState(BaseState):
                 #enemyPos = enemy.Agent.position
 
                 if ((pos.x - enemyPos.x) ** 2 + (pos.z - enemyPos.z) ** 2) ** .5 < statParser.getStat("soldierAttackRange") \
-                        and demo.GetTime() - agent.startTime < statParser.getStat("soldierAttackSpeed"):
+                        and demo.GetTime() - agent.startTime >= statParser.getStat("soldierAttackSpeed"):
+
                     if random.random() > statParser.getStat("hitChance"):
                         print("fsm, ChargeAndAttackState: attacking castle")
                         overlord.overlord.SendMsg(agent, enemy)
