@@ -48,6 +48,7 @@ class Agent:
             healthProperty.hp -= 1
             self.entityHandle.Health = healthProperty
         else:
+            print("agent, TakeDamage: red agent is dead")
             overlord.overlord.KillAgent(self)
 
     def DealDamage(self, targetEntity):
@@ -116,7 +117,7 @@ class Agent:
                 self.finalGoal = self.itemEntity.Tree.position
                 self.ChangeState(fsm.MoveState())
             except ValueError:
-                print("agent, GoalHandler: Already claimed!")
+                print("agent, GoalHandler: tree no longer exists!")
                 return
 
         elif self.goal == enums.GoalEnum.IRON_GOAL:
@@ -128,7 +129,7 @@ class Agent:
                 self.finalGoal = self.itemEntity.Iron.position
                 self.ChangeState(fsm.MoveState())
             except ValueError:
-                print("agent, GoalHandler: Already claimed!")
+                print("agent, GoalHandler: iron no longer exists!")
                 return
 
         elif self.goal == enums.GoalEnum.SOLDIER_GOAL:
