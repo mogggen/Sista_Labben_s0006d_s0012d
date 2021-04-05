@@ -1,5 +1,5 @@
 from Grupp2 import overlord, enums
-import fog_of_war, demo, enum
+import fog_of_war, demo, enum, math
 
 
 class EntityManager():
@@ -31,10 +31,9 @@ class EntityManager():
             if self.incrementUpdateState.view_i == 0 and self.incrementUpdateState.index == 0:
                 self.trees = self.new_trees
                 self.new_trees = set()
-                overlord.overlord.AddScoutedTree(self.setTolistOfEntetys(self.trees))
+                overlord.overlord.AddScoutedTree(self.sortingTrees())
 
         elif updateState == enums.UpdateState.IRON:
-            # overlord.overlord.AddScoutedTree()
             ownedIron = set()
 
             def updateIron(entity, iron):
@@ -46,7 +45,7 @@ class EntityManager():
 
             demo.ForIron(updateIron)
             self.ironore = ownedIron
-            overlord.overlord.AddScoutedIron(self.setTolistOfEntetys(self.ironore))
+            overlord.overlord.AddScoutedIron(self.sortingIron())
             # send to overlord
         elif updateState == enums.UpdateState.ENEMIES:
             workers = set()
@@ -90,11 +89,55 @@ class EntityManager():
 
         self.updateState = (self.updateState + 1) % len(enums.updateOrder)
 
-    def setTolistOfEntetys(self, s: set()):
+    def setTolistOfEntetys(self, s: ()):
         temp = []
         for i in s:
             temp.append(demo.Entity.fromInt(i))
         return temp
 
+    def sortingTrees(self):
+        temp = []
+        distans = []
+        distreeTuppler =[]
+        for tree in self.setTolistOfEntetys(self.trees):
+            try:
+                x = math.fabs(overlord.overlord.castleEntity.Building.position.x - tree.Tree.position.x)
+                z = math.fabs(overlord.overlord.castleEntity.Building.position.z - tree.Tree.position.z)
+            except:
+                return temp
+            pi = math.sqrt(x*x + z*z)
+            distans.append(pi)
+            distreeTuppler.append((tree, pi))
 
+        distans.sort()
+
+        for i in distans:
+            for j in distreeTuppler:
+                if i == j[1]:
+                    temp.append(j[0])
+
+        return temp
+
+    def sortingIron(self):
+        temp = []
+        distans = []
+        disfeTuppler =[]
+        for iron in self.setTolistOfEntetys(self.ironore):
+            try:
+                x = math.fabs(overlord.overlord.castleEntity.Building.position.x - iron.Iron.position.x)
+                z = math.fabs(overlord.overlord.castleEntity.Building.position.z - iron.Iron.position.z)
+            except:
+                return temp
+            pi = math.sqrt(x*x + z*z)
+            distans.append(pi)
+            disfeTuppler.append((iron, pi))
+
+        distans.sort()
+
+        for i in distans:
+            for j in disfeTuppler:
+                if i == j[1]:
+                    temp.append(j[0])
+
+        return temp
 entitymanger = EntityManager()
