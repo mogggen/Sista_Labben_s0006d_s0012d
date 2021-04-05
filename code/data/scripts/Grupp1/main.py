@@ -35,7 +35,7 @@ for _ in range(50):
 
 def NebulaUpdate():
 
-    path_manager.instance.calc_paths(100)
+    path_manager.instance.calc_paths(1000)
 
     godManager.update()
 
@@ -112,6 +112,9 @@ def NebulaDraw(p):
 
     for point in pathFinder.invalid_points:
         demo.DrawDot(nmath.Point(point.x, 0, point.y), 10, nmath.Vec4(1,0,0.5,1))
+    
+    for point in agent.invalid_points:
+        demo.DrawDot(nmath.Point(point.x, 0, point.y), 10, nmath.Vec4(0,0,1,1))
 
 
 

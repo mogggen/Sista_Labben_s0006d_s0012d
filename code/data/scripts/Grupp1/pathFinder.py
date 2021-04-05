@@ -36,14 +36,19 @@ class AStar:
         self.closed = []
         self.nodes = {}
 
-        start_face = navMesh.findInNavMesh(path.start_pos)
-        if start_face < 0:
-            print("invalid start face ", start_face)
+        self.start_face = navMesh.findInNavMesh(path.start_pos)
+        if self.start_face < 0:
+            print("invalid start face ", self.start_face)
             invalid_points.append(path.start_pos)
-        start_node = Node(start_face, -1)
 
-        self.nodes[start_face] = start_node
+            return False
+
+        start_node = Node(self.start_face, -1)
+
+        self.nodes[self.start_face] = start_node
         self.open.append(start_node)
+
+        return True
 
     def step(self, path):
         current_node = self.open.pop(0)

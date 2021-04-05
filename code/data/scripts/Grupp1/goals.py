@@ -34,7 +34,43 @@ class WalkToGoal(Goal):
 
     def enter(self, agent):
         self.path = path_manager.instance.create_path(agent.getPos(), self.goal, lambda: self.path_is_done_callback(agent))
-        agent.setTarget( nmath.Point(self.target.x, 0, self.target.y) )
+
+        face = self.path.algorithm.start_face
+        vertices = []
+
+        he = navMesh.getHalfEdge(face)
+        v = navMesh.getVertex(he.vertIdx)
+        vF2 = nmath.Float2(v.x, v.z)
+        distance = (self.target - vF2).length_sq()
+
+        best_distance = distance
+        best_v = vF2
+
+        he = navMesh.getHalfEdge(he.nextEdge)
+        v = navMesh.getVertex(he.vertIdx)
+        vF2 = nmath.Float2(v.x, v.z)
+        distance = (self.target - vF2).length_sq()
+
+        if distance < best_distance:
+            best_distance = distance
+            best_v = vF2
+
+        he = navMesh.getHalfEdge(he.nextEdge)
+        v = navMesh.getVertex(he.vertIdx)
+        vF2 = nmath.Float2(v.x, v.z)
+        distance = (self.target - vF2).length_sq()
+        
+        if distance < best_distance:
+            best_distance = distance
+            best_v = vF2
+
+
+        v = best_v - self.target
+        v = nmath.Float2.normalize(v) * v.length()*0.9
+
+        p = self.target + v
+
+        #agent.setTarget( nmath.Point(p.x, 0, p.y) )
         self.active = True
 
 
@@ -73,7 +109,7 @@ class WalkToGoal(Goal):
         if self.path:
             self.path.algorithm.visualize(self.path)
 
-        demo.DrawDot(nmath.Point(self.path.goal_pos.x, 0, self.path.goal_pos.z), 20, nmath.Vec4(0,1,1,1))
+        demo.DrawDot(nmath.Point(self.path.goal_pos.x, 0, self.path.goal_pos.y), 20, nmath.Vec4(0,1,1,1))
 
 
         imgui.Begin("WalkToGoal goal", None, 0)
@@ -240,6 +276,10 @@ class Attack(Goal):
     def enter(self, agent):
         self.timer = demo.GetTime()
         self.active = True
+        agent.resetTarget()
+        self.current_face = navMesh.findInNavMesh(agent.getPos())
+        if self.current_face < 0:
+            raise ValueError("Attack enter: Agent is not on navmesh.")
 
 
     def path_is_done_callback(self, agent):
@@ -276,7 +316,7 @@ class Attack(Goal):
         if not self.path.is_done:
             return
 
-        if distance < 100:
+        if distance < 25:
             self.path = None
             return 
 
@@ -307,10 +347,19 @@ class Attack(Goal):
         if distance >= 100:
             target = nmath.Float2(enemyPos.x, enemyPos.z)
             self.path = path_manager.instance.create_path(agent.getPos(), target, lambda: self.path_is_done_callback(agent))
+            if self.path == None:
+                raise ValueError("Path with wrong start_pos")
             agent.setTarget(nmath.Point(enemyPos.x, enemyPos.y, enemyPos.z))
 
 
         elif distance > pow(statParser.getStat("soldierAttackRange"), 2):
+            
+            enemyPosF2 = nmath.Float2(enemyPos.x, enemyPos.z)
+            if not navMesh.isInFace(enemyPosF2, self.current_face):
+                self.current_face = navMesh.findInNavMesh(enemyPosF2)
+                if self.current_face < 0:
+                    raise ValueError("Enemy is not on navmesh.")
+
             agent.setTarget(nmath.Point(0,0,0) + enemyPos)
         elif not self.onCooldown:
             if random.uniform(0, 1) <= statParser.getStat("hitChance"):

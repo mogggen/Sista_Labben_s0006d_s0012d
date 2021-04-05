@@ -42,6 +42,10 @@ from Grupp1 import main as Grupp1main
 from Grupp2 import main as Grupp2main
 import msgManager
 
+def pauseNow():
+    global paused, selected_time
+    paused = True         
+    demo.SetTimeFactor(0)
 
 # Runs once every frame
 def NebulaUpdate():
@@ -108,7 +112,13 @@ def NebulaUpdate():
             face = he.nextEdge
 
     if not paused:
-        Grupp1main.NebulaUpdate()
+
+        try:
+            Grupp1main.NebulaUpdate()
+        except Exception as e:
+            pauseNow()
+            raise e
+
         Grupp2main.NebulaUpdate()
         msgManager.instance.distributeMsg()
 
