@@ -333,6 +333,15 @@ class Overlord:
         for b in self.buildings:
             if b.entityHandle == msg.taker:
                 b.buildingTakeDamage(msg)
+        if msg.taker == self.castleEntity:
+            healthProperty = self.castleEntity.Health
+            if healthProperty.hp > 0:
+                healthProperty.hp -= 1
+                self.castleEntity.Health = healthProperty
+            else:
+                demo.Delete(self.castleEntity)
+                demo.SetTimeFactor(0)
+                print("overlord, HandleMsg: We lost")
         # Reaction
 
     def SendMsg(self, agent, target: demo.Entity):
