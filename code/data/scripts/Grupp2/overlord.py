@@ -202,14 +202,14 @@ class Overlord:
 
     def AddSoldier(self, agent):
         self.soldiers.append(agent)
-        agent.ChangeState(fsm.ChargeAndAttackState(self.scoutedWorkers[0]))
-        # if len(self.soldiers) < self.amountOfSoldiersForAttack:
-        #     agent.finalGoal = nmath.Point(0, 0, 0)
-        #     agent.ChangeState(fsm.MoveState())
-        # elif self.enemyCastleEntity is not None:
-        #     for s in self.soldiers:
-        #         s.finalGoal = self.enemyCastleEntity.Building.position
-        #         s.ChangeState(fsm.ChargeAndAttackState())
+        #agent.ChangeState(fsm.ChargeAndAttackState(self.scoutedWorkers[random.randrange(0,len(self.scoutedWorkers))]))
+        if len(self.soldiers) < self.amountOfSoldiersForAttack:
+            agent.finalGoal = nmath.Point(0, 0, 0)
+            agent.ChangeState(fsm.MoveState())
+        elif self.enemyCastleEntity is not None:
+            for s in self.soldiers:
+                s.finalGoal = self.enemyCastleEntity.Building.position
+                s.ChangeState(fsm.ChargeAndAttackState(self.enemyCastleEntity))
 
     def AddBuilding(self, building):
         self.buildings.append(building)
