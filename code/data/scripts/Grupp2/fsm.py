@@ -313,6 +313,9 @@ class ChargeAndAttackState(BaseState):
 
                 pos = agent.entityHandle.Agent.position
                 enemy = overlord.overlord.GetEnemyCastle()
+                if not demo.IsValid(enemy):
+                    print("fsm, ChargeAndAttackState: the enemy castle should be destroyed")
+                    return
                 enemyPos = enemy.Building.position
 
                 if ((pos.x - enemyPos.x) ** 2 + (pos.z - enemyPos.z) ** 2) ** .5 < statParser.getStat("soldierAttackRange") \

@@ -27,6 +27,8 @@ def defendMode():
     
     for enemy_i in entity_manager.instance.enemy_soldiers:
         enemy = demo.Entity.fromInt(enemy_i)
+        if not demo.IsValid(enemy):
+            continue
         ep = enemy.Agent.position
         cp = entity_manager.instance.getCastlePos()
         dist_sq = (cp.x - ep.x)**2 + (cp.y - ep.z)**2
@@ -101,6 +103,8 @@ def assultMode():
     
     for enemy_i in entity_manager.instance.enemy_soldiers:
         enemy = demo.Entity.fromInt(enemy_i)
+        if not demo.IsValid(enemy):
+            continue
         enemies.append(enemy)
 
     if len(enemies):
@@ -139,6 +143,7 @@ def assultMode():
         enemy = demo.Entity.fromInt(enemy_i)
         if not demo.IsValid(enemy):
             print("NOT VALIDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD")
+            continue
 
         if enemy.Agent.type != demo.agentType.WORKER:
             continue
