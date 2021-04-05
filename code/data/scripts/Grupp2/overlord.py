@@ -90,6 +90,8 @@ class Overlord:
 
         self.agents.remove(agent)
         demo.Delete(agent.entityHandle)
+        if agent.entityHandle.Agent.type == demo.agentType.SOLDIER:
+            self.soldiers.remove(agent)
         del agent
 
     def KillBuilding(self, building):
