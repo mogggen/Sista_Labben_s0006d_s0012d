@@ -117,6 +117,7 @@ def HandleMessage(msg):
         msg.taker.Health = agentHealth
 
         if agentHealth.hp <= 0:
+            print("main, HandleMessage: blue agent is dead")
             entity_manager.instance.deleteEntity(msg.taker)
 
 
@@ -128,7 +129,7 @@ def HandleMessage(msg):
         if buildingHealth.hp <= 0:
             entity_manager.instance.deleteEntity(msg.taker)
 
-    elif entity_manager.instamce.castle.toInt() == msg.taker.toInt():
+    elif entity_manager.instance.castle.toInt() == msg.taker.toInt():
         castleHealth = msg.taker.Health
         castleHealth.hp -= 1
         msg.taker.Health = castleHealth

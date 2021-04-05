@@ -110,7 +110,7 @@ def assultMode():
     if len(enemies):
 
         enemies.sort(key=keyFunc)
-        print("enemies: ", enemies)
+        #print("enemies: ", enemies)
         
 
         for enemy in enemies:

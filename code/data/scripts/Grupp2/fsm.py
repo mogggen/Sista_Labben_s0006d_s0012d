@@ -289,6 +289,10 @@ class BuildState(BaseState):
 
 # Soldier Agents
 class ChargeAndAttackState(BaseState):
+
+    def __init__(self, enemy):
+        self.targetEnemy = enemy
+
     def Enter(self, agent):
         agent.pathToGoal = pathfinder.pf.AStar(agent.entityHandle.Agent.position, agent.finalGoal)
         agent.pathToGoal.pop(0)
@@ -312,11 +316,13 @@ class ChargeAndAttackState(BaseState):
             if agent.entityHandle.Agent.position == agent.finalGoal:
 
                 pos = agent.entityHandle.Agent.position
-                enemy = overlord.overlord.GetEnemyCastle()
+                #enemy = overlord.overlord.GetEnemyCastle()
+                enemy = self.targetEnemy
                 if not demo.IsValid(enemy):
                     print("fsm, ChargeAndAttackState: the enemy castle should be destroyed")
                     return
-                enemyPos = enemy.Building.position
+                #enemyPos = enemy.Building.position
+                enemyPos = enemy.Agent.position
 
                 if ((pos.x - enemyPos.x) ** 2 + (pos.z - enemyPos.z) ** 2) ** .5 < statParser.getStat("soldierAttackRange") \
                         and demo.GetTime() - agent.startTime < statParser.getStat("soldierAttackSpeed"):

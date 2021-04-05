@@ -96,7 +96,7 @@ class Overlord:
 
     def KillBuilding(self, building):
         if building.entityHandle.Building.type == demo.buildingType.CASTLE:
-            print("red defited")
+            print("red defeated")
         self.buildings.remove(building)
         demo.Delete(building.entityHandle)
         del building
@@ -202,13 +202,14 @@ class Overlord:
 
     def AddSoldier(self, agent):
         self.soldiers.append(agent)
-        if len(self.soldiers) < self.amountOfSoldiersForAttack:
-            agent.finalGoal = nmath.Point(0, 0, 0)
-            agent.ChangeState(fsm.MoveState())
-        elif self.enemyCastleEntity is not None:
-            for s in self.soldiers:
-                s.finalGoal = self.enemyCastleEntity.Building.position
-                s.ChangeState(fsm.ChargeAndAttackState())
+        agent.ChangeState(fsm.ChargeAndAttackState(self.scoutedWorkers[0]))
+        # if len(self.soldiers) < self.amountOfSoldiersForAttack:
+        #     agent.finalGoal = nmath.Point(0, 0, 0)
+        #     agent.ChangeState(fsm.MoveState())
+        # elif self.enemyCastleEntity is not None:
+        #     for s in self.soldiers:
+        #         s.finalGoal = self.enemyCastleEntity.Building.position
+        #         s.ChangeState(fsm.ChargeAndAttackState())
 
     def AddBuilding(self, building):
         self.buildings.append(building)
