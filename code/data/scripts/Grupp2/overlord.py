@@ -90,9 +90,12 @@ class Overlord:
 
         self.agents.remove(agent)
         demo.Delete(agent.entityHandle)
+        print("red agent is dead")
         del agent
 
     def KillBuilding(self, building):
+        if building.entityHandle.Building.type == demo.buildingType.CASTLE:
+            print("red defited")
         self.buildings.remove(building)
         demo.Delete(building.entityHandle)
         del building
