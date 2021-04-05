@@ -130,6 +130,9 @@ def assultMode():
     castle = None
     for building_i in entity_manager.instance.enemy_buildings:
         building = demo.Entity.fromInt(building_i)
+        if not demo.IsValid(building):
+            continue
+
         if building.Building.type == demo.buildingType.CASTLE:
             castle = building
             break
@@ -142,7 +145,6 @@ def assultMode():
     for enemy_i in entity_manager.instance.enemy_workers:
         enemy = demo.Entity.fromInt(enemy_i)
         if not demo.IsValid(enemy):
-            print("NOT VALIDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD")
             continue
 
         if enemy.Agent.type != demo.agentType.WORKER:

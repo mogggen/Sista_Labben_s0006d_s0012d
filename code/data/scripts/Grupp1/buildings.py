@@ -113,12 +113,17 @@ class blacksmith:
 
 
 class trainingCamp:
-    working = False
+
 
     def __init__(self, x, y):
         self.x = x
         self.y = y
         self.buildingEntity = buildings.spawnBuilding(demo.buildingType.TRAININGCAMP, self.x, self.y, 0, demo.teamEnum.GRUPP_1)
+        self.paid = False
+        entity_manager.instance.queueUpgrade(demo.agentType.SOLDIER)
+        entity_manager.instance.queueUpgrade(demo.agentType.SOLDIER)
+
+        self.hasStartedUpgrade = False
 
 
     def consumeAgent(self, agent):
@@ -126,40 +131,38 @@ class trainingCamp:
 
         agentProperty = self.agent.entity.Agent
         agentProperty.type = demo.agentType.SOLDIER
-
-        agentPropertyHealth = agent.entity.Health
-        agentPropertyHealth.hp = int(statParser.getStat("soldierHealth"))
-        agent.entity.Health = agentPropertyHealth
-
         self.agent.entity.Agent = agentProperty
+
+        agentPropertyHealth = self.agent.entity.Health
+        agentPropertyHealth.hp = int(statParser.getStat("soldierHealth"))
+        self.agent.entity.Health = agentPropertyHealth
+
 
         entity_manager.instance.stageForUpgrade(self.agent.entity)
 
-        buildingProperty = self.buildingEntity.Building
-        buildingProperty.hasWorker = True
-        self.buildingEntity.Building = buildingProperty
+        self.hasStartedUpgrade = True
+
+        self.paid = False
 
 
     def update(self):
-        if self.buildingEntity.Building.hasWorker:
-            if not self.working:
-                self.timer = demo.GetTime()
-                self.removeProductCost()
-                self.working = True
-            else:
-                if demo.GetTime() - self.timer >= statParser.getStat("soldierUpgradeTime"):
-                    entity_manager.instance.doneUpgrade(self.agent.entity)
-                    entity_manager.instance.queueUpgrade(demo.agentType.SOLDIER)
-                    self.agent = None
-                    self.working = False
+        if self.buildingEntity.Building.hasWorker and self.hasStartedUpgrade:
+            if not self.paid:
+                if item_manager.instance.swords > 0:
+                    self.timer = demo.GetTime()
+                    self.removeProductCost()
+                    self.paid = True
+            elif demo.GetTime() - self.timer >= statParser.getStat("soldierUpgradeTime"):
+                entity_manager.instance.doneUpgrade(self.agent.entity)
+                self.agent = None
 
-                    buildingProperty = self.buildingEntity.Building
-                    buildingProperty.hasWorker = False
-                    self.buildingEntity.Building = buildingProperty
+                buildingProperty = self.buildingEntity.Building
+                buildingProperty.hasWorker = False
+                self.buildingEntity.Building = buildingProperty
+                self.hasStartedUpgrade = False
+                self.paid = False
+
+                entity_manager.instance.queueUpgrade(demo.agentType.SOLDIER)
 
     def removeProductCost(self):
-        soldierSwordCost = statParser.getStat("soldierSwordCost")
-        if item_manager.instance.swords >= soldierSwordCost:
-            item_manager.instance.swords -= soldierSwordCost
-            return True
-        return False
+        item_manager.instance.swords -= statParser.getStat("soldierSwordCost")

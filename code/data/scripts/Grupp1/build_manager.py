@@ -1,5 +1,5 @@
 from Grupp1 import buildings, entity_manager, goals, item_manager
-import navMesh, demo, random, nmath
+import navMesh, demo, random, nmath, imgui
 import buildings as common_buildings
 import statParser
 
@@ -45,6 +45,8 @@ def update():
     for building in entity_manager.instance.buildings.values():
         if not building.buildingEntity.Building.hasWorker:
             for craftsmen in entity_manager.instance.craftsmen.values():
+                if not craftsmen.isFree():
+                    continue
                 if craftsmen.entity.Agent.type == demo.agentType.KILNER and building.buildingEntity.Building.type == demo.buildingType.KILN:
                     craftsmen.addGoal(goals.EnterBuilding(building.buildingEntity))
                     break;
@@ -83,6 +85,16 @@ def placing(type:demo.buildingType):
                     entity_manager.instance.queueUpgrade(demo.agentType.SMITH)
                 return
 
+def dbgDraw():
+    imgui.Begin("Grupp1 build manager", None, 0)
+    
+    try:
+        for b in building_queue:
+            imgui.Text(str(b[0]) + " at " + str(b[1]))
 
+        imgui.End()
+    except Exception as e:
+        imgui.End()
+        raise e
 
 

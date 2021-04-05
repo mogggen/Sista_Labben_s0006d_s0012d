@@ -168,6 +168,9 @@ class EntityManager:
                         building = demo.Entity.fromInt(building_i)
                         if building.Building.type == demo.buildingType.TRAININGCAMP and not building.Building.hasWorker:
                             worker.addGoal(goals.EnterBuilding(building))
+                            buildingProperty = building.Building
+                            buildingProperty.hasWorker = True
+                            building.Building = buildingProperty
                             break
                     else:
                         self.upgrade_queue.append(t)
@@ -423,6 +426,10 @@ class EntityManager:
             imgui.End()
             raise e
 
+        for e_i in self.craftsmen:
+            e = demo.Entity.fromInt(e_i)
+            demo.DrawDot(e.Agent.position, 10, nmath.Vec4(1,1,1,1))
+
         for b in self.buildings.values():
             imgui.Begin("Building", None, 0)
             try:
@@ -430,6 +437,11 @@ class EntityManager:
                 imgui.Text("----------" + str(b))
                 for member, value in members:
                     imgui.Text(member + ": " + str(value))
+            
+                members = [(attr, getattr(b.buildingEntity.Building, attr)) for attr in dir(b.buildingEntity.Building) if
+                           not callable(getattr(b.buildingEntity.Building, attr)) and not attr.startswith("__")]
+                for member, value in members:
+                    imgui.Text("Agent: " + member + ": " + str(value))
 
                 imgui.End()
 

@@ -116,6 +116,8 @@ def NebulaDraw(p):
     for point in agent.invalid_points:
         demo.DrawDot(nmath.Point(point.x, 0, point.y), 10, nmath.Vec4(0,0,1,1))
 
+    build_manager.dbgDraw()
+
 
 
 def HandleMessage(msg):

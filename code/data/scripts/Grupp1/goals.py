@@ -34,7 +34,7 @@ class WalkToGoal(Goal):
 
     def enter(self, agent):
         self.path = path_manager.instance.create_path(agent.getPos(), self.goal, lambda: self.path_is_done_callback(agent))
-
+        agent.resetTarget()
         #face = self.path.algorithm.start_face
         #vertices = []
 
@@ -81,11 +81,11 @@ class WalkToGoal(Goal):
     def path_is_done_callback(self, agent):
         if len(self.path.reverse_points) > 0:
             p = navMesh.getCenterOfFace(self.path.reverse_points[-1])
-            self.target = nmath.Float2(p.x, p.z)
+            #self.target = nmath.Float2(p.x, p.z)
             if self.active:
                 agent.setTarget(p)
         else:
-            agent.setTarget( nmath.Point(self.target.x, 0, self.target.y) )
+            agent.setTarget( nmath.Point(self.goal.x, 0, self.goal.y) )
 
     
     def execute(self, agent):
@@ -530,6 +530,7 @@ class Upgrade(Goal):
         super().__init__()
         self.type = type
         self.timer = 0
+        assert(type != demo.agentType.SOLDIER)
 
     def enter(self, agent):
         a = agent.entity.Agent
