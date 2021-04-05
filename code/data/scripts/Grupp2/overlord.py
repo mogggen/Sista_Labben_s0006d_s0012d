@@ -208,6 +208,7 @@ class Overlord:
             agent.ChangeState(fsm.MoveState())
         elif self.enemyCastleEntity is not None:
             for s in self.soldiers:
+                #print("AddSolider, overlord: Working!")
                 s.finalGoal = self.enemyCastleEntity.Building.position
                 s.ChangeState(fsm.ChargeAndAttackState(self.enemyCastleEntity))
 

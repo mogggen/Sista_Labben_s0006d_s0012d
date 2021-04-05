@@ -298,7 +298,7 @@ class Attack(Goal):
 
     def execute(self, agent):
         if not demo.IsValid(self.enemy):
-            print("attack execute not valid")
+            #print("attack execute not valid")
             agent.clearGoals()
             agent.addGoal(WalkToGoal(nmath.Float2(0,150)))
             return

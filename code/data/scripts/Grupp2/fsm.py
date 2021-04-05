@@ -240,7 +240,7 @@ class BuildState(BaseState):
                     # print("Not enough resources for a blacksmith")
                     agent.ChangeState(IdleState())
         else:
-            print("Agent is not a builder")
+            print("BuildState, fsm: Agent is not a builder")
 
     def Execute(self, agent):
         if agent.goal == enums.GoalEnum.BUILD_KILNS_GOAL:
@@ -321,8 +321,8 @@ class ChargeAndAttackState(BaseState):
                 if not demo.IsValid(enemy):
                     print("fsm, ChargeAndAttackState: the enemy castle should be destroyed")
                     return
-                #enemyPos = enemy.Building.position
-                enemyPos = enemy.Agent.position
+                enemyPos = enemy.Building.position
+                #enemyPos = enemy.Agent.position
 
                 if ((pos.x - enemyPos.x) ** 2 + (pos.z - enemyPos.z) ** 2) ** .5 < statParser.getStat("soldierAttackRange") \
                         and demo.GetTime() - agent.startTime < statParser.getStat("soldierAttackSpeed"):

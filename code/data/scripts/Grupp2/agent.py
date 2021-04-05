@@ -69,7 +69,7 @@ class Agent:
                 overlord.overlord.Addironore(1)
             self.holding = None
         else:
-            print("Agent not in castle keep walking")
+            print("agent, DropItem: Agent not in castle keep walking")
 
     def Discover(self):
         p = self.entityHandle.Agent.position
